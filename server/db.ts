@@ -237,8 +237,8 @@ function seedInitialData(): void {
   const settingCount = (db.prepare('SELECT COUNT(*) as c FROM site_settings').get() as { c: number }).c;
   if (settingCount === 0) {
     const defaultProfile: SiteProfile = {
-      labName: 'Autonomous Cyber-Physical Systems Laboratory',
-      shortTitle: 'Purdue ACPS Lab',
+      labName: 'Digital Agriculture Discovery (Dad Lab)',
+      shortTitle: 'Digital Agriculture Discovery (Dad Lab)',
       department: 'Elmore Family School of Electrical and Computer Engineering',
       college: 'College of Engineering',
       institution: 'Purdue University',
@@ -256,7 +256,7 @@ function seedInitialData(): void {
       piOffice: 'Materials and Electrical Engineering Building (MSEE), Room 342',
       piPortraitUrl: '/src/assets/images/pi_portrait_faculty_1794777661027.jpg',
       piBioHtml:
-        '<p>Dr. Elena Saraswat leads the Autonomous Cyber-Physical Systems Laboratory at Purdue University. Her research focuses on verified control synthesis, real-time sensor fusion, and ultra-low-power photonic interconnects for autonomous vehicles and industrial robotics.</p><p>Prior to joining Purdue Engineering, she completed her doctorate at MIT and held visiting research appointments with national metrology and aerospace laboratories. Her work is supported by the National Science Foundation, the Office of Naval Research, and industry consortium partners.</p>',
+        '<p>Dr. Elena Saraswat leads the Digital Agriculture Discovery (Dad Lab) at Purdue University. Her research focuses on verified control synthesis, real-time sensor fusion, and ultra-low-power photonic interconnects for autonomous vehicles and industrial robotics.</p><p>Prior to joining Purdue Engineering, she completed her doctorate at MIT and held visiting research appointments with national metrology and aerospace laboratories. Her work is supported by the National Science Foundation, the Office of Naval Research, and industry consortium partners.</p>',
       piEducation: [
         'Ph.D., Electrical Engineering and Computer Science — Massachusetts Institute of Technology',
         'M.S., Mechanical and Aerospace Engineering — Princeton University',
@@ -529,7 +529,7 @@ function seedInitialData(): void {
 
     insertNews.run(
       'symposium-best-poster-award-2026',
-      'ACPS Lab Researchers Win Best Hardware Demonstration at Midwest Autonomy Symposium',
+      'Dad Lab Researchers Win Best Hardware Demonstration at Midwest Autonomy Symposium',
       'Award',
       '2026-10-18',
       'Ph.D. candidates Marcus Chen and Priya Nair received first-place recognition for demonstrating closed-loop photonic-guided gantry safety control.',
@@ -549,7 +549,7 @@ function seedInitialData(): void {
       'Research Development',
       '2026-09-04',
       'New federal funding supports two graduate research fellowships and cleanroom fabrication for integrated optical sensors.',
-      '<p>The National Science Foundation has awarded $540,000 to the Autonomous Cyber-Physical Systems Laboratory to investigate fault-tolerant photonic sensing architectures for extreme-environment robotics.</p><p>Funding begins in Spring 2027 and supports new undergraduate and doctoral research positions at Purdue University.</p>',
+      '<p>The National Science Foundation has awarded $540,000 to the Digital Agriculture Discovery (Dad Lab) to investigate fault-tolerant photonic sensing architectures for extreme-environment robotics.</p><p>Funding begins in Spring 2027 and supports new undergraduate and doctoral research positions at Purdue University.</p>',
       '/src/assets/images/research_photonics_computing_1794777661254.jpg',
       'Integrated silicon-nitride photonic test assembly supported under the new NSF initiative.',
       1,

@@ -260,8 +260,7 @@ app.use((req, res, next) => {
 // PUBLIC API ROUTES
 // ========================
 
-app.get('/api/public/bootstrap', (_req, res) => {
-  try {
+export function getPublicBootstrap() {
     const profile = getProfile();
     const allProjects = (
       db
@@ -313,7 +312,7 @@ app.get('/api/public/bootstrap', (_req, res) => {
       .filter((p) => p.featured_on_home)
       .slice(0, profile.homeLimits?.publications ?? 4);
 
-    res.json({
+    return {
       profile,
       featuredProjects: featuredProjects.length ? featuredProjects : allProjects.slice(0, 3),
       allProjects,
@@ -328,7 +327,12 @@ app.get('/api/public/bootstrap', (_req, res) => {
       allPublications,
       courses,
       opportunities,
-    });
+    };
+}
+
+app.get('/api/public/bootstrap', (_req, res) => {
+  try {
+    res.json(getPublicBootstrap());
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : 'Failed to load public data' });
   }
@@ -1093,4 +1097,4 @@ async function startServer() {
   });
 }
 
-startServer();
+if (process.env.EXPORT_PUBLIC_DATA !== 'true') startServer();

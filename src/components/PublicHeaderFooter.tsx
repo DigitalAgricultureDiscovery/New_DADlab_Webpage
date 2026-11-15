@@ -1,3 +1,4 @@
+import { routeHref } from '../lib/routing';
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import type { SiteProfile, UserAccount } from '../types/cms';
@@ -49,9 +50,9 @@ export const PublicHeader: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8">
         {/* Zone 1: Single-line Brand Wordmark */}
         <a
-          href="/"
+          href={routeHref('/')}
           onClick={(e) => handleLinkClick(e, '/')}
-          className="font-serif text-lg sm:text-xl font-semibold tracking-tight text-white hover:text-[#CFB991] transition-colors whitespace-nowrap shrink-0"
+          className="font-serif text-lg sm:text-xl font-semibold tracking-tight text-white hover:text-[#CFB991] transition-colors max-w-[55%] lg:max-w-[30%] leading-tight shrink-0"
         >
           {profile.shortTitle}
         </a>
@@ -63,7 +64,7 @@ export const PublicHeader: React.FC<HeaderProps> = ({
             return (
               <a
                 key={item.path}
-                href={item.path}
+                href={routeHref(item.path)}
                 onClick={(e) => handleLinkClick(e, item.path)}
                 className={`relative py-1 text-[13px] font-medium transition-colors whitespace-nowrap shrink-0 ${
                   active ? 'text-[#CFB991]' : 'text-neutral-300 hover:text-white'
@@ -84,7 +85,7 @@ export const PublicHeader: React.FC<HeaderProps> = ({
         {/* Zone 3: Single Primary Action */}
         <div className="flex items-center gap-3 shrink-0">
           <a
-            href="/admin"
+            href={routeHref('/admin')}
             onClick={(e) => handleLinkClick(e, '/admin')}
             className="hidden sm:inline-flex items-center px-4 py-2 text-xs font-semibold bg-[#CFB991] text-black rounded hover:bg-[#DFCCA8] transition-colors whitespace-nowrap shrink-0"
           >
@@ -110,7 +111,7 @@ export const PublicHeader: React.FC<HeaderProps> = ({
             return (
               <a
                 key={item.path}
-                href={item.path}
+                href={routeHref(item.path)}
                 onClick={(e) => handleLinkClick(e, item.path)}
                 className={`block px-3 py-2.5 text-sm font-medium rounded transition-colors ${
                   active
@@ -124,7 +125,7 @@ export const PublicHeader: React.FC<HeaderProps> = ({
           })}
           <div className="pt-3 mt-2 border-t border-neutral-800">
             <a
-              href="/admin"
+              href={routeHref('/admin')}
               onClick={(e) => handleLinkClick(e, '/admin')}
               className="block w-full text-center px-4 py-2.5 text-xs font-semibold bg-[#CFB991] text-black rounded hover:bg-[#DFCCA8]"
             >
@@ -190,7 +191,7 @@ export const PublicFooter: React.FC<FooterProps> = ({ profile, onNavigate }) => 
               {PUBLIC_NAV_ITEMS.map((item) => (
                 <li key={item.path}>
                   <a
-                    href={item.path}
+                    href={routeHref(item.path)}
                     onClick={(e) => handleLink(e, item.path)}
                     className="text-neutral-400 hover:text-[#CFB991] transition-colors"
                   >
@@ -207,7 +208,7 @@ export const PublicFooter: React.FC<FooterProps> = ({ profile, onNavigate }) => 
             © {new Date().getFullYear()} {profile.labName} · {profile.institution}, West Lafayette, IN
           </p>
           <a
-            href="/admin"
+            href={routeHref('/admin')}
             onClick={(e) => handleLink(e, '/admin')}
             className="text-neutral-400 hover:text-[#CFB991] transition-colors"
           >

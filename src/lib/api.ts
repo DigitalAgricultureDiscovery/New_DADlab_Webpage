@@ -12,7 +12,12 @@ import type {
   ContactInquiry,
 } from '../types/cms';
 
+export const isStaticSite = import.meta.env.VITE_STATIC_SITE === 'true';
+
 async function requestJson<T>(url: string, options?: RequestInit): Promise<T> {
+  if (isStaticSite && url.startsWith('/api/')) {
+    throw new Error('This feature requires the CMS server and is unavailable on GitHub Pages. Please contact the lab by email.');
+  }
   const res = await fetch(url, {
     credentials: 'include',
     headers: {
@@ -53,7 +58,7 @@ export interface AdminWorkspaceData {
 
 export const api = {
   // Public
-  getPublicBootstrap: () => requestJson<PublicBootstrapData>('/api/public/bootstrap'),
+  getPublicBootstrap: () => requestJson<PublicBootstrapData>(isStaticSite ? `${import.meta.env.BASE_URL}public-data.json` : '/api/public/bootstrap'),
   submitContact: (payload: {
     name: string;
     email: string;
@@ -66,7 +71,7 @@ export const api = {
   }),
 
   // Auth
-  getMe: () => requestJson<{ user: UserAccount | null }>('/api/auth/me'),
+  getMe: () => isStaticSite ? Promise.resolve({ user: null }) : requestJson<{ user: UserAccount | null }>('/api/auth/me'),
   login: (email: string, password: string) =>
     requestJson<{ user: UserAccount }>('/api/auth/login', {
       method: 'POST',

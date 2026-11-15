@@ -9,7 +9,8 @@
     "start": "node server.ts",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "build:pages": "VITE_STATIC_SITE=true vite build && tsx scripts/export-public.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
