@@ -12,13 +12,17 @@ export interface TeamMember {
   id: string;
   name: string;
   role: string;
-  category: 'Faculty' | 'PhD Student' | 'MS Student' | 'Undergraduate' | 'Alumni';
+  category: 'Faculty' | 'PhD Student' | 'MS Student' | 'Undergraduate' | 'Postdoctoral Researcher' | 'Visiting Researcher' | 'Alumni';
   focus: string;
+  photoUrl?: string;
   email?: string;
   website?: string;
 }
 
 export interface SiteProfile {
+  researchAreas?: { id: string; title: string; description: string; imageUrl: string }[];
+  teachingOverview?: string;
+  reviewNote?: string;
   labName: string;
   shortTitle: string;
   department: string;
@@ -62,6 +66,8 @@ export type NewsCategory =
 export type PublishStatus = 'draft' | 'published' | 'archived';
 
 export interface NewsItem {
+  source_url?: string;
+  attachments?: {label: string; url: string}[];
   id: number;
   slug: string;
   title: string;
@@ -141,7 +147,7 @@ export interface ResearchProjectItem {
   progress_notes: string;
   image_url: string;
   image_caption: string;
-  project_status: 'ongoing' | 'completed';
+  project_status: 'ongoing' | 'completed' | 'archived';
   related_publication_ids: number[];
   collaborators: string;
   funding_info: string;

@@ -11,6 +11,7 @@ export interface NavItem {
 export const PUBLIC_NAV_ITEMS: NavItem[] = [
   { label: 'Home', path: '/' },
   { label: 'About', path: '/about' },
+  { label: 'People', path: '/people' },
   { label: 'Research', path: '/research' },
   { label: 'Publications', path: '/publications' },
   { label: 'News', path: '/news' },
@@ -161,7 +162,7 @@ export const PublicFooter: React.FC<FooterProps> = ({ profile, onNavigate }) => 
               {profile.labName}
             </h2>
             <p className="text-sm text-neutral-400 leading-relaxed max-w-md">
-              {profile.department}, {profile.college}. {profile.missionStatement}
+              {profile.department}. {profile.missionStatement}
             </p>
           </div>
 

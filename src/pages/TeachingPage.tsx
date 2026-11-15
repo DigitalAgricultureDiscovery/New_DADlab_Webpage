@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { ExternalLink, FileText, BookOpen } from 'lucide-react';
-import type { CourseItem } from '../types/cms';
+import type { CourseItem, SiteProfile } from '../types/cms';
 import { sanitizeHtmlClient } from '../lib/htmlUtils';
 
 interface TeachingPageProps {
   courses: CourseItem[];
+  profile: SiteProfile;
 }
 
-export const TeachingPage: React.FC<TeachingPageProps> = ({ courses }) => {
+export const TeachingPage: React.FC<TeachingPageProps> = ({ courses, profile }) => {
   const [view, setView] = useState<'active' | 'archived'>('active');
 
   const activeCourses = courses.filter((c) => c.status === 'active');
@@ -26,7 +27,7 @@ export const TeachingPage: React.FC<TeachingPageProps> = ({ courses }) => {
               Courses &amp; Teaching
             </h1>
             <p className="text-base text-neutral-600 mt-3 leading-relaxed">
-              Undergraduate and graduate engineering courses taught within the Elmore Family School of Electrical and Computer Engineering.
+              {profile.teachingOverview}
             </p>
           </div>
 
@@ -56,6 +57,7 @@ export const TeachingPage: React.FC<TeachingPageProps> = ({ courses }) => {
           </div>
         </div>
 
+        <p className="text-sm text-neutral-600">Course titles, instructor assignments, and semesters awaiting verification are retained as unpublished drafts. No current teaching schedule is asserted here.</p>
         {displayed.length === 0 ? (
           <div className="bg-white border border-[#E5E2DC] rounded-md p-10 text-center">
             <p className="text-sm text-neutral-600">

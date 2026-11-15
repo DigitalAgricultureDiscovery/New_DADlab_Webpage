@@ -48,7 +48,7 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = ({
               Research Opportunities &amp; Positions
             </h1>
             <p className="text-base text-neutral-600 mt-3 leading-relaxed">
-              We welcome motivated Purdue undergraduate students, graduate researchers, and full-time scholars to collaborate on autonomous and photonic systems.
+              Research opportunities are posted here when confirmed by the laboratory.
             </p>
           </div>
 
@@ -79,7 +79,7 @@ export const OpportunitiesPage: React.FC<OpportunitiesPageProps> = ({
           {openPositions.length === 0 ? (
             <div className="bg-white border border-[#E5E2DC] rounded-md p-8 space-y-3">
               <p className="text-sm text-neutral-700">
-                No active openings match your selected category right now. Prospective Ph.D. and undergraduate researchers with strong alignment are encouraged to contact us.
+                No current openings are posted for this category.
               </p>
               <button
                 type="button"

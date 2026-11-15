@@ -10,7 +10,7 @@ interface AboutPageProps {
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => {
-  const categories = ['Faculty', 'PhD Student', 'MS Student', 'Undergraduate', 'Alumni'] as const;
+  const categories = ['Faculty', 'PhD Student', 'MS Student', 'Undergraduate', 'Postdoctoral Researcher', 'Visiting Researcher', 'Alumni'] as const;
 
   return (
     <div className="bg-[#FAF9F6] py-14">
@@ -18,7 +18,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
         {/* Page Header */}
         <div className="pb-8 border-b border-[#E5E2DC] max-w-3xl">
           <p className="text-xs font-semibold tracking-wider text-[#8E6F3E] uppercase">
-            {profile.institution} · {profile.college}
+            {profile.institution}
           </p>
           <h1 className="font-serif text-4xl font-semibold text-black mt-2">
             About the Laboratory &amp; Principal Investigator
@@ -178,7 +178,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                         key={m.id}
                         className="bg-white border border-[#E5E2DC] rounded-md p-5 space-y-1.5"
                       >
+                        {m.photoUrl && <LabImage src={m.photoUrl} alt={m.name} className="w-24 h-24 rounded-full object-cover" />}
                         <h4 className="font-serif text-lg font-semibold text-black">{m.name}</h4>
+                        {m.website && <a href={m.website} target="_blank" rel="noreferrer" className="underline text-sm">Professional profile</a>}
                         <p className="text-xs font-medium text-[#8E6F3E]">{m.role}</p>
                         <p className="text-sm text-neutral-600 pt-1 leading-relaxed">{m.focus}</p>
                         {m.email && (

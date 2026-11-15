@@ -195,6 +195,7 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                         <p className="text-sm text-neutral-600 italic">{pub.venue}</p>
 
                         <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-semibold">
+                          {pub.abstract && (
                           <button
                             type="button"
                             onClick={() => toggleAbstract(pub.id)}
@@ -210,6 +211,7 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                               </>
                             )}
                           </button>
+                          )}
 
                           {pub.doi_url && (
                             <a

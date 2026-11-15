@@ -1,8 +1,6 @@
 {
-  "name": "Digital Agriculture Discovery (Dad Lab)",
+  "name": "Digital Agriculture Discovery Lab",
   "description": "Academic research laboratory website and administrative content management system for Purdue University.",
   "requestFramePermissions": [],
-  "majorCapabilities": [
-    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
-  ]
+  "majorCapabilities": []
 }

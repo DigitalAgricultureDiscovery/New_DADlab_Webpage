@@ -1,13 +1,6 @@
+import DOMPurify from 'dompurify';
 export function sanitizeHtmlClient(input: string): string {
-  if (!input) return '';
-  return input
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
-    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
-    .replace(/<embed\b[^>]*>/gi, '')
-    .replace(/\son\w+\s*=\s*(['"]).*?\1/gi, '')
-    .replace(/\son\w+\s*=\s*[^\s>]+/gi, '')
-    .replace(/javascript:/gi, '#blocked:');
+  return DOMPurify.sanitize(input || '', { USE_PROFILES: { html: true } });
 }
 
 export function formatAcademicDate(isoDate: string): string {
@@ -30,7 +23,7 @@ export function formatAcademicDate(isoDate: string): string {
 export function formatMonthYear(isoDate: string): { year: string; monthLabel: string; monthKey: string } {
   const parts = isoDate.split('-');
   if (parts.length < 2) {
-    return { year: 'Undated', monthLabel: 'General', monthKey: '0000-00' };
+    return { year: parts[0] || 'Undated', monthLabel: 'Date not specified', monthKey: `${parts[0] || '0000'}-00` };
   }
   const year = parts[0];
   const monthIdx = Number(parts[1]) - 1;

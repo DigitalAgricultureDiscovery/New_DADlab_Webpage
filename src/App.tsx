@@ -4,6 +4,7 @@ import { api, isStaticSite } from './lib/api';
 import type { PublicBootstrapData, UserAccount } from './types/cms';
 import { PublicHeader, PublicFooter } from './components/PublicHeaderFooter';
 import { HomePage } from './pages/HomePage';
+import { PeoplePage } from './pages/PeoplePage';
 import { AboutPage } from './pages/AboutPage';
 import { ResearchPage } from './pages/ResearchPage';
 import { PublicationsPage } from './pages/PublicationsPage';
@@ -130,6 +131,7 @@ export default function App() {
     if (currentPath === '/' || currentPath === '') {
       return <HomePage data={publicData} onNavigate={navigate} />;
     }
+    if (currentPath === '/people') return <PeoplePage profile={publicData.profile} />;
     if (currentPath === '/about') {
       return <AboutPage profile={publicData.profile} onNavigate={navigate} />;
     }
@@ -141,6 +143,7 @@ export default function App() {
         <ResearchPage
           projects={publicData.allProjects}
           publications={publicData.allPublications}
+          researchAreas={publicData.profile.researchAreas}
           selectedSlug={slug}
           onNavigate={navigate}
         />
@@ -158,7 +161,7 @@ export default function App() {
       );
     }
     if (currentPath === '/teaching') {
-      return <TeachingPage courses={publicData.courses} />;
+      return <TeachingPage courses={publicData.courses} profile={publicData.profile} />;
     }
     if (currentPath === '/opportunities') {
       return (
@@ -179,6 +182,7 @@ export default function App() {
         onNavigate={navigate}
         currentUser={currentUser}
       />
+      {publicData.profile.reviewNote && <p className="bg-[#CFB991] text-black px-4 py-3 text-sm text-center">{publicData.profile.reviewNote}</p>}
       <main className="flex-1">{renderPublicPage()}</main>
       <PublicFooter profile={publicData.profile} onNavigate={navigate} />
     </div>

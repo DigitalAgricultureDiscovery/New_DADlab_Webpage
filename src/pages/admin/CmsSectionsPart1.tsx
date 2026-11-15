@@ -87,6 +87,8 @@ export const NewsManager: React.FC<NewsManagerProps> = ({
   if (editing) {
     return (
       <form onSubmit={handleSave} className="bg-white border border-neutral-200 rounded-md p-6 space-y-5">
+        <label className="block text-sm">Source URL<input type="url" className="block border p-2 w-full" value={editing.source_url || ''} onChange={e => setEditing({...editing,source_url:e.target.value})} /></label>
+        <label className="block text-sm">Attachment links (one URL per line)<textarea className="block border p-2 w-full" value={(editing.attachments || []).map(a=>a.url).join('\n')} onChange={e=>setEditing({...editing,attachments:e.target.value.split('\n').map(url=>({label:'Download resource',url}))})} /></label>
         <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-neutral-200">
           <h2 className="font-serif text-xl font-semibold text-black">
             {editing.id ? 'Edit News Announcement' : 'New News Announcement'}
@@ -786,13 +788,14 @@ export const ProjectsManager: React.FC<ProjectsManagerProps> = ({
               onChange={(e) =>
                 setEditing({
                   ...editing,
-                  project_status: e.target.value as 'ongoing' | 'completed',
+                  project_status: e.target.value as 'ongoing' | 'completed' | 'archived',
                 })
               }
               className="w-full px-3 py-2 text-sm border border-neutral-300 rounded-md bg-white focus:outline-none focus:border-black"
             >
               <option value="ongoing">Ongoing</option>
-              <option value="completed">Completed (Archival)</option>
+              <option value="completed">Completed</option>
+              <option value="archived">Archived / historical theme</option>
             </select>
           </div>
         </div>
@@ -818,7 +821,7 @@ export const ProjectsManager: React.FC<ProjectsManagerProps> = ({
             rows={2}
             value={editing.progress_notes || ''}
             onChange={(e) => setEditing({ ...editing, progress_notes: e.target.value })}
-            placeholder="e.g., November 2026 Update: Hardware validation completed..."
+            placeholder="Research progress, status confirmation, or historical context"
             className="w-full px-3 py-2 text-sm border border-neutral-300 rounded-md focus:outline-none focus:border-black"
           />
         </div>
