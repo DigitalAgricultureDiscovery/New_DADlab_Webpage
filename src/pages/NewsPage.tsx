@@ -11,7 +11,7 @@ interface NewsPageProps {
 }
 
 export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNavigate }) => {
-  const [viewMode, setViewMode] = useState<'recent' | 'archive'>('recent');
+  const [viewMode, setViewMode] = useState<'recent' | 'archive'>('archive');
   const [yearFilter, setYearFilter] = useState<string>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
 
@@ -75,6 +75,10 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
               </figure>
             )}
 
+            <div className="px-8 pt-6 space-y-2">
+              {activeArticle.source_url && <a className="block underline" href={activeArticle.source_url} target="_blank" rel="noreferrer">Original announcement / source</a>}
+              {activeArticle.attachments?.filter(a=>a.url).map((a,i)=><a className="block underline" key={i} href={a.url} target="_blank" rel="noreferrer">{a.label}</a>)}
+            </div>
             <div className="p-8 sm:p-10">
               <div
                 className="prose-lab max-w-2xl"
@@ -89,7 +93,7 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
     );
   }
 
-  const filtered = useMemo(() => {
+  const filtered = (() => {
     return news.filter((item) => {
       if (viewMode === 'recent' && item.status === 'archived') return false;
       if (viewMode === 'archive' && item.status !== 'archived') return false;
@@ -97,9 +101,9 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
       if (categoryFilter !== 'all' && item.category !== categoryFilter) return false;
       return true;
     });
-  }, [news, viewMode, yearFilter, categoryFilter]);
+  })();
 
-  const groupedByMonthYear = useMemo(() => {
+  const groupedByMonthYear = (() => {
     const groups = new Map<string, { label: string; items: NewsItem[] }>();
     for (const item of filtered) {
       const { year, monthLabel, monthKey } = formatMonthYear(item.published_date);
@@ -111,7 +115,7 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
       }
     }
     return Array.from(groups.entries()).sort((a, b) => b[0].localeCompare(a[0]));
-  }, [filtered]);
+  })();
 
   return (
     <div className="bg-[#FAF9F6] py-14">

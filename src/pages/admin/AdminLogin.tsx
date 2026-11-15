@@ -102,42 +102,6 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ labName, onSuccess, onNa
               {loading ? 'Signing In...' : 'Sign In to CMS'}
             </button>
 
-            <div className="pt-4 border-t border-[#E5E2DC] space-y-2.5">
-              <p className="text-[11px] font-semibold text-neutral-600 uppercase tracking-wider">
-                Initial Evaluation Accounts
-              </p>
-              <div className="grid grid-cols-1 gap-2">
-                <button
-                  type="button"
-                  disabled={loading}
-                  onClick={() => submitLogin('saraswat@purdue.edu', 'PurdueLab2026!')}
-                  className="w-full px-3 py-2 text-left text-xs bg-[#FAF9F6] border border-[#E5E2DC] rounded hover:border-black transition-colors"
-                >
-                  <span className="font-semibold text-black block">
-                    Sign in as Principal Investigator (Admin)
-                  </span>
-                  <span className="text-neutral-500 font-mono text-[11px]">
-                    saraswat@purdue.edu · Full publish, settings, &amp; backup access
-                  </span>
-                </button>
-                <button
-                  type="button"
-                  disabled={loading}
-                  onClick={() => submitLogin('researcher@purdue.edu', 'LabEditor2026!')}
-                  className="w-full px-3 py-2 text-left text-xs bg-[#FAF9F6] border border-[#E5E2DC] rounded hover:border-black transition-colors"
-                >
-                  <span className="font-semibold text-black block">
-                    Sign in as Graduate Lab Editor
-                  </span>
-                  <span className="text-neutral-500 font-mono text-[11px]">
-                    researcher@purdue.edu · Content &amp; media management role
-                  </span>
-                </button>
-              </div>
-              <p className="text-[11px] text-neutral-500 leading-relaxed">
-                Change default passwords under Users &amp; Security after initial sign-in.
-              </p>
-            </div>
           </form>
         </div>
       </div>

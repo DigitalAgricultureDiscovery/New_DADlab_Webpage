@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import { api } from './lib/api';
+import { readPath, routeHref } from './lib/routing';
+import { api, isStaticSite } from './lib/api';
 import type { PublicBootstrapData, UserAccount } from './types/cms';
 import { PublicHeader, PublicFooter } from './components/PublicHeaderFooter';
 import { HomePage } from './pages/HomePage';
+import { PeoplePage } from './pages/PeoplePage';
 import { AboutPage } from './pages/AboutPage';
 import { ResearchPage } from './pages/ResearchPage';
 import { PublicationsPage } from './pages/PublicationsPage';
@@ -13,7 +15,7 @@ import { ContactPage } from './pages/ContactPage';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 
 export default function App() {
-  const [currentPath, setCurrentPath] = useState<string>(() => window.location.pathname || '/');
+  const [currentPath, setCurrentPath] = useState<string>(() => readPath());
   const [publicData, setPublicData] = useState<PublicBootstrapData | null>(null);
   const [currentUser, setCurrentUser] = useState<UserAccount | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,15 +40,19 @@ export default function App() {
 
   useEffect(() => {
     const onPop = () => {
-      setCurrentPath(window.location.pathname || '/');
+      setCurrentPath(readPath());
     };
     window.addEventListener('popstate', onPop);
-    return () => window.removeEventListener('popstate', onPop);
+    window.addEventListener('hashchange', onPop);
+    return () => {
+      window.removeEventListener('popstate', onPop);
+      window.removeEventListener('hashchange', onPop);
+    };
   }, []);
 
   const navigate = useCallback((path: string) => {
-    if (path !== window.location.pathname) {
-      window.history.pushState({}, '', path);
+    if (path !== readPath()) {
+      window.history.pushState({}, '', routeHref(path));
     }
     setCurrentPath(path);
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -101,6 +107,14 @@ export default function App() {
     );
   }
 
+  if (currentPath.startsWith('/admin') && isStaticSite) {
+    return <main className="max-w-2xl mx-auto p-8 space-y-4">
+      <h1 className="text-2xl">CMS administration</h1>
+      <p>CMS editing requires the laboratory server. This website publishes the public laboratory content.</p>
+      <a href={routeHref('/')} onClick={(event) => { event.preventDefault(); navigate('/'); }}>Return to the laboratory website</a>
+    </main>;
+  }
+
   if (currentPath.startsWith('/admin')) {
     return (
       <AdminDashboard
@@ -117,6 +131,7 @@ export default function App() {
     if (currentPath === '/' || currentPath === '') {
       return <HomePage data={publicData} onNavigate={navigate} />;
     }
+    if (currentPath === '/people') return <PeoplePage profile={publicData.profile} />;
     if (currentPath === '/about') {
       return <AboutPage profile={publicData.profile} onNavigate={navigate} />;
     }
@@ -128,6 +143,7 @@ export default function App() {
         <ResearchPage
           projects={publicData.allProjects}
           publications={publicData.allPublications}
+          researchAreas={publicData.profile.researchAreas}
           selectedSlug={slug}
           onNavigate={navigate}
         />
@@ -145,7 +161,7 @@ export default function App() {
       );
     }
     if (currentPath === '/teaching') {
-      return <TeachingPage courses={publicData.courses} />;
+      return <TeachingPage courses={publicData.courses} profile={publicData.profile} />;
     }
     if (currentPath === '/opportunities') {
       return (
@@ -166,6 +182,7 @@ export default function App() {
         onNavigate={navigate}
         currentUser={currentUser}
       />
+      {publicData.profile.reviewNote && <p className="bg-[#CFB991] text-black px-4 py-3 text-sm text-center">{publicData.profile.reviewNote}</p>}
       <main className="flex-1">{renderPublicPage()}</main>
       <PublicFooter profile={publicData.profile} onNavigate={navigate} />
     </div>

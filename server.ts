@@ -1,4 +1,5 @@
 import express from 'express';
+import { rateLimit } from 'express-rate-limit';
 import type { Request, Response, NextFunction } from 'express';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -27,7 +28,7 @@ initDb();
 
 const SESSION_SECRET = getSessionSecret();
 const COOKIE_NAME = 'purdue_lab_session';
-const PORT = 3000;
+const PORT = Number(process.env.PORT || 3000);
 
 interface SessionPayload {
   uid: number;
@@ -125,6 +126,8 @@ function requireAdmin(req: AuthedRequest, res: Response, next: NextFunction): vo
 // Row mappers
 function mapNewsRow(row: Record<string, unknown>): NewsItem {
   return {
+    source_url: String(row.source_url || ''),
+    attachments: JSON.parse(String(row.attachments_json || '[]')),
     id: Number(row.id),
     slug: String(row.slug),
     title: String(row.title),
@@ -236,6 +239,7 @@ function getProfile(): SiteProfile {
 }
 
 const app = express();
+app.disable('x-powered-by');
 app.use(express.json({ limit: '20mb' }));
 app.use(attachSession);
 
@@ -260,8 +264,7 @@ app.use((req, res, next) => {
 // PUBLIC API ROUTES
 // ========================
 
-app.get('/api/public/bootstrap', (_req, res) => {
-  try {
+export function getPublicBootstrap() {
     const profile = getProfile();
     const allProjects = (
       db
@@ -313,14 +316,14 @@ app.get('/api/public/bootstrap', (_req, res) => {
       .filter((p) => p.featured_on_home)
       .slice(0, profile.homeLimits?.publications ?? 4);
 
-    res.json({
+    return {
       profile,
       featuredProjects: featuredProjects.length ? featuredProjects : allProjects.slice(0, 3),
       allProjects,
       featuredNews:
         featuredNews.length
           ? featuredNews
-          : allNews.filter((n) => n.status === 'published').slice(0, 3),
+          : allNews.slice(0, 3),
       allNews,
       featuredPublications: featuredPublications.length
         ? featuredPublications
@@ -328,7 +331,12 @@ app.get('/api/public/bootstrap', (_req, res) => {
       allPublications,
       courses,
       opportunities,
-    });
+    };
+}
+
+app.get('/api/public/bootstrap', (_req, res) => {
+  try {
+    res.json(getPublicBootstrap());
   } catch (err) {
     res.status(500).json({ error: err instanceof Error ? err.message : 'Failed to load public data' });
   }
@@ -376,7 +384,7 @@ app.get('/api/auth/me', (req: AuthedRequest, res) => {
   });
 });
 
-app.post('/api/auth/login', (req, res) => {
+app.post('/api/auth/login', rateLimit({windowMs: 15*60*1000, limit: 20, standardHeaders: true, legacyHeaders: false}), (req, res) => {
   const { email, password } = req.body ?? {};
   if (!email || !password) {
     res.status(400).json({ error: 'Email and password are required.' });
@@ -403,7 +411,7 @@ app.post('/api/auth/login', (req, res) => {
   const token = signSession(payload);
   res.setHeader(
     'Set-Cookie',
-    `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${7 * 24 * 60 * 60}`
+    `${COOKIE_NAME}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; ${process.env.NODE_ENV === 'production' ? 'Secure;' : ''} Max-Age=${7 * 24 * 60 * 60}`
   );
   res.json({
     user: { id: user.id, email: user.email, name: user.name, role: user.role },
@@ -497,6 +505,7 @@ app.post('/api/admin/news', requireAuth, (req: AuthedRequest, res) => {
       now,
       now
     );
+  db.prepare('UPDATE news SET source_url=?, attachments_json=? WHERE id=?').run(String(b.source_url || ''), JSON.stringify(b.attachments || []), Number(result.lastInsertRowid));
   const created = db.prepare('SELECT * FROM news WHERE id = ?').get(Number(result.lastInsertRowid)) as Record<string, unknown>;
   res.status(201).json(mapNewsRow(created));
 });
@@ -532,6 +541,7 @@ app.put('/api/admin/news/:id', requireAuth, (req, res) => {
     now,
     id
   );
+  db.prepare('UPDATE news SET source_url=?, attachments_json=? WHERE id=?').run(String(b.source_url ?? existing.source_url), JSON.stringify(b.attachments ?? JSON.parse(String(existing.attachments_json || '[]'))), id);
   const updated = db.prepare('SELECT * FROM news WHERE id = ?').get(id) as Record<string, unknown>;
   res.json(mapNewsRow(updated));
 });
@@ -618,7 +628,7 @@ app.post('/api/admin/courses', requireAuth, (req, res) => {
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
-      String(b.course_number || 'ECE 50000'),
+      String(b.course_number || ''),
       String(b.title || 'Untitled Course'),
       String(b.semester || 'Fall'),
       String(b.academic_year || '2026–2027'),
@@ -697,7 +707,7 @@ app.post('/api/admin/projects', requireAuth, (req, res) => {
       String(b.progress_notes || ''),
       String(b.image_url || ''),
       String(b.image_caption || ''),
-      b.project_status === 'completed' ? 'completed' : 'ongoing',
+      ['completed', 'archived'].includes(b.project_status) ? b.project_status : 'ongoing',
       JSON.stringify(Array.isArray(b.related_publication_ids) ? b.related_publication_ids : []),
       String(b.collaborators || ''),
       String(b.funding_info || ''),
@@ -821,7 +831,7 @@ app.post('/api/admin/media', requireAuth, (req: AuthedRequest, res) => {
     return;
   }
 
-  const allowedExt = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.pdf', '.txt', '.bib', '.docx']);
+  const allowedExt = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.pdf', '.txt', '.bib', '.docx']);
   const origName = path.basename(String(filename));
   const ext = path.extname(origName).toLowerCase();
   if (!allowedExt.has(ext)) {
@@ -901,6 +911,10 @@ app.put('/api/admin/profile', requireAdmin, (req, res) => {
     now
   );
   res.json(incoming);
+});
+
+app.get('/api/admin/public-export', requireAdmin, (_req, res) => {
+  res.attachment('public-data.json').json(getPublicBootstrap());
 });
 
 // CONTACT INQUIRIES
@@ -1017,6 +1031,7 @@ app.post('/api/admin/backup/restore', requireAdmin, (req, res) => {
     );
     for (const n of snap.news) {
       insNews.run(n.id, n.slug, n.title, n.category, n.published_date, n.summary, sanitizeHtml(n.content_html), n.image_url || '', n.image_caption || '', n.featured_on_home ? 1 : 0, n.status, n.author_name, n.created_at, n.updated_at);
+      db.prepare('UPDATE news SET source_url=?, attachments_json=? WHERE id=?').run(n.source_url || '', n.attachments_json || '[]', n.id);
     }
 
     const insPub = db.prepare(
@@ -1093,4 +1108,4 @@ async function startServer() {
   });
 }
 
-startServer();
+if (process.env.EXPORT_PUBLIC_DATA !== 'true') startServer();

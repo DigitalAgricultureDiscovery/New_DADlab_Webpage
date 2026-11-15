@@ -1,11 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight, ExternalLink, FileText } from 'lucide-react';
-import type { PublicationItem, ResearchProjectItem } from '../types/cms';
+import type { PublicationItem, ResearchProjectItem, SiteProfile } from '../types/cms';
 import { LabImage } from '../components/LabImage';
 import { sanitizeHtmlClient } from '../lib/htmlUtils';
 
 interface ResearchPageProps {
   projects: ResearchProjectItem[];
+  researchAreas?: SiteProfile['researchAreas'];
   publications: PublicationItem[];
   selectedSlug?: string;
   onNavigate: (path: string) => void;
@@ -13,11 +14,12 @@ interface ResearchPageProps {
 
 export const ResearchPage: React.FC<ResearchPageProps> = ({
   projects,
+  researchAreas,
   publications,
   selectedSlug,
   onNavigate,
 }) => {
-  const [statusFilter, setStatusFilter] = useState<'all' | 'ongoing' | 'completed'>('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'ongoing' | 'completed' | 'archived'>('all');
   const [areaFilter, setAreaFilter] = useState<string>('all');
 
   const areas = useMemo(() => {
@@ -50,7 +52,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({
             <div className="p-8 sm:p-10 space-y-6 border-b border-[#E5E2DC]">
               <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-500">
                 <span className="font-semibold text-[#8E6F3E]">
-                  {activeProject.project_status === 'ongoing' ? 'Ongoing Research' : 'Completed Project'}
+                  {activeProject.project_status === 'ongoing' ? 'Ongoing Research' : activeProject.project_status === 'completed' ? 'Completed Project' : 'Historical Research / Established Theme'}
                 </span>
                 <span aria-hidden="true">·</span>
                 <span>{activeProject.research_area}</span>
@@ -202,16 +204,16 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({
               Laboratory Portfolio
             </p>
             <h1 className="font-serif text-4xl font-semibold text-black mt-2">
-              Research &amp; Experimental Testbeds
+              Research &amp; Digital Agriculture
             </h1>
             <p className="text-base text-neutral-600 mt-3 leading-relaxed">
-              Ongoing investigations and completed archival programs conducted by our research group at Purdue University.
+              Documented research activities and established themes. Historical listings do not imply currently active or funded projects.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-1 p-1 bg-white border border-[#E5E2DC] rounded-md">
-              {(['all', 'ongoing', 'completed'] as const).map((status) => (
+              {(['all', 'ongoing', 'completed', 'archived'] as const).map((status) => (
                 <button
                   key={status}
                   type="button"
@@ -242,6 +244,11 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({
           </div>
         </div>
 
+        <div className="grid md:grid-cols-2 gap-5">{researchAreas?.map(area => <article key={area.id} className="bg-white border border-[#E5E2DC] p-6 rounded-md">
+          {area.imageUrl && <LabImage src={area.imageUrl} alt={area.title} className="w-full h-48 object-cover" />}
+          <h2 className="font-serif text-xl">{area.title}</h2><p className="mt-2 text-neutral-700">{area.description}</p>
+          <ul className="text-sm mt-3 space-y-2">{publications.filter(pub => pub.topic === area.title).map(pub => <li key={pub.id}>{pub.authors} ({pub.year}). {pub.title}</li>)}</ul>
+        </article>)}</div>
         {filtered.length === 0 ? (
           <div className="bg-white border border-[#E5E2DC] rounded-md p-10 text-center">
             <p className="text-sm text-neutral-600">No research projects match the selected filters.</p>
@@ -266,7 +273,7 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({
                   <div className="space-y-3">
                     <div className="flex items-center gap-2 text-xs text-neutral-500">
                       <span className="font-semibold text-[#8E6F3E]">
-                        {project.project_status === 'ongoing' ? 'Ongoing' : 'Completed'}
+                        {project.project_status === 'ongoing' ? 'Ongoing' : project.project_status === 'completed' ? 'Completed' : 'Historical / theme'}
                       </span>
                       <span aria-hidden="true">·</span>
                       <span>{project.research_area}</span>

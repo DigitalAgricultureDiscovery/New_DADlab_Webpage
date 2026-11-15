@@ -311,7 +311,7 @@ export const ProfileManager: React.FC<ProfileManagerProps> = ({
                 <option>PhD Student</option>
                 <option>MS Student</option>
                 <option>Undergraduate</option>
-                <option>Alumni</option>
+                <option>Postdoctoral Researcher</option><option>Visiting Researcher</option><option>Alumni</option>
               </select>
               <input
                 type="text"
@@ -320,6 +320,9 @@ export const ProfileManager: React.FC<ProfileManagerProps> = ({
                 placeholder="Research Focus"
                 className="md:col-span-3 px-2.5 py-1.5 text-xs border border-neutral-300 rounded bg-white"
               />
+              <input aria-label="Member photo URL" placeholder="Approved photo URL" value={member.photoUrl || ''} onChange={e => updateMember(idx,{photoUrl:e.target.value})} className="border p-2" />
+              <input aria-label="Member email" placeholder="Email" value={member.email || ''} onChange={e => updateMember(idx,{email:e.target.value})} className="border p-2" />
+              <input aria-label="Member professional URL" placeholder="Professional URL" value={member.website || ''} onChange={e => updateMember(idx,{website:e.target.value})} className="border p-2" />
               <button
                 type="button"
                 onClick={() => removeMember(idx)}
@@ -332,6 +335,20 @@ export const ProfileManager: React.FC<ProfileManagerProps> = ({
         </div>
       </div>
 
+      <section className="bg-white border rounded-md p-6 space-y-4">
+        <h2 className="font-serif text-xl">Research focus areas</h2>
+        {(form.researchAreas || []).map((area, idx) => <fieldset key={area.id} className="border p-4 space-y-2">
+          <label className="block">Title<input className="block border p-2 w-full" value={area.title} onChange={e => setForm({...form, researchAreas: form.researchAreas!.map((a,i) => i===idx ? {...a,title:e.target.value} : a)})} /></label>
+          <label className="block">Description<textarea className="block border p-2 w-full" value={area.description} onChange={e => setForm({...form, researchAreas: form.researchAreas!.map((a,i) => i===idx ? {...a,description:e.target.value} : a)})} /></label>
+          <label className="block">Approved image URL<input className="block border p-2 w-full" value={area.imageUrl} onChange={e => setForm({...form, researchAreas: form.researchAreas!.map((a,i) => i===idx ? {...a,imageUrl:e.target.value} : a)})} /></label>
+          <button type="button" onClick={() => setForm({...form,researchAreas:form.researchAreas!.filter((_,i)=>i!==idx)})}>Remove area</button>
+        </fieldset>)}
+        <button type="button" onClick={() => setForm({...form,researchAreas:[...(form.researchAreas||[]),{id:crypto.randomUUID(),title:'',description:'',imageUrl:''}]})}>Add research area</button>
+        <label className="block">Educational activities<textarea className="block border p-2 w-full" value={form.teachingOverview || ''} onChange={e => setForm({...form,teachingOverview:e.target.value})} /></label>
+        <label className="block">Public review notice (clear only after approval)<textarea className="block border p-2 w-full" value={form.reviewNote || ''} onChange={e => setForm({...form,reviewNote:e.target.value})} /></label>
+        <a className="block underline" href="/api/admin/public-export">Download public content for Pages</a>
+        <p className="text-sm">Published and archived public records only. Private accounts and inquiries are excluded. See deployment instructions before updating Pages.</p>
+      </section>
       <div className="flex justify-end">
         <button
           type="submit"
@@ -804,7 +821,7 @@ export const AdminGuideView: React.FC = () => {
             <strong>Add a Publication:</strong> Open <em>Publications</em>, enter authors, year, venue, abstract, DOI, and optionally upload a permitted preprint PDF directly via <em>Upload File</em>.
           </li>
           <li>
-            <strong>Update Ongoing Research:</strong> Open <em>Research Projects</em>, edit any ongoing project to update its <em>Ongoing Progress Notes</em>, methodology, or linked publications, or switch status to <em>Completed</em> when archived.
+            <strong>Update Ongoing Research:</strong> Open <em>Research Projects</em>, edit any ongoing project to update its <em>Ongoing Progress Notes</em>, methodology, or linked publications, or use <em>Completed</em> or <em>Archived</em> as appropriate.
           </li>
           <li>
             <strong>Manage Courses &amp; Lab Positions:</strong> Use <em>Courses &amp; Teaching</em> to upload syllabi and archive past semesters, and <em>Lab Opportunities</em> to open, update deadlines, or mark positions as <em>Filled</em> or <em>Closed</em>.
@@ -819,7 +836,7 @@ export const AdminGuideView: React.FC = () => {
         </p>
         <ul className="list-disc pl-5 space-y-1.5">
           <li>
-            <strong>Low Maintenance &amp; Cost:</strong> Requires zero external paid SaaS CMS subscriptions and runs on a single Node.js 22+ container or university virtual machine behind HTTPS (e.g., Purdue Engineering web hosting, Cloud Run with persistent volume, or a standard Linux VPS with Nginx/Caddy).
+            <strong>Low Maintenance &amp; Cost:</strong> Requires zero external paid SaaS CMS subscriptions and runs on a single Node.js 24+ container or university virtual machine behind HTTPS (e.g., Purdue Engineering web hosting, Cloud Run with persistent volume, or a standard Linux VPS with Nginx/Caddy).
           </li>
           <li>
             <strong>Security &amp; RBAC:</strong> Passwords are salted and hashed using <code>scrypt</code>; sessions use HMAC-SHA256 signed <code>HttpOnly</code> cookies. Administrator accounts control publishing, team roles, site profile, redirects, and backups.

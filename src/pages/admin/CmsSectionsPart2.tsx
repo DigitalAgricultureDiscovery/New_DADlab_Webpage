@@ -45,17 +45,17 @@ export const CoursesManager: React.FC<CoursesManagerProps> = ({
       setObjectivesText(course.objectives.join('\n'));
     } else {
       setEditing({
-        course_number: 'ECE 59500',
+        course_number: '',
         title: '',
-        semester: 'Fall',
-        academic_year: '2026–2027',
+        semester: '',
+        academic_year: '',
         description_html: '<p></p>',
         topics: [],
         objectives: [],
         syllabus_url: '',
         materials: [],
         university_catalog_url: 'https://selfservice.mypurdue.purdue.edu',
-        status: 'active',
+        status: 'draft',
         featured_on_home: false,
       });
       setTopicsText('');
@@ -146,7 +146,7 @@ export const CoursesManager: React.FC<CoursesManagerProps> = ({
               required
               value={editing.course_number || ''}
               onChange={(e) => setEditing({ ...editing, course_number: e.target.value })}
-              placeholder="ECE 59500"
+              placeholder="Course number"
               className="w-full px-3 py-2 text-sm font-mono border border-neutral-300 rounded-md focus:outline-none focus:border-black"
             />
           </div>

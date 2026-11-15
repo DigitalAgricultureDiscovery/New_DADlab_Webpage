@@ -55,7 +55,7 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
                   onClick={() => onNavigate('/opportunities')}
                   className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold border border-neutral-600 text-white rounded hover:border-[#CFB991] hover:text-[#CFB991] transition-colors whitespace-nowrap shrink-0"
                 >
-                  Open Lab Positions
+                  Research Opportunities
                 </button>
               </div>
             </div>
@@ -73,6 +73,16 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
         </div>
       </section>
 
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-5">
+        <h2 className="font-serif text-3xl">{profile.piName}</h2>
+        <p>{profile.piTitle} · {profile.institution}</p>
+        <p className="max-w-4xl text-neutral-700 leading-relaxed">{profile.missionStatement}</p>
+        <button className="underline" onClick={() => onNavigate('/about')}>Biography and recognition</button>
+        <h2 className="font-serif text-2xl pt-4">Research Focus Areas</h2>
+        <div className="grid md:grid-cols-2 gap-6">{profile.researchAreas?.map(area => <article key={area.id} className="bg-white p-6 border border-[#E5E2DC] rounded-md">
+          <h3 className="font-serif text-xl">{area.title}</h3><p className="mt-2 text-neutral-700">{area.description}</p>
+        </article>)}</div>
+      </section>
       {/* Quick Links Institutional Bar */}
       <section className="bg-white border-b border-[#E5E2DC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -88,8 +98,7 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
                   Research Projects
                 </p>
                 <p className="text-xs text-neutral-600 mt-0.5 tabular-nums">
-                  {data.allProjects.filter((p) => p.project_status === 'ongoing').length} ongoing ·{' '}
-                  {data.allProjects.filter((p) => p.project_status === 'completed').length} completed
+                  Research themes and documented activities
                 </p>
               </div>
             </button>
@@ -105,7 +114,7 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
                   Publications Archive
                 </p>
                 <p className="text-xs text-neutral-600 mt-0.5 tabular-nums">
-                  {data.allPublications.length} peer-reviewed papers
+                  Selected articles and preprints
                 </p>
               </div>
             </button>
@@ -121,7 +130,7 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
                   Purdue Courses
                 </p>
                 <p className="text-xs text-neutral-600 mt-0.5 tabular-nums">
-                  {data.courses.filter((c) => c.status === 'active').length} active courses &amp; syllabi
+                  Educational activities and course resources
                 </p>
               </div>
             </button>
@@ -137,7 +146,7 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
                   Lab Opportunities
                 </p>
                 <p className="text-xs text-neutral-600 mt-0.5 tabular-nums">
-                  {opportunities.filter((o) => o.position_status === 'Open').length} open student &amp; research roles
+                  View current announcements
                 </p>
               </div>
             </button>
@@ -187,7 +196,7 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
                 <div className="space-y-2.5">
                   <div className="flex items-center gap-2 text-xs text-neutral-500">
                     <span className="font-semibold text-[#8E6F3E]">
-                      {project.project_status === 'ongoing' ? 'Ongoing' : 'Completed'}
+                      {project.project_status === 'ongoing' ? 'Ongoing' : project.project_status === 'completed' ? 'Completed' : 'Historical / theme'}
                     </span>
                     <span aria-hidden="true">·</span>
                     <span className="truncate">{project.research_area}</span>
@@ -222,6 +231,11 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
         </div>
       </section>
 
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-4">
+        <h2 className="font-serif text-3xl">Teaching &amp; Educational Activities</h2>
+        <p className="text-neutral-700 max-w-4xl">{profile.teachingOverview}</p>
+        <button className="underline" onClick={() => onNavigate('/teaching')}>Explore teaching and course resources</button>
+      </section>
       {/* Latest News & Current Laboratory Opportunities */}
       <section className="bg-white border-y border-[#E5E2DC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -234,7 +248,7 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
                     Dispatches &amp; Honors
                   </p>
                   <h2 className="font-serif text-2xl sm:text-3xl font-semibold text-black mt-1">
-                    Latest Laboratory News
+                    News & Historical Achievements
                   </h2>
                 </div>
                 <button
@@ -303,7 +317,7 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
               </div>
             </div>
 
-            {/* Open Lab Positions (5 cols) */}
+            {/* Research Opportunities (5 cols) */}
             <div className="lg:col-span-5 space-y-6">
               <div className="flex items-end justify-between pb-4 border-b border-[#E5E2DC]">
                 <div>
