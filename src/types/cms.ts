@@ -1,0 +1,222 @@
+export type UserRole = 'admin' | 'editor';
+
+export interface UserAccount {
+  id: number;
+  email: string;
+  name: string;
+  role: UserRole;
+  created_at: string;
+}
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  category: 'Faculty' | 'PhD Student' | 'MS Student' | 'Undergraduate' | 'Alumni';
+  focus: string;
+  email?: string;
+  website?: string;
+}
+
+export interface SiteProfile {
+  labName: string;
+  shortTitle: string;
+  department: string;
+  college: string;
+  institution: string;
+  heroEyebrow: string;
+  heroHeadline: string;
+  heroSubheadline: string;
+  heroImageUrl: string;
+  missionStatement: string;
+  piName: string;
+  piTitle: string;
+  piEmail: string;
+  piPhone: string;
+  piOffice: string;
+  piPortraitUrl: string;
+  piBioHtml: string;
+  piEducation: string[];
+  piHonors: string[];
+  labAddress: string;
+  officeHours: string;
+  googleScholarUrl: string;
+  orcidUrl: string;
+  githubUrl: string;
+  homeLimits: {
+    projects: number;
+    news: number;
+    publications: number;
+    opportunities: number;
+  };
+  teamMembers: TeamMember[];
+}
+
+export type NewsCategory =
+  | 'Award'
+  | 'Conference'
+  | 'Student Achievement'
+  | 'Research Development'
+  | 'Announcement';
+
+export type PublishStatus = 'draft' | 'published' | 'archived';
+
+export interface NewsItem {
+  id: number;
+  slug: string;
+  title: string;
+  category: NewsCategory;
+  published_date: string;
+  summary: string;
+  content_html: string;
+  image_url: string;
+  image_caption: string;
+  featured_on_home: boolean;
+  status: PublishStatus;
+  author_name: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export type PublicationType =
+  | 'Journal Article'
+  | 'Conference Paper'
+  | 'Workshop'
+  | 'Book Chapter'
+  | 'Preprint'
+  | 'Technical Report';
+
+export interface PublicationItem {
+  id: number;
+  title: string;
+  authors: string;
+  year: number;
+  venue: string;
+  pub_type: PublicationType;
+  topic: string;
+  abstract: string;
+  doi_url: string;
+  publisher_url: string;
+  pdf_url: string;
+  bibtex: string;
+  featured_on_home: boolean;
+  status: 'draft' | 'published';
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CourseMaterial {
+  label: string;
+  url: string;
+}
+
+export type CourseStatus = 'draft' | 'active' | 'archived';
+
+export interface CourseItem {
+  id: number;
+  course_number: string;
+  title: string;
+  semester: string;
+  academic_year: string;
+  description_html: string;
+  topics: string[];
+  objectives: string[];
+  syllabus_url: string;
+  materials: CourseMaterial[];
+  university_catalog_url: string;
+  status: CourseStatus;
+  featured_on_home: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ResearchProjectItem {
+  id: number;
+  slug: string;
+  title: string;
+  research_area: string;
+  overview: string;
+  objectives_html: string;
+  methodology_html: string;
+  progress_notes: string;
+  image_url: string;
+  image_caption: string;
+  project_status: 'ongoing' | 'completed';
+  related_publication_ids: number[];
+  collaborators: string;
+  funding_info: string;
+  featured_on_home: boolean;
+  publish_status: 'draft' | 'published';
+  created_at: string;
+  updated_at: string;
+}
+
+export type AppointmentType =
+  | 'Hourly Student Research'
+  | 'Undergraduate Research'
+  | 'Graduate Research'
+  | 'Research Assistantship'
+  | 'Full-Time Research'
+  | 'Postdoctoral / Other';
+
+export type PositionStatus = 'Open' | 'Closed' | 'Filled' | 'Archived';
+
+export interface OpportunityItem {
+  id: number;
+  title: string;
+  appointment_type: AppointmentType;
+  description_html: string;
+  qualifications_html: string;
+  responsibilities_html: string;
+  application_instructions: string;
+  application_url: string;
+  deadline: string;
+  position_status: PositionStatus;
+  featured_on_home: boolean;
+  publish_status: 'draft' | 'published';
+  created_at: string;
+  updated_at: string;
+}
+
+export interface MediaAsset {
+  id: number;
+  filename: string;
+  original_name: string;
+  mime_type: string;
+  size_bytes: number;
+  url: string;
+  category: 'image' | 'pdf' | 'document';
+  uploaded_by: string;
+  created_at: string;
+}
+
+export interface RedirectRule {
+  id: number;
+  from_path: string;
+  to_path: string;
+  note: string;
+  created_at: string;
+}
+
+export interface ContactInquiry {
+  id: number;
+  name: string;
+  email: string;
+  subject: string;
+  inquiry_type: string;
+  message: string;
+  status: 'unread' | 'read' | 'archived';
+  created_at: string;
+}
+
+export interface PublicBootstrapData {
+  profile: SiteProfile;
+  featuredProjects: ResearchProjectItem[];
+  allProjects: ResearchProjectItem[];
+  featuredNews: NewsItem[];
+  allNews: NewsItem[];
+  featuredPublications: PublicationItem[];
+  allPublications: PublicationItem[];
+  courses: CourseItem[];
+  opportunities: OpportunityItem[];
+}
