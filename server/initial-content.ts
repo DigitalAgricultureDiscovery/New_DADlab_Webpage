@@ -2,7 +2,7 @@ import type { SiteProfile } from "../src/types/cms.ts";
 
 // Source: user-supplied Personalization Brief v2.0. See docs/content-audit.md.
 export const initialProfile: SiteProfile = {
-  "reviewNote": "Content review version based on the personalization brief. Publication metadata and historical records await final PI approval.",
+  "reviewNote": "",
   "labName": "Digital Agriculture Discovery Lab",
   "shortTitle": "DAD Lab",
   "department": "Department of Agricultural and Biological Engineering",
@@ -266,14 +266,28 @@ export const initialRecords = {
       "course_number": "ASM 54000",
       "title": "Geographic Information System Application",
       "semester": "",
-      "academic_year": "",
-      "description_html": "<p>Candidate course from the personalization brief. Official title, instructor assignment, semester, and materials require confirmation before publication.</p>",
+      "academic_year": "2026–2027",
+      "description_html": "<p>Fundamentals of geographic information systems (GIS) applied to environmental, agricultural, and engineering problems. Students work with spatial data sources, map projections, and metadata; analyze vector and raster data; automate GIS workflows with custom geoprocessing tools; and share their results through dashboards, web apps, and StoryMaps.</p>",
       "topics_json": "[]",
       "objectives_json": "[]",
       "syllabus_url": "",
       "materials_json": "[]",
-      "university_catalog_url": "",
-      "status": "draft",
+      "university_catalog_url": "https://catalog.purdue.edu/preview_course_nopop.php?catoid=19&coid=227381",
+      "status": "active",
+      "featured_on_home": 0
+    },
+    {
+      "course_number": "ASM 59100",
+      "title": "Data Visualization and Edge Computing",
+      "semester": "",
+      "academic_year": "2026–2027",
+      "description_html": "<p>A hands-on introduction to data visualization for students new to the field, covering the visualization process through lectures, readings, and current tools. Students also work with IoT sensors for real-time data, edge computing, and deep learning models for computer vision, building a foundation in data analysis and visualization for future applications.</p>",
+      "topics_json": "[]",
+      "objectives_json": "[]",
+      "syllabus_url": "",
+      "materials_json": "[{\"label\":\"Course description (Purdue Agricultural & Biological Engineering)\",\"url\":\"https://ag.purdue.edu/department/abe/courses/agriculture-informatics/index.html\"}]",
+      "university_catalog_url": "https://catalog.purdue.edu/preview_course_nopop.php?catoid=19&coid=227384",
+      "status": "active",
       "featured_on_home": 0
     },
     {
