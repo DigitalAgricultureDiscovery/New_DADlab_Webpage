@@ -19,6 +19,17 @@ export interface TeamMember {
   website?: string;
 }
 
+/** An honor or award shown on the About page, newest first. */
+export interface Award {
+  /** Year or range as displayed, e.g. "2025" or "1990-91". */
+  year: string;
+  title: string;
+  organization?: string;
+  /** Optional sentence(s) shown under the award. */
+  details?: string;
+  url?: string;
+}
+
 /** A research focus area. Its `id` is the topic key that research projects reference. */
 export interface ResearchArea {
   id: string;
@@ -53,7 +64,10 @@ export interface SiteProfile {
   piPortraitUrl: string;
   piBioHtml: string;
   piEducation: string[];
+  /** One-line honors ("YEAR — Award, Organization"); kept in sync with piAwards and used when piAwards is empty. */
   piHonors: string[];
+  /** Structured honors and awards (preferred). */
+  piAwards?: Award[];
   labAddress: string;
   officeHours: string;
   googleScholarUrl: string;

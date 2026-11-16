@@ -1,12 +1,15 @@
 import type { SiteProfile } from '../types/cms.ts';
 import { RESEARCH_AREAS } from './research/areas.ts';
 import { TEAM_MEMBERS } from './people/team.ts';
+import { AWARDS } from './awards/awards.ts';
+import { awardLine } from '../lib/awards.ts';
 
 /**
  * Site profile. Sources: the personalization brief, the former DAD Lab
  * website's "About Us" (homepage), "Home", and "Contact Us" pages
- * (dad.saraswat.rcac.purdue.edu), and the department address on the official
- * Purdue Engineering directory. See docs/content-audit.md.
+ * (dad.saraswat.rcac.purdue.edu), the department address on the official
+ * Purdue Engineering directory, and the PI's awards list (November 2026).
+ * See docs/content-audit.md.
  */
 export const SITE_PROFILE: SiteProfile = {
   reviewNote: '',
@@ -43,23 +46,9 @@ export const SITE_PROFILE: SiteProfile = {
     'M.S., 1990 — Indian Agricultural Research Institute (IARI), New Delhi, Agricultural Engineering',
     'Bachelor’s degree — Allahabad Agricultural Institute (now SHUATS), Agricultural Engineering',
   ],
-  piHonors: [
-    '2023 — Fulbright U.S. Scholar Award',
-    '2022 — Excellence in Multistate Research Team Award, USDA-NIFA (S1069 project)',
-    '2022 — Outstanding Faculty Mentor Award, Purdue Agricultural and Biological Engineering',
-    '2021 — Outstanding Educator Award, SHUATS',
-    '2019 — ASABE ITSC Best Paper Award',
-    '2019 — Outstanding Engineering Teacher (Fall), Purdue College of Engineering',
-    '2018 — ASABE Standards Award',
-    '2017, 2015, 2013 — ASABE Educational Aids Blue Ribbon Award',
-    '2016 — American Society for Horticultural Science (ASHS) Outstanding App Award',
-    '2016, 2012 — Southern Region ASHS Blue Ribbon Extension Communication Award',
-    '2014 — Fellow, Indian Society of Agricultural Engineers',
-    '2014 — John W. White Outstanding Extension State Faculty Award, University of Arkansas',
-    '2013 — Excellence in Remote Sensing and Precision Agriculture Award, National Association of County Agricultural Agents',
-    '2012 — ASABE Superior Paper Award',
-    '2011 — Early Career Award and Innovation Award, University of Arkansas',
-  ],
+  // Structured awards from src/data/awards/awards.ts; the one-line list is derived from them.
+  piHonors: AWARDS.map(awardLine),
+  piAwards: AWARDS,
   labAddress:
     'Department of Agricultural and Biological Engineering, Purdue University, 225 S. University Street, West Lafayette, IN 47907',
   officeHours: '',

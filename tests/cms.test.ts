@@ -25,6 +25,7 @@ test('CMS persists migrated content, enforces authentication, and exports only p
     assert.equal(pub.courses.length,4);
     assert.deepEqual(pub.courses.filter((c:any)=>c.status==='active').map((c:any)=>c.title),['Geographic Information System Application','Data Visualization and Edge Computing']);
     assert.equal(pub.profile.heroEyebrow,'');assert.equal(pub.profile.reviewNote,'');
+    assert.equal(pub.profile.piAwards.length,37);assert.equal(pub.profile.piHonors.length,37);
     assert.equal(pub.opportunities.length,0);
     assert.equal(pub.allProjects.length,16);
     assert.ok(pub.allProjects.every((p:any)=>['ongoing','completed'].includes(p.project_status) && p.topics.length>0));
@@ -62,6 +63,7 @@ test('CMS persists migrated content, enforces authentication, and exports only p
     pub=await (await fetch(base+'/api/public/bootstrap')).json();
     assert.equal(pub.profile.teachingOverview,'Edited educational activities');
     assert.equal(pub.profile.researchAreas[0].title,'Reviewed research');
+    assert.equal(pub.profile.piAwards.length,37,'awards survive profile edits, backup restore, and restart');
     assert.equal(pub.allProjects.find((p:any)=>p.id===exported.allProjects[0].id)?.project_status,exported.allProjects[0].project_status);
     assert.deepEqual(pub.allProjects.find((p:any)=>p.id===retagged.id)?.topics,['area-4','area-5'],'topics survive backup restore and restart');
   } finally {

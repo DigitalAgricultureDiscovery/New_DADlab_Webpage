@@ -3,7 +3,9 @@ import { Download, Upload, Plus, Trash2, Check, Shield, BookOpen } from 'lucide-
 import { api } from '../../lib/api';
 import { RichTextEditor } from '../../components/RichTextEditor';
 import { MediaPickerField } from '../../components/MediaPickerField';
+import { awardLine, profileAwards } from '../../lib/awards';
 import type {
+  Award,
   SiteProfile,
   TeamMember,
   ContactInquiry,
@@ -32,7 +34,17 @@ export const ProfileManager: React.FC<ProfileManagerProps> = ({
 }) => {
   const [form, setForm] = useState<SiteProfile>(profile);
   const [eduText, setEduText] = useState(profile.piEducation.join('\n'));
-  const [honorsText, setHonorsText] = useState(profile.piHonors.join('\n'));
+  // Structured awards (newest first); profiles that only have one-line honors are converted on load.
+  const [awards, setAwards] = useState<Award[]>(() => profileAwards(profile));
+  const updateAward = (idx: number, patch: Partial<Award>) =>
+    setAwards(awards.map((a, i) => (i === idx ? { ...a, ...patch } : a)));
+  const moveAward = (idx: number, delta: number) => {
+    const target = idx + delta;
+    if (target < 0 || target >= awards.length) return;
+    const next = [...awards];
+    [next[idx], next[target]] = [next[target], next[idx]];
+    setAwards(next);
+  };
   const [saving, setSaving] = useState(false);
   const [savedMsg, setSavedMsg] = useState('');
   const [error, setError] = useState('');
@@ -63,10 +75,20 @@ export const ProfileManager: React.FC<ProfileManagerProps> = ({
     setSavedMsg('');
     setSaving(true);
     try {
+      const cleanAwards = awards
+        .map((a) => ({
+          year: a.year.trim(),
+          title: a.title.trim(),
+          ...(a.organization?.trim() ? { organization: a.organization.trim() } : {}),
+          ...(a.details?.trim() ? { details: a.details.trim() } : {}),
+          ...(a.url?.trim() ? { url: a.url.trim() } : {}),
+        }))
+        .filter((a) => a.title);
       const payload: SiteProfile = {
         ...form,
         piEducation: eduText.split('\n').map((s) => s.trim()).filter(Boolean),
-        piHonors: honorsText.split('\n').map((s) => s.trim()).filter(Boolean),
+        piAwards: cleanAwards,
+        piHonors: cleanAwards.map(awardLine),
       };
       await api.updateProfile(payload);
       await onRefresh();
@@ -271,17 +293,86 @@ export const ProfileManager: React.FC<ProfileManagerProps> = ({
               className="w-full px-3 py-2 text-sm border border-neutral-300 rounded-md"
             />
           </div>
-          <div>
-            <label className="block text-xs font-semibold text-neutral-800 mb-1">
-              Selected Honors (one per line)
-            </label>
-            <textarea
-              rows={4}
-              value={honorsText}
-              onChange={(e) => setHonorsText(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-neutral-300 rounded-md"
-            />
+          <div className="text-xs text-neutral-600 self-end">
+            Honors and awards are edited in the <strong>Honors &amp; Awards</strong> section below. The About page
+            shows the six most recent in the biography card and the full list grouped by year.
           </div>
+        </div>
+      </div>
+
+      <div className="bg-white border border-neutral-200 rounded-md p-6 space-y-4">
+        <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
+          <h2 className="font-serif text-xl font-semibold text-black">Honors &amp; Awards</h2>
+          <button
+            type="button"
+            onClick={() => setAwards([{ year: String(new Date().getFullYear()), title: '' }, ...awards])}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-black text-[#CFB991] rounded"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            Add Award
+          </button>
+        </div>
+        <p className="text-xs text-neutral-600">
+          List newest first; awards with the same year are grouped together. Organization, details, and link are
+          optional.
+        </p>
+        <div className="space-y-3">
+          {awards.map((award, idx) => (
+            <fieldset key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-2 p-3 border border-neutral-200 rounded-md bg-neutral-50">
+              <input
+                aria-label="Award year"
+                value={award.year}
+                onChange={(e) => updateAward(idx, { year: e.target.value })}
+                placeholder="Year"
+                className="md:col-span-2 px-2.5 py-1.5 text-xs border border-neutral-300 rounded bg-white"
+              />
+              <input
+                aria-label="Award title"
+                value={award.title}
+                onChange={(e) => updateAward(idx, { title: e.target.value })}
+                placeholder="Award or honor"
+                className="md:col-span-5 px-2.5 py-1.5 text-xs border border-neutral-300 rounded bg-white"
+              />
+              <input
+                aria-label="Awarding organization"
+                value={award.organization || ''}
+                onChange={(e) => updateAward(idx, { organization: e.target.value })}
+                placeholder="Awarding organization"
+                className="md:col-span-5 px-2.5 py-1.5 text-xs border border-neutral-300 rounded bg-white"
+              />
+              <textarea
+                aria-label="Award details"
+                rows={2}
+                value={award.details || ''}
+                onChange={(e) => updateAward(idx, { details: e.target.value })}
+                placeholder="Details (optional)"
+                className="md:col-span-7 px-2.5 py-1.5 text-xs border border-neutral-300 rounded bg-white"
+              />
+              <input
+                aria-label="Award link"
+                value={award.url || ''}
+                onChange={(e) => updateAward(idx, { url: e.target.value })}
+                placeholder="Link (optional)"
+                className="md:col-span-3 px-2.5 py-1.5 text-xs border border-neutral-300 rounded bg-white self-start"
+              />
+              <div className="md:col-span-2 flex items-start justify-end gap-1">
+                <button type="button" onClick={() => moveAward(idx, -1)} aria-label="Move award up" className="px-2 py-1 text-xs border border-neutral-300 rounded bg-white">
+                  {'\u2191'}
+                </button>
+                <button type="button" onClick={() => moveAward(idx, 1)} aria-label="Move award down" className="px-2 py-1 text-xs border border-neutral-300 rounded bg-white">
+                  {'\u2193'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setAwards(awards.filter((_, i) => i !== idx))}
+                  aria-label="Remove award"
+                  className="px-2 py-1 text-xs border border-neutral-300 rounded bg-white text-red-700"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </fieldset>
+          ))}
         </div>
       </div>
 

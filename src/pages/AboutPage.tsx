@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Mail, MapPin, Phone, ExternalLink, ArrowRight } from 'lucide-react';
 import type { SiteProfile } from '../types/cms';
 import { LabImage } from '../components/LabImage';
 import { sanitizeHtmlClient } from '../lib/htmlUtils';
 import { resolveMediaUrl } from '../lib/mediaAssets';
+import { groupAwardsByYear, profileAwards } from '../lib/awards';
+
+const RECENT_AWARDS_SHOWN = 6;
 
 interface AboutPageProps {
   profile: SiteProfile;
@@ -14,6 +17,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
   const team = profile.teamMembers.filter((m) => m.category !== 'Faculty');
   const alumniCount = team.filter((m) => m.category === 'Alumni').length;
   const previewMembers = team.filter((m) => m.photoUrl).slice(0, 8);
+  const awards = profileAwards(profile);
+  const awardsRef = useRef<HTMLElement>(null);
 
   return (
     <div className="bg-[#FAF9F6] py-14">
@@ -132,15 +137,27 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
 
                 <div>
                   <h3 className="font-serif text-lg font-semibold text-black mb-3">
-                    Selected Honors &amp; Service
+                    Recent Honors
                   </h3>
                   <ul className="space-y-2.5 text-sm text-neutral-700">
-                    {profile.piHonors.map((honor, idx) => (
+                    {awards.slice(0, RECENT_AWARDS_SHOWN).map((award, idx) => (
                       <li key={idx} className="leading-snug">
-                        {honor}
+                        <span className="tabular-nums">{award.year}</span>
+                        {award.year && ' \u2014 '}
+                        {award.title}
                       </li>
                     ))}
                   </ul>
+                  {awards.length > RECENT_AWARDS_SHOWN && (
+                    <button
+                      type="button"
+                      onClick={() => awardsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                      className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-black hover:text-[#8E6F3E]"
+                    >
+                      View all {awards.length} honors and awards
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -186,6 +203,50 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
             )}
           </div>
         </section>
+
+        {/* Honors & awards, grouped by year (newest first) */}
+        {awards.length > 0 && (
+          <section ref={awardsRef} className="space-y-6 scroll-mt-24" aria-labelledby="honors-heading">
+            <div className="pb-4 border-b border-[#E5E2DC]">
+              <p className="text-xs font-semibold tracking-wider text-[#8E6F3E] uppercase">Recognition</p>
+              <h2 id="honors-heading" className="font-serif text-3xl font-semibold text-black mt-1">
+                Honors &amp; Awards
+              </h2>
+            </div>
+            <div className="bg-white border border-[#E5E2DC] rounded-md divide-y divide-[#E5E2DC]">
+              {groupAwardsByYear(awards).map((group, groupIdx) => (
+                <div key={`${group.year}-${groupIdx}`} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 p-5 sm:p-6">
+                  <p className="md:col-span-2 font-serif text-xl font-semibold text-[#8E6F3E] tabular-nums">
+                    {group.year}
+                  </p>
+                  <ul className="md:col-span-10 space-y-4">
+                    {group.awards.map((award, idx) => (
+                      <li key={idx} className="space-y-1">
+                        <p className="text-base font-semibold text-black leading-snug">
+                          {award.url ? (
+                            <a
+                              href={award.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 hover:text-[#8E6F3E] underline-offset-4 hover:underline"
+                            >
+                              {award.title}
+                              <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                            </a>
+                          ) : (
+                            award.title
+                          )}
+                        </p>
+                        {award.organization && <p className="text-sm text-neutral-600">{award.organization}</p>}
+                        {award.details && <p className="text-sm text-neutral-700 leading-relaxed">{award.details}</p>}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Research group preview: the full directory is on the People page */}
         {team.length > 0 && (
