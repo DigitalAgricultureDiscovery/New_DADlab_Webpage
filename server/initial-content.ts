@@ -8,7 +8,7 @@ export const initialProfile: SiteProfile = {
   "department": "Department of Agricultural and Biological Engineering",
   "college": "Purdue University",
   "institution": "Purdue University",
-  "heroEyebrow": "Purdue University \u00b7 Digital Agriculture Discovery Lab",
+  "heroEyebrow": "",
   "heroHeadline": "Digital Agriculture Discovery Lab",
   "heroSubheadline": "Advancing Agriculture and Natural Resource Management Through Data Science, Artificial Intelligence, and Digital Technologies.",
   "heroImageUrl": "",
