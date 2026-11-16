@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Search, ExternalLink, FileText, Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import type { PublicationItem } from '../types/cms';
+import { safeExternalUrl } from '../lib/links';
 
 interface PublicationsPageProps {
   publications: PublicationItem[];
@@ -179,8 +180,21 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                 <div className="lg:col-span-10 bg-white border border-[#E5E2DC] rounded-md divide-y divide-[#E5E2DC]">
                   {items.map((pub) => {
                     const isExpanded = Boolean(expandedIds[pub.id]);
+                    // Verified link to the paper. When present, the whole card opens it
+                    // (the title link is stretched over the card); otherwise the card is static.
+                    const cardUrl = safeExternalUrl(pub.publication_url);
+                    // Skip DOI/Publisher links that would just repeat the card's own link.
+                    const doiUrl = safeExternalUrl(pub.doi_url);
+                    const publisherUrl = safeExternalUrl(pub.publisher_url);
+                    const showDoi = Boolean(doiUrl) && doiUrl !== cardUrl;
+                    const showPublisher = Boolean(publisherUrl) && publisherUrl !== cardUrl;
                     return (
-                      <article key={pub.id} className="p-6 space-y-3">
+                      <article
+                        key={pub.id}
+                        className={`p-6 space-y-3${
+                          cardUrl ? ' group relative transition-colors hover:bg-[#FAF9F6]' : ''
+                        }`}
+                      >
                         <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-500">
                           <span className="font-semibold text-[#8E6F3E]">{pub.pub_type}</span>
                           <span aria-hidden="true">·</span>
@@ -188,7 +202,19 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                         </div>
 
                         <h3 className="font-serif text-xl font-semibold text-black leading-snug">
-                          {pub.title}
+                          {cardUrl ? (
+                            <a
+                              href={cardUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="transition-colors group-hover:text-[#8E6F3E] focus-visible:outline-none after:absolute after:inset-0 after:content-[''] focus-visible:after:ring-2 focus-visible:after:ring-inset focus-visible:after:ring-[#8E6F3E]"
+                            >
+                              {pub.title}
+                              <span className="sr-only"> (opens the publication in a new tab)</span>
+                            </a>
+                          ) : (
+                            pub.title
+                          )}
                         </h3>
 
                         <p className="text-sm text-neutral-800">{pub.authors}</p>
@@ -199,7 +225,7 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                           <button
                             type="button"
                             onClick={() => toggleAbstract(pub.id)}
-                            className="inline-flex items-center gap-1 text-neutral-700 hover:text-black"
+                            className="relative z-10 inline-flex items-center gap-1 text-neutral-700 hover:text-black"
                           >
                             {isExpanded ? (
                               <>
@@ -213,23 +239,23 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                           </button>
                           )}
 
-                          {pub.doi_url && (
+                          {showDoi && (
                             <a
-                              href={pub.doi_url}
+                              href={doiUrl}
                               target="_blank"
-                              rel="noreferrer"
-                              className="inline-flex items-center gap-1 text-[#8E6F3E] hover:text-black"
+                              rel="noopener noreferrer"
+                              className="relative z-10 inline-flex items-center gap-1 text-[#8E6F3E] hover:text-black"
                             >
                               DOI <ExternalLink className="w-3 h-3" />
                             </a>
                           )}
 
-                          {pub.publisher_url && (
+                          {showPublisher && (
                             <a
-                              href={pub.publisher_url}
+                              href={publisherUrl}
                               target="_blank"
-                              rel="noreferrer"
-                              className="inline-flex items-center gap-1 text-neutral-700 hover:text-black"
+                              rel="noopener noreferrer"
+                              className="relative z-10 inline-flex items-center gap-1 text-neutral-700 hover:text-black"
                             >
                               Publisher <ExternalLink className="w-3 h-3" />
                             </a>
@@ -239,8 +265,8 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                             <a
                               href={pub.pdf_url}
                               target="_blank"
-                              rel="noreferrer"
-                              className="inline-flex items-center gap-1 text-black hover:text-[#8E6F3E]"
+                              rel="noopener noreferrer"
+                              className="relative z-10 inline-flex items-center gap-1 text-black hover:text-[#8E6F3E]"
                             >
                               Download PDF <FileText className="w-3.5 h-3.5" />
                             </a>
@@ -249,7 +275,7 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                           <button
                             type="button"
                             onClick={() => copyBibtex(pub)}
-                            className="inline-flex items-center gap-1 text-neutral-600 hover:text-black"
+                            className="relative z-10 inline-flex items-center gap-1 text-neutral-600 hover:text-black"
                           >
                             {copiedId === pub.id ? (
                               <>

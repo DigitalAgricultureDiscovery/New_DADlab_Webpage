@@ -15,6 +15,7 @@ function pub(p: Partial<PublicationSeed> & Pick<PublicationSeed, 'id' | 'title' 
   return {
     pub_type: 'Journal Article',
     abstract: '',
+    publication_url: '',
     doi_url: '',
     publisher_url: '',
     pdf_url: '',
@@ -35,6 +36,13 @@ function pub(p: Partial<PublicationSeed> & Pick<PublicationSeed, 'id' | 'title' 
  *    the DOI or URL on the same entry (see docs/content-audit.md).
  *  - ids 31-38: conference papers cited in dated news posts on the former site.
  * PDFs hosted on the former site were not copied (publisher copyright).
+ *
+ * `publication_url` is the link a publication card opens. Each one was verified
+ * (November 2026) against the DOI registration record (Crossref; arXiv for id 1;
+ * the CIGR Journal article page for id 15, which has no DOI): authors, year,
+ * venue and volume/pages or ASABE paper number match, and the link resolves to
+ * that article. Entries without a verified link leave it empty and are listed
+ * in docs/content-audit.md.
  */
 export const PUBLICATIONS: PublicationSeed[] = [
   pub({
@@ -46,6 +54,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     pub_type: 'Preprint',
     topic: RS,
     featured_on_home: true,
+    doi_url: doi('10.48550/arXiv.2609.16871'),
+    publication_url: doi('10.48550/arXiv.2609.16871'),
   }),
   pub({
     id: 2,
@@ -56,6 +66,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     topic: AI,
     publisher_url: 'https://ieeexplore.ieee.org/document/10026479',
     featured_on_home: true,
+    doi_url: doi('10.1109/ACCESS.2023.3240100'),
+    publication_url: doi('10.1109/ACCESS.2023.3240100'),
   }),
   pub({
     id: 3,
@@ -65,6 +77,7 @@ export const PUBLICATIONS: PublicationSeed[] = [
     venue: 'Smart Agricultural Technology, 3, 100083',
     topic: AI,
     doi_url: doi('10.1016/j.atech.2022.100083'),
+    publication_url: doi('10.1016/j.atech.2022.100083'),
   }),
   pub({
     id: 4,
@@ -74,6 +87,7 @@ export const PUBLICATIONS: PublicationSeed[] = [
     venue: 'Smart Agricultural Technology, 3, 100108',
     topic: AI,
     doi_url: doi('10.1016/j.atech.2022.100108'),
+    publication_url: doi('10.1016/j.atech.2022.100108'),
   }),
   pub({
     id: 5,
@@ -83,6 +97,7 @@ export const PUBLICATIONS: PublicationSeed[] = [
     venue: 'Earth’s Future, 10(11)',
     topic: ENV,
     doi_url: doi('10.1029/2022EF002723'),
+    publication_url: doi('10.1029/2022EF002723'),
   }),
   pub({
     id: 6,
@@ -93,6 +108,7 @@ export const PUBLICATIONS: PublicationSeed[] = [
     topic: RS,
     doi_url: doi('10.3390/rs14174140'),
     featured_on_home: true,
+    publication_url: doi('10.3390/rs14174140'),
   }),
   pub({
     id: 7,
@@ -102,6 +118,7 @@ export const PUBLICATIONS: PublicationSeed[] = [
     venue: 'Journal of the ASABE, 65(6), 1433–1442',
     topic: AI,
     doi_url: doi('10.13031/ja.14895'),
+    publication_url: doi('10.13031/ja.14895'),
   }),
   pub({
     id: 8,
@@ -111,6 +128,7 @@ export const PUBLICATIONS: PublicationSeed[] = [
     venue: 'IEEE Access, 10',
     topic: AI,
     doi_url: doi('10.1109/ACCESS.2022.3215497'),
+    publication_url: doi('10.1109/ACCESS.2022.3215497'),
   }),
   pub({
     id: 9,
@@ -122,6 +140,7 @@ export const PUBLICATIONS: PublicationSeed[] = [
     doi_url: doi('10.3390/rs13245182'),
     publisher_url: 'https://www.mdpi.com/2072-4292/13/24/5182',
     featured_on_home: true,
+    publication_url: doi('10.3390/rs13245182'),
   }),
   pub({
     id: 10,
@@ -131,6 +150,7 @@ export const PUBLICATIONS: PublicationSeed[] = [
     venue: 'Computers and Electronics in Agriculture, 184, 106081',
     topic: AI,
     doi_url: doi('10.1016/j.compag.2021.106081'),
+    publication_url: doi('10.1016/j.compag.2021.106081'),
   }),
   pub({
     id: 11,
@@ -140,6 +160,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     venue: 'Water, 12(2), 410',
     topic: ENV,
     publisher_url: 'https://www.mdpi.com/2073-4441/12/2/410',
+    doi_url: doi('10.3390/w12020410'),
+    publication_url: doi('10.3390/w12020410'),
   }),
   pub({
     id: 12,
@@ -149,6 +171,7 @@ export const PUBLICATIONS: PublicationSeed[] = [
     venue: 'Applied Engineering in Agriculture, 35(5), 723–731',
     topic: ENV,
     doi_url: doi('10.13031/aea.13295'),
+    publication_url: doi('10.13031/aea.13295'),
   }),
   pub({
     id: 13,
@@ -157,6 +180,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2018,
     venue: 'Water, 10(4), 443',
     topic: ENV,
+    doi_url: doi('10.3390/w10040443'),
+    publication_url: doi('10.3390/w10040443'),
   }),
   pub({
     id: 14,
@@ -165,6 +190,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2017,
     venue: 'Journal of Applied Remote Sensing, 11(3), 036003',
     topic: RS,
+    doi_url: doi('10.1117/1.JRS.11.036003'),
+    publication_url: doi('10.1117/1.JRS.11.036003'),
   }),
   pub({
     id: 15,
@@ -173,6 +200,7 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2016,
     venue: 'Agricultural Engineering International: CIGR Journal, 18(2), 73–82',
     topic: RS,
+    publication_url: 'https://cigrjournal.org/index.php/Ejounral/article/view/3555',
   }),
   pub({
     id: 16,
@@ -181,6 +209,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2016,
     venue: 'Environmental Modelling & Software, 81, 26–39',
     topic: ENV,
+    doi_url: doi('10.1016/j.envsoft.2015.12.001'),
+    publication_url: doi('10.1016/j.envsoft.2015.12.001'),
   }),
   pub({
     id: 17,
@@ -189,6 +219,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2016,
     venue: 'Transactions of the ASABE, 59(2), 497–508',
     topic: ENV,
+    doi_url: doi('10.13031/trans.59.11202'),
+    publication_url: doi('10.13031/trans.59.11202'),
   }),
   pub({
     id: 18,
@@ -197,6 +229,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2015,
     venue: 'Computers and Electronics in Agriculture, 113, 14–23',
     topic: DS,
+    doi_url: doi('10.1016/j.compag.2014.12.012'),
+    publication_url: doi('10.1016/j.compag.2014.12.012'),
   }),
   pub({
     id: 19,
@@ -205,6 +239,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2015,
     venue: 'Transactions of the ASABE, 58(6), 1787–1797',
     topic: ENV,
+    doi_url: doi('10.13031/trans.58.10707'),
+    publication_url: doi('10.13031/trans.58.10707'),
   }),
   pub({
     id: 20,
@@ -213,6 +249,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2015,
     venue: 'Transactions of the ASABE, 58(6), 1705–1719',
     topic: ENV,
+    doi_url: doi('10.13031/trans.58.10712'),
+    publication_url: doi('10.13031/trans.58.10712'),
   }),
   pub({
     id: 21,
@@ -221,6 +259,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2015,
     venue: 'Transactions of the ASABE, 58(6), 1609–1618',
     topic: ENV,
+    doi_url: doi('10.13031/trans.58.11075'),
+    publication_url: doi('10.13031/trans.58.11075'),
   }),
   pub({
     id: 22,
@@ -229,6 +269,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2013,
     venue: 'Transactions of the ASABE, 56(4), 1387–1397',
     topic: ENV,
+    doi_url: doi('10.13031/trans.56.10062'),
+    publication_url: doi('10.13031/trans.56.10062'),
   }),
   pub({
     id: 23,
@@ -237,6 +279,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2013,
     venue: 'Environmental Modelling & Software, 40, 151–159',
     topic: ENV,
+    doi_url: doi('10.1016/j.envsoft.2012.08.012'),
+    publication_url: doi('10.1016/j.envsoft.2012.08.012'),
   }),
   pub({
     id: 24,
@@ -245,6 +289,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2011,
     venue: 'Computers & Geosciences',
     topic: ENV,
+    doi_url: doi('10.1016/j.cageo.2011.07.006'),
+    publication_url: doi('10.1016/j.cageo.2011.07.006'),
   }),
   pub({
     id: 25,
@@ -253,6 +299,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2011,
     venue: 'Transactions of the ASABE, 54(6), 2181–2196',
     topic: ENV,
+    doi_url: doi('10.13031/2013.40657'),
+    publication_url: doi('10.13031/2013.40657'),
   }),
   pub({
     id: 26,
@@ -261,6 +309,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2011,
     venue: 'Transactions of the ASABE, 54(5), 1649–1658 (2012 ASABE Superior Paper Award)',
     topic: ENV,
+    doi_url: doi('10.13031/2013.39854'),
+    publication_url: doi('10.13031/2013.39854'),
   }),
   pub({
     id: 27,
@@ -269,6 +319,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2010,
     venue: 'Biofuels, 1(3), 463–477',
     topic: ENV,
+    doi_url: doi('10.4155/bfs.10.17'),
+    publication_url: doi('10.4155/bfs.10.17'),
   }),
   pub({
     id: 28,
@@ -285,6 +337,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2006,
     venue: 'Applied Engineering in Agriculture, 22(2), 215–230',
     topic: RS,
+    doi_url: doi('10.13031/2013.20283'),
+    publication_url: doi('10.13031/2013.20283'),
   }),
   pub({
     id: 30,
@@ -293,6 +347,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     year: 2005,
     venue: 'Transactions of the ASAE, 48(6), 2123–2135',
     topic: RS,
+    doi_url: doi('10.13031/2013.20098'),
+    publication_url: doi('10.13031/2013.20098'),
   }),
   // Conference papers cited in the former website's dated news posts.
   pub({
@@ -303,6 +359,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     venue: 'ASABE Annual International Meeting, Paper No. 2100566 (2021 ASABE ITSC Paper Award)',
     pub_type: 'Conference Paper',
     topic: AI,
+    doi_url: doi('10.13031/aim.202100566'),
+    publication_url: doi('10.13031/aim.202100566'),
   }),
   pub({
     id: 32,
@@ -321,6 +379,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     venue: 'ASABE Annual International Meeting, Paper No. 2100617',
     pub_type: 'Conference Paper',
     topic: IOT,
+    doi_url: doi('10.13031/aim.202100617'),
+    publication_url: doi('10.13031/aim.202100617'),
   }),
   pub({
     id: 34,
@@ -357,6 +417,8 @@ export const PUBLICATIONS: PublicationSeed[] = [
     venue: 'ASABE Annual International Meeting, Paper No. 2201193',
     pub_type: 'Conference Paper',
     topic: AI,
+    doi_url: doi('10.13031/aim.202201193'),
+    publication_url: doi('10.13031/aim.202201193'),
   }),
   pub({
     id: 38,

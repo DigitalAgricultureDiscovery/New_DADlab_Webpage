@@ -34,9 +34,9 @@ and what still needs the PI's confirmation. Migration date: November 16, 2026.
 | People (28) | People page, The DAD Group page, thesis-defense posts | `src/data/people/team.ts` |
 | Images (54 files) | WordPress media library | `public/images/` |
 
-`server/initial-content.ts` converts these modules into rows for a fresh CMS
-database and for the GitHub Pages export. Existing CMS databases are not
-overwritten.
+The site is static (GitHub Pages, no server or admin login): the app bundles
+these modules, and `src/lib/siteData.ts` hides drafts, orders each list and
+picks the home-page items. Edit the files and merge to `main` to publish.
 
 ## Images
 
@@ -125,7 +125,7 @@ page filters by status and topic with AND logic.
 - **Title:** the former site says *Associate Professor*; the new site keeps
   *Professor* from the personalization brief. Please confirm.
 - **Phone:** the Contact page lists +1 (501) 954-0365 (an Arkansas area code).
-  It was not published; add it in Site Profile if it should appear.
+  It was not published; add it as `piPhone` in `src/data/profile.ts` if it should appear.
 - **Bachelor's degree year** is not on the former site and is not shown.
 - **Current roster:** the People page reflects the former site (last updated
   2023-2024). Please confirm current students and alumni positions.
@@ -152,7 +152,52 @@ page filters by status and topic with AND logic.
   connect.purdue.edu, and iitj.ac.in could not be verified from the migration
   environment.
 
+## Publication links
+
+Every publication card opens the paper's `publication_url` in a new tab.
+Links were verified in November 2026 rather than taken on trust: each DOI's
+registration record (Crossref; arXiv for the 2026 preprint) was matched to the
+listed authors, year, venue and volume/pages or ASABE paper number, and each
+DOI was confirmed to resolve to that article's own page. The 12 DOI or
+publisher links carried over from the former site all pointed to the correct
+papers. The *CIGR Journal* issues no DOIs, so that entry links to the
+journal's article page, whose metadata was checked the same way.
+
+**Linked (32 of 38):** every publication except the six below.
+
+**Not linked; need manual verification (6).** These cards stay visible but are
+not clickable:
+
+| Publication | Why no link |
+| --- | --- |
+| Allred, Clevenger & Saraswat (2009), *FastTimes* 14(3), 15–24 | No DOI or online record of the *FastTimes* article was found. A similarly titled 2009 SAGEEP symposium paper (doi 10.4133/1.3176775) is a different publication. |
+| Aggarwal, Saraswat & Young (2021), ASABE paper 2100571 | No DOI registered; not found in searches |
+| Aggarwal, Saraswat & El Gamal (2022), ASABE paper 2201187 | No DOI registered; not found in searches |
+| Chawla, Aggarwal & Saraswat (2022), ASABE meeting (no paper number) | No DOI registered; not found in searches |
+| Tiwari, Aggarwal & Saraswat (2022), ASABE paper 2201188 | No DOI registered; not found in searches |
+| Ahmad et al. (2022), ICPA abstract 8812 | The ICPA proceedings page for that abstract ID does not exist; no other record found |
+
+ASABE meeting papers without DOIs may still have pages in the ASABE Technical
+Library (elibrary.asabe.org); its search could not be used from the migration
+environment.
+
+**Linked, but the published record differs from the site's listing.** The
+DOI matches the cited venue, volume/pages or paper number, and authors, so the
+link is correct; the site's wording (from the former site) may need updating:
+
+| Site entry | Published record |
+| --- | --- |
+| Ahmad, Saraswat & El Gamal (2023), *IEEE Access* | Title begins "Toward Generalization…"; Crossref lists the authors as Ahmad, El Gamal, Saraswat |
+| Singh et al. (2019), LUU Checker, *AEA* 35(5) | "LUU CHECKER: A Web-based Tool to Incorporate Emerging LUs in the SWAT Model" |
+| Leiva et al. (2017), *J. Applied Remote Sensing* 11(3) | "…with differing unmanned aircraft system altitudes, physical canopy separations, and ground covers" |
+| McCarty et al. (2016), *Trans. ASABE* 59(2) | "Post-Model Validation of a Deterministic Watershed Model Using Monitoring Data" |
+| Saraswat et al. (2015), *Trans. ASABE* 58(6), 1787–1797 | Title begins "Hydrologic and Water Quality Models…" |
+| Pai, Saraswat & Daniel (2011), *Trans. ASABE* 54(6) | "Identifying Priority Subwatersheds in the Illinois River Drainage Area in Arkansas Watershed Using a Distributed Modeling Approach"; third author Daniels, M. |
+| Pai, Saraswat & Srinivasan (2011), *Computers & Geosciences* | Volume 40, 175–184 (2012 issue; online 2011) |
+| Guntaka et al. (2021), ASABE paper 2100617 | "IoT based low-cost testbed for precision indoor farming" |
+| Ahmad et al. (2022), ASABE paper 2201193 | "Deep Learning-Based Disease Identification and Severity Estimation Tool for Tar Spot in Corn" |
+
 ## Review notice
 
-The header review notice is cleared (as on `main`). It can be restored in
-**Site Profile → Public review notice** if needed.
+The header review notice is cleared at the lab's request. It can be restored
+by setting `reviewNote` in `src/data/profile.ts`.

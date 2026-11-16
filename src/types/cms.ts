@@ -1,13 +1,3 @@
-export type UserRole = 'admin' | 'editor';
-
-export interface UserAccount {
-  id: number;
-  email: string;
-  name: string;
-  role: UserRole;
-  created_at: string;
-}
-
 export interface TeamMember {
   id: string;
   name: string;
@@ -92,8 +82,6 @@ export interface NewsItem {
   featured_on_home: boolean;
   status: PublishStatus;
   author_name: string;
-  created_at: string;
-  updated_at: string;
 }
 
 export type PublicationType =
@@ -112,15 +100,20 @@ export interface PublicationItem {
   venue: string;
   pub_type: PublicationType;
   topic: string;
+  /**
+   * Verified link to this exact paper; clicking the publication card opens it.
+   * Prefer the DOI link (https://doi.org/...). Leave empty when no verified link
+   * exists, and the card stays visible but not clickable.
+   */
+  publication_url: string;
   abstract: string;
+  /** DOI as a full https://doi.org/... link, when the paper has a DOI. */
   doi_url: string;
   publisher_url: string;
   pdf_url: string;
   bibtex: string;
   featured_on_home: boolean;
   status: 'draft' | 'published';
-  created_at: string;
-  updated_at: string;
 }
 
 export interface CourseMaterial {
@@ -144,8 +137,6 @@ export interface CourseItem {
   university_catalog_url: string;
   status: CourseStatus;
   featured_on_home: boolean;
-  created_at: string;
-  updated_at: string;
 }
 
 export type ProjectStatus = 'ongoing' | 'completed' | 'archived';
@@ -169,8 +160,6 @@ export interface ResearchProjectItem {
   funding_info: string;
   featured_on_home: boolean;
   publish_status: 'draft' | 'published';
-  created_at: string;
-  updated_at: string;
 }
 
 export type AppointmentType =
@@ -196,39 +185,6 @@ export interface OpportunityItem {
   position_status: PositionStatus;
   featured_on_home: boolean;
   publish_status: 'draft' | 'published';
-  created_at: string;
-  updated_at: string;
-}
-
-export interface MediaAsset {
-  id: number;
-  filename: string;
-  original_name: string;
-  mime_type: string;
-  size_bytes: number;
-  url: string;
-  category: 'image' | 'pdf' | 'document';
-  uploaded_by: string;
-  created_at: string;
-}
-
-export interface RedirectRule {
-  id: number;
-  from_path: string;
-  to_path: string;
-  note: string;
-  created_at: string;
-}
-
-export interface ContactInquiry {
-  id: number;
-  name: string;
-  email: string;
-  subject: string;
-  inquiry_type: string;
-  message: string;
-  status: 'unread' | 'read' | 'archived';
-  created_at: string;
 }
 
 export interface PublicBootstrapData {
