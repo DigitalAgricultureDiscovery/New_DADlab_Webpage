@@ -1,4 +1,5 @@
 import { routeHref } from '../lib/routing';
+import { resolveMediaUrl } from '../lib/mediaAssets';
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import type { SiteProfile, UserAccount } from '../types/cms';
@@ -49,13 +50,23 @@ export const PublicHeader: React.FC<HeaderProps> = ({
   return (
     <header className="sticky top-0 z-40 bg-black text-white border-b border-[#CFB991]/35">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8">
-        {/* Zone 1: Single-line Brand Wordmark */}
+        {/* Zone 1: Laboratory logo + single-line brand wordmark */}
         <a
           href={routeHref('/')}
           onClick={(e) => handleLinkClick(e, '/')}
-          className="font-serif text-lg sm:text-xl font-semibold tracking-tight text-white hover:text-[#CFB991] transition-colors max-w-[55%] lg:max-w-[30%] leading-tight shrink-0"
+          aria-label={`${profile.labName} home`}
+          className="inline-flex items-center gap-2.5 font-serif text-lg sm:text-xl font-semibold tracking-tight text-white hover:text-[#CFB991] transition-colors max-w-[55%] lg:max-w-[30%] leading-tight shrink-0"
         >
-          {profile.shortTitle}
+          {profile.logoUrl && (
+            <img
+              src={resolveMediaUrl(profile.logoUrl)}
+              alt=""
+              width={40}
+              height={40}
+              className="w-10 h-10 object-contain shrink-0"
+            />
+          )}
+          <span>{profile.shortTitle}</span>
         </a>
 
         {/* Zone 2: Clean single-line Navigation Links */}
@@ -158,7 +169,17 @@ export const PublicFooter: React.FC<FooterProps> = ({ profile, onNavigate }) => 
             <p className="text-xs font-semibold tracking-wider text-[#CFB991] uppercase">
               {profile.institution}
             </p>
-            <h2 className="font-serif text-2xl font-semibold text-white">
+            <h2 className="font-serif text-2xl font-semibold text-white flex items-center gap-3">
+              {profile.logoUrl && (
+                <img
+                  src={resolveMediaUrl(profile.logoUrl)}
+                  alt=""
+                  width={48}
+                  height={48}
+                  loading="lazy"
+                  className="w-12 h-12 object-contain shrink-0"
+                />
+              )}
               {profile.labName}
             </h2>
             <p className="text-sm text-neutral-400 leading-relaxed max-w-md">
@@ -181,7 +202,8 @@ export const PublicFooter: React.FC<FooterProps> = ({ profile, onNavigate }) => 
                 {profile.piEmail}
               </a>
             </p>
-            <p className="text-neutral-400">Office Hours: {profile.officeHours}</p>
+            {profile.piOffice && <p className="text-neutral-400">Office: {profile.piOffice}</p>}
+            {profile.officeHours && <p className="text-neutral-400">Office Hours: {profile.officeHours}</p>}
           </div>
 
           <div className="md:col-span-3 space-y-2.5 text-sm">

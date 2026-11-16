@@ -1,8 +1,9 @@
 import React from 'react';
-import { Mail, MapPin, Phone, ExternalLink } from 'lucide-react';
+import { Mail, MapPin, Phone, ExternalLink, ArrowRight } from 'lucide-react';
 import type { SiteProfile } from '../types/cms';
 import { LabImage } from '../components/LabImage';
 import { sanitizeHtmlClient } from '../lib/htmlUtils';
+import { resolveMediaUrl } from '../lib/mediaAssets';
 
 interface AboutPageProps {
   profile: SiteProfile;
@@ -10,7 +11,9 @@ interface AboutPageProps {
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => {
-  const categories = ['Faculty', 'PhD Student', 'MS Student', 'Undergraduate', 'Postdoctoral Researcher', 'Visiting Researcher', 'Alumni'] as const;
+  const team = profile.teamMembers.filter((m) => m.category !== 'Faculty');
+  const alumniCount = team.filter((m) => m.category === 'Alumni').length;
+  const previewMembers = team.filter((m) => m.photoUrl).slice(0, 8);
 
   return (
     <div className="bg-[#FAF9F6] py-14">
@@ -31,11 +34,14 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
         {/* PI Profile Grid */}
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           <div className="lg:col-span-4 space-y-5">
-            <div className="aspect-[3/4] rounded-md overflow-hidden border border-[#E5E2DC] bg-white">
+            <div className="rounded-md overflow-hidden border border-[#E5E2DC] bg-white">
               <LabImage
                 src={profile.piPortraitUrl}
-                alt={profile.piName}
-                className="w-full h-full object-cover"
+                alt={`Portrait of ${profile.piName}`}
+                width={800}
+                height={946}
+                loading="eager"
+                className="w-full h-auto block"
               />
             </div>
 
@@ -49,14 +55,21 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                     {profile.piEmail}
                   </a>
                 </p>
-                <p className="flex items-start gap-2">
-                  <Phone className="w-3.5 h-3.5 text-[#8E6F3E] shrink-0 mt-0.5" />
-                  <span className="tabular-nums">{profile.piPhone}</span>
-                </p>
-                <p className="flex items-start gap-2">
-                  <MapPin className="w-3.5 h-3.5 text-[#8E6F3E] shrink-0 mt-0.5" />
-                  <span>{profile.piOffice}</span>
-                </p>
+                {profile.piPhone && (
+                  <p className="flex items-start gap-2">
+                    <Phone className="w-3.5 h-3.5 text-[#8E6F3E] shrink-0 mt-0.5" />
+                    <span className="tabular-nums">{profile.piPhone}</span>
+                  </p>
+                )}
+                {(profile.piOffice || profile.labAddress) && (
+                  <p className="flex items-start gap-2">
+                    <MapPin className="w-3.5 h-3.5 text-[#8E6F3E] shrink-0 mt-0.5" />
+                    <span>
+                      {profile.piOffice && <span className="block">Office: {profile.piOffice}</span>}
+                      {profile.labAddress}
+                    </span>
+                  </p>
+                )}
               </div>
               <div className="pt-3 border-t border-neutral-100 flex flex-wrap gap-4 text-xs font-semibold">
                 {profile.googleScholarUrl && (
@@ -149,55 +162,65 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                 </button>
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* Team & Alumni Directory */}
-        <section className="space-y-6">
-          <div className="pb-4 border-b border-[#E5E2DC]">
-            <p className="text-xs font-semibold tracking-wider text-[#8E6F3E] uppercase">
-              People
-            </p>
-            <h2 className="font-serif text-3xl font-semibold text-black mt-1">
-              Research Group &amp; Alumni
-            </h2>
-          </div>
-
-          <div className="space-y-8">
-            {categories.map((cat) => {
-              const members = profile.teamMembers.filter((m) => m.category === cat);
-              if (members.length === 0) return null;
-              return (
-                <div key={cat} className="space-y-3">
-                  <h3 className="font-sans text-xs font-semibold tracking-wider text-neutral-500 uppercase">
-                    {cat === 'Faculty' ? 'Principal Investigator' : `${cat}s`}
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {members.map((m) => (
-                      <div
-                        key={m.id}
-                        className="bg-white border border-[#E5E2DC] rounded-md p-5 space-y-1.5"
-                      >
-                        {m.photoUrl && <LabImage src={m.photoUrl} alt={m.name} className="w-24 h-24 rounded-full object-cover" />}
-                        <h4 className="font-serif text-lg font-semibold text-black">{m.name}</h4>
-                        {m.website && <a href={m.website} target="_blank" rel="noreferrer" className="underline text-sm">Professional profile</a>}
-                        <p className="text-xs font-medium text-[#8E6F3E]">{m.role}</p>
-                        <p className="text-sm text-neutral-600 pt-1 leading-relaxed">{m.focus}</p>
-                        {m.email && (
-                          <p className="text-xs text-neutral-500 pt-1">
-                            <a href={`mailto:${m.email}`} className="hover:underline">
-                              {m.email}
-                            </a>
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+            {profile.logoUrl && (
+              <div className="bg-white border border-[#E5E2DC] rounded-md p-6 sm:p-8 grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-6 items-center">
+                <img
+                  src={resolveMediaUrl(profile.logoUrl)}
+                  alt={`${profile.shortTitle} logo: Digital Agriculture Discovery at the center of UAV and machine intelligence, big data analytics, web tools, and IoT for high-value crops`}
+                  width={512}
+                  height={511}
+                  loading="lazy"
+                  className="w-48 h-48 sm:w-56 sm:h-56 object-contain mx-auto"
+                />
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold tracking-wider text-[#8E6F3E] uppercase">Laboratory Identity</p>
+                  <h3 className="font-serif text-xl font-semibold text-black">The {profile.shortTitle} Logo</h3>
+                  <p className="text-sm text-neutral-700 leading-relaxed">
+                    The lab&rsquo;s logo places Digital Agriculture Discovery at the center of four connected themes:
+                    UAV and machine intelligence, big data analytics, web tools, and IoT for high-value crops, linked
+                    by platforms that connect over the web and open-source tools for production and management.
+                  </p>
                 </div>
-              );
-            })}
+              </div>
+            )}
           </div>
         </section>
+
+        {/* Research group preview: the full directory is on the People page */}
+        {team.length > 0 && (
+          <section className="space-y-6">
+            <div className="pb-4 border-b border-[#E5E2DC] flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div>
+                <p className="text-xs font-semibold tracking-wider text-[#8E6F3E] uppercase">People</p>
+                <h2 className="font-serif text-3xl font-semibold text-black mt-1">
+                  Research Group &amp; Alumni
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => onNavigate('/people')}
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-black hover:text-[#8E6F3E] whitespace-nowrap shrink-0"
+              >
+                Meet the team
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+            <p className="text-sm text-neutral-700 max-w-3xl leading-relaxed">
+              The DAD Lab brings together graduate students, staff, visiting scholars, and undergraduate researchers
+              {alumniCount > 0 ? `, with ${alumniCount} alumni listed` : ''}.
+            </p>
+            {previewMembers.length > 0 && (
+              <ul className="flex flex-wrap gap-3" aria-label="Selected lab members">
+                {previewMembers.map((m) => (
+                  <li key={m.id} title={m.name} className="w-14 h-14 rounded-full overflow-hidden border border-[#E5E2DC] bg-white">
+                    <LabImage src={m.photoUrl!} alt={m.name} width={56} height={56} className="w-full h-full object-cover" />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        )}
       </div>
     </div>
   );
