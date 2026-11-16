@@ -24,7 +24,8 @@ and what still needs the PI's confirmation. Migration date: November 16, 2026.
 
 | Content | Former site | New location |
 | --- | --- | --- |
-| Biography, education, awards | About Us (homepage), Home | `src/data/profile.ts` |
+| Biography, education | About Us (homepage), Home | `src/data/profile.ts` |
+| Honors and awards (37) | Complete list supplied by the PI (Nov 16, 2026), replacing the 15 migrated from About Us | `src/data/awards/awards.ts` |
 | Contact (email, office) | Contact Us | `src/data/profile.ts` |
 | Research focus areas | Research Interests (`/news/`) + brief | `src/data/research/areas.ts` |
 | Research projects (16) | News feed, Tools, People, NNF, posts + brief | `src/data/research/projects.ts` |
@@ -151,6 +152,17 @@ page filters by status and topic with AND logic.
   until the RCAC certificate is renewed. Links to aaes.auburn.edu,
   connect.purdue.edu, and iitj.ac.in could not be verified from the migration
   environment.
+
+## Honors and awards
+
+The About page now shows the PI's complete awards list (37 entries, 2026 back
+to 1988), supplied on November 16, 2026, in place of the shorter list taken
+from the former site. Differences from the former site's list follow the PI's
+list, e.g. the ASABE ITSC Best Paper Award is dated 2021 (the former site said
+2019). First-person wording ("my mentee", "recognized me") was rewritten in the
+third person; no facts were changed. Fulbright Specialist, the Alpha Epsilon
+Honor Society, and the class rank have no awarding organization in the PI's
+list and are shown without one.
 
 ## Review notice
 

@@ -19,7 +19,8 @@ public/images/
   news/                          News photos
 src/
   data/                          Seed content (single source for the site's data)
-    profile.ts                   Lab profile, biography, education, honors, contact
+    profile.ts                   Lab profile, biography, education, contact
+    awards/awards.ts             Honors and awards (About page), newest first
     research/areas.ts            Research focus areas = Research page topic filters
     research/projects.ts         Research projects (status + topics)
     publications/publications.ts Publications
@@ -132,7 +133,8 @@ secret must survive container restarts. Keep backups private. The public export
 is not a database backup. Deploying on GitHub Pages alone does not provide CMS
 hosting, authentication, or persistent server storage.
 
-The profile editor manages identity, biography, education, honors, logo, hero
+The profile editor manages identity, biography, education, honors and awards
+(structured: year, title, organization, details, link), logo, hero
 image, research focus areas, teaching overview, team and alumni, review notice
 and homepage curation. Separate managers support publications, research
 projects (status and topics), news sources/attachments, draft/current/archived
