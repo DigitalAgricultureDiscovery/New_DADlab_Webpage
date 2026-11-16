@@ -197,7 +197,7 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           <textarea
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className={`w-full p-3 font-mono text-xs text-neutral-800 bg-white focus:outline-none ${minHeightClass}`}
+            className={`w-full p-3 font-code text-xs text-neutral-800 bg-white focus:outline-none ${minHeightClass}`}
           />
         ) : (
           <div
