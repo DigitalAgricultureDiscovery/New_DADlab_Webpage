@@ -144,6 +144,7 @@ export function initDb(): void {
       image_caption TEXT NOT NULL DEFAULT '',
       project_status TEXT NOT NULL CHECK(project_status IN ('ongoing', 'completed', 'archived')) DEFAULT 'ongoing',
       related_publication_ids_json TEXT NOT NULL DEFAULT '[]',
+      topics_json TEXT NOT NULL DEFAULT '[]',
       collaborators TEXT NOT NULL DEFAULT '',
       funding_info TEXT NOT NULL DEFAULT '',
       featured_on_home INTEGER NOT NULL DEFAULT 0,
@@ -210,6 +211,10 @@ export function initDb(): void {
       db.exec('INSERT INTO projects_updated SELECT * FROM projects; DROP TABLE projects; ALTER TABLE projects_updated RENAME TO projects; COMMIT;');
     } catch (error) { db.exec('ROLLBACK'); throw error; }
   }
+  // Research topics (research area ids) were added after the first release; existing rows start empty
+  // and the public site falls back to their primary research area until topics are assigned in the CMS.
+  const projectColumns = (db.prepare('PRAGMA table_info(projects)').all() as {name:string}[]).map(c=>c.name);
+  if (!projectColumns.includes('topics_json')) db.exec("ALTER TABLE projects ADD COLUMN topics_json TEXT NOT NULL DEFAULT '[]'");
   const newsColumns = (db.prepare('PRAGMA table_info(news)').all() as {name:string}[]).map(c=>c.name);
   if (!newsColumns.includes('source_url')) db.exec("ALTER TABLE news ADD COLUMN source_url TEXT NOT NULL DEFAULT ''");
   if (!newsColumns.includes('attachments_json')) db.exec("ALTER TABLE news ADD COLUMN attachments_json TEXT NOT NULL DEFAULT '[]'");

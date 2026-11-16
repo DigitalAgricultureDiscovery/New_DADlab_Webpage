@@ -186,6 +186,19 @@ function mapCourseRow(row: Record<string, unknown>): CourseItem {
   };
 }
 
+function parseTopics(value: unknown): string[] {
+  try {
+    const parsed = JSON.parse(String(value || '[]'));
+    return Array.isArray(parsed) ? parsed.map(String).filter(Boolean) : [];
+  } catch {
+    return [];
+  }
+}
+
+function topicsJson(value: unknown): string {
+  return JSON.stringify(Array.isArray(value) ? Array.from(new Set(value.map(String).filter(Boolean))) : []);
+}
+
 function mapProjectRow(row: Record<string, unknown>): ResearchProjectItem {
   return {
     id: Number(row.id),
@@ -200,6 +213,7 @@ function mapProjectRow(row: Record<string, unknown>): ResearchProjectItem {
     image_caption: String(row.image_caption || ''),
     project_status: row.project_status as ResearchProjectItem['project_status'],
     related_publication_ids: JSON.parse(String(row.related_publication_ids_json || '[]')),
+    topics: parseTopics(row.topics_json),
     collaborators: String(row.collaborators || ''),
     funding_info: String(row.funding_info || ''),
     featured_on_home: Boolean(row.featured_on_home),
@@ -269,7 +283,7 @@ export function getPublicBootstrap() {
     const allProjects = (
       db
         .prepare(
-          "SELECT * FROM projects WHERE publish_status = 'published' ORDER BY CASE WHEN project_status = 'ongoing' THEN 0 ELSE 1 END, updated_at DESC"
+          "SELECT * FROM projects WHERE publish_status = 'published' ORDER BY CASE WHEN project_status = 'ongoing' THEN 0 ELSE 1 END, updated_at DESC, id ASC"
         )
         .all() as Record<string, unknown>[]
     ).map(mapProjectRow);
@@ -694,13 +708,13 @@ app.post('/api/admin/projects', requireAuth, (req, res) => {
   }
   const result = db
     .prepare(
-      `INSERT INTO projects (slug, title, research_area, overview, objectives_html, methodology_html, progress_notes, image_url, image_caption, project_status, related_publication_ids_json, collaborators, funding_info, featured_on_home, publish_status, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO projects (slug, title, research_area, overview, objectives_html, methodology_html, progress_notes, image_url, image_caption, project_status, related_publication_ids_json, topics_json, collaborators, funding_info, featured_on_home, publish_status, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       slug,
       String(b.title || 'Untitled Research Project'),
-      String(b.research_area || 'Autonomous Systems'),
+      String(b.research_area || ''),
       String(b.overview || ''),
       sanitizeHtml(String(b.objectives_html || '')),
       sanitizeHtml(String(b.methodology_html || '')),
@@ -709,6 +723,7 @@ app.post('/api/admin/projects', requireAuth, (req, res) => {
       String(b.image_caption || ''),
       ['completed', 'archived'].includes(b.project_status) ? b.project_status : 'ongoing',
       JSON.stringify(Array.isArray(b.related_publication_ids) ? b.related_publication_ids : []),
+      topicsJson(b.topics),
       String(b.collaborators || ''),
       String(b.funding_info || ''),
       b.featured_on_home ? 1 : 0,
@@ -728,9 +743,13 @@ app.put('/api/admin/projects/:id', requireAuth, (req, res) => {
     return;
   }
   const b = req.body ?? {};
+  if (b.project_status !== undefined && !['ongoing', 'completed', 'archived'].includes(b.project_status)) {
+    res.status(400).json({ error: 'Project status must be ongoing, completed, or archived' });
+    return;
+  }
   const now = new Date().toISOString();
   db.prepare(
-    `UPDATE projects SET title=?, research_area=?, overview=?, objectives_html=?, methodology_html=?, progress_notes=?, image_url=?, image_caption=?, project_status=?, related_publication_ids_json=?, collaborators=?, funding_info=?, featured_on_home=?, publish_status=?, updated_at=? WHERE id=?`
+    `UPDATE projects SET title=?, research_area=?, overview=?, objectives_html=?, methodology_html=?, progress_notes=?, image_url=?, image_caption=?, project_status=?, related_publication_ids_json=?, topics_json=?, collaborators=?, funding_info=?, featured_on_home=?, publish_status=?, updated_at=? WHERE id=?`
   ).run(
     String(b.title ?? existing.title),
     String(b.research_area ?? existing.research_area),
@@ -744,6 +763,7 @@ app.put('/api/admin/projects/:id', requireAuth, (req, res) => {
     b.related_publication_ids !== undefined
       ? JSON.stringify(b.related_publication_ids)
       : String(existing.related_publication_ids_json),
+    b.topics !== undefined ? topicsJson(b.topics) : String(existing.topics_json || '[]'),
     String(b.collaborators ?? existing.collaborators),
     String(b.funding_info ?? existing.funding_info),
     b.featured_on_home !== undefined ? (b.featured_on_home ? 1 : 0) : Number(existing.featured_on_home),
@@ -1056,6 +1076,7 @@ app.post('/api/admin/backup/restore', requireAdmin, (req, res) => {
       );
       for (const pr of snap.projects) {
         insProj.run(pr.id, pr.slug, pr.title, pr.research_area, pr.overview, sanitizeHtml(pr.objectives_html), sanitizeHtml(pr.methodology_html), pr.progress_notes || '', pr.image_url || '', pr.image_caption || '', pr.project_status, pr.related_publication_ids_json || '[]', pr.collaborators || '', pr.funding_info || '', pr.featured_on_home ? 1 : 0, pr.publish_status, pr.created_at, pr.updated_at);
+        db.prepare('UPDATE projects SET topics_json=? WHERE id=?').run(topicsJson(parseTopics(pr.topics_json)), pr.id);
       }
     }
 

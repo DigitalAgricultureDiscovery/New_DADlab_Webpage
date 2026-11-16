@@ -378,6 +378,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 <ProjectsManager
                   items={workspace.projects}
                   publications={workspace.publications}
+                  researchAreas={workspace.profile.researchAreas || []}
                   mediaAssets={workspace.media}
                   onMediaUploaded={handleMediaUploaded}
                   onRefresh={refreshAll}

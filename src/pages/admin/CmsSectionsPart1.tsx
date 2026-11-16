@@ -11,6 +11,7 @@ import type {
   PublicationItem,
   PublicationType,
   ResearchProjectItem,
+  ResearchArea,
   MediaAsset,
 } from '../../types/cms';
 
@@ -661,6 +662,7 @@ export const PublicationsManager: React.FC<PublicationsManagerProps> = ({
 interface ProjectsManagerProps {
   items: ResearchProjectItem[];
   publications: PublicationItem[];
+  researchAreas: ResearchArea[];
   mediaAssets: MediaAsset[];
   onMediaUploaded: (asset: MediaAsset) => void;
   onRefresh: () => Promise<void>;
@@ -670,6 +672,7 @@ interface ProjectsManagerProps {
 export const ProjectsManager: React.FC<ProjectsManagerProps> = ({
   items,
   publications,
+  researchAreas,
   mediaAssets,
   onMediaUploaded,
   onRefresh,
@@ -681,10 +684,11 @@ export const ProjectsManager: React.FC<ProjectsManagerProps> = ({
   const startNew = () => {
     setEditing({
       title: '',
-      research_area: 'Autonomous Control & Verification',
+      research_area: researchAreas[0]?.title || '',
+      topics: researchAreas[0] ? [researchAreas[0].id] : [],
       overview: '',
-      objectives_html: '<ul><li>Define research objective</li></ul>',
-      methodology_html: '<p>Describe technical approach...</p>',
+      objectives_html: '',
+      methodology_html: '',
       progress_notes: '',
       image_url: '',
       image_caption: '',
@@ -694,6 +698,27 @@ export const ProjectsManager: React.FC<ProjectsManagerProps> = ({
       funding_info: '',
       featured_on_home: true,
       publish_status: 'published',
+    });
+  };
+
+  // Topics are research area ids; the primary research area is always one of them.
+  const toggleTopic = (areaId: string) => {
+    if (!editing) return;
+    const current = editing.topics || [];
+    const primaryId = researchAreas.find((a) => a.title === editing.research_area)?.id;
+    if (current.includes(areaId) && areaId === primaryId) return;
+    const next = current.includes(areaId) ? current.filter((id) => id !== areaId) : [...current, areaId];
+    setEditing({ ...editing, topics: next });
+  };
+
+  const setPrimaryArea = (title: string) => {
+    if (!editing) return;
+    const area = researchAreas.find((a) => a.title === title);
+    const topics = editing.topics || [];
+    setEditing({
+      ...editing,
+      research_area: title,
+      topics: area && !topics.includes(area.id) ? [area.id, ...topics] : topics,
     });
   };
 
@@ -711,10 +736,16 @@ export const ProjectsManager: React.FC<ProjectsManagerProps> = ({
     if (!editing) return;
     setSaving(true);
     try {
+      const primaryId = researchAreas.find((a) => a.title === editing.research_area)?.id;
+      const topics = editing.topics || [];
+      const payload = {
+        ...editing,
+        topics: primaryId && !topics.includes(primaryId) ? [primaryId, ...topics] : topics,
+      };
       if (editing.id) {
-        await api.updateProject(editing.id, editing);
+        await api.updateProject(editing.id, payload);
       } else {
-        await api.createProject(editing);
+        await api.createProject(payload);
       }
       await onRefresh();
       setEditing(null);
@@ -769,15 +800,26 @@ export const ProjectsManager: React.FC<ProjectsManagerProps> = ({
           </div>
           <div className="md:col-span-3">
             <label className="block text-xs font-semibold text-neutral-800 mb-1">
-              Research Area
+              Primary Research Area
             </label>
-            <input
-              type="text"
+            <select
               required
               value={editing.research_area || ''}
-              onChange={(e) => setEditing({ ...editing, research_area: e.target.value })}
-              className="w-full px-3 py-2 text-sm border border-neutral-300 rounded-md focus:outline-none focus:border-black"
-            />
+              onChange={(e) => setPrimaryArea(e.target.value)}
+              className="w-full px-3 py-2 text-sm border border-neutral-300 rounded-md bg-white focus:outline-none focus:border-black"
+            >
+              <option value="" disabled>
+                Select a research area
+              </option>
+              {editing.research_area && !researchAreas.some((a) => a.title === editing.research_area) && (
+                <option value={editing.research_area}>{editing.research_area}</option>
+              )}
+              {researchAreas.map((area) => (
+                <option key={area.id} value={area.title}>
+                  {area.title}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="md:col-span-3">
             <label className="block text-xs font-semibold text-neutral-800 mb-1">
@@ -799,6 +841,33 @@ export const ProjectsManager: React.FC<ProjectsManagerProps> = ({
             </select>
           </div>
         </div>
+
+        <fieldset>
+          <legend className="block text-xs font-semibold text-neutral-800 mb-1">
+            Research Topics (used by the Research page topic filter; select all that apply)
+          </legend>
+          <div className="flex flex-wrap gap-x-5 gap-y-2 p-3 border border-neutral-200 rounded-md bg-neutral-50">
+            {researchAreas.map((area) => {
+              const isPrimary = area.title === editing.research_area;
+              const checked = isPrimary || (editing.topics || []).includes(area.id);
+              return (
+                <label key={area.id} className="inline-flex items-center gap-2 text-xs text-neutral-800">
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    disabled={isPrimary}
+                    onChange={() => toggleTopic(area.id)}
+                  />
+                  {area.shortLabel || area.title}
+                  {isPrimary && <span className="text-neutral-500">(primary)</span>}
+                </label>
+              );
+            })}
+            {researchAreas.length === 0 && (
+              <p className="text-xs text-neutral-600">Add research areas in Site Profile to enable topics.</p>
+            )}
+          </div>
+        </fieldset>
 
         <div>
           <label className="block text-xs font-semibold text-neutral-800 mb-1">

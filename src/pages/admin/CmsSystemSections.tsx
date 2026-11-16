@@ -172,6 +172,24 @@ export const ProfileManager: React.FC<ProfileManagerProps> = ({
           mediaAssets={mediaAssets}
           onMediaUploaded={onMediaUploaded}
         />
+        <label className="block text-xs font-semibold text-neutral-800">
+          Hero image description (alt text)
+          <input
+            type="text"
+            value={form.heroImageAlt || ''}
+            onChange={(e) => setForm({ ...form, heroImageAlt: e.target.value })}
+            className="mt-1 w-full px-3 py-2 text-sm font-normal border border-neutral-300 rounded-md"
+          />
+        </label>
+
+        <MediaPickerField
+          label="Laboratory Logo"
+          value={form.logoUrl || ''}
+          onChange={(url) => setForm({ ...form, logoUrl: url })}
+          accept="image"
+          mediaAssets={mediaAssets}
+          onMediaUploaded={onMediaUploaded}
+        />
       </div>
 
       <div className="bg-white border border-neutral-200 rounded-md p-6 space-y-4">
@@ -308,6 +326,7 @@ export const ProfileManager: React.FC<ProfileManagerProps> = ({
                 className="md:col-span-2 px-2 py-1.5 text-xs border border-neutral-300 rounded bg-white"
               >
                 <option>Faculty</option>
+                <option>Staff</option>
                 <option>PhD Student</option>
                 <option>MS Student</option>
                 <option>Undergraduate</option>
@@ -339,6 +358,8 @@ export const ProfileManager: React.FC<ProfileManagerProps> = ({
         <h2 className="font-serif text-xl">Research focus areas</h2>
         {(form.researchAreas || []).map((area, idx) => <fieldset key={area.id} className="border p-4 space-y-2">
           <label className="block">Title<input className="block border p-2 w-full" value={area.title} onChange={e => setForm({...form, researchAreas: form.researchAreas!.map((a,i) => i===idx ? {...a,title:e.target.value} : a)})} /></label>
+          <label className="block">Short label for topic filters (optional)<input className="block border p-2 w-full" value={area.shortLabel || ''} onChange={e => setForm({...form, researchAreas: form.researchAreas!.map((a,i) => i===idx ? {...a,shortLabel:e.target.value} : a)})} /></label>
+          <p className="text-xs text-neutral-600">Topic id <code>{area.id}</code>: research projects reference this id; keep publication topics identical to the title.</p>
           <label className="block">Description<textarea className="block border p-2 w-full" value={area.description} onChange={e => setForm({...form, researchAreas: form.researchAreas!.map((a,i) => i===idx ? {...a,description:e.target.value} : a)})} /></label>
           <label className="block">Approved image URL<input className="block border p-2 w-full" value={area.imageUrl} onChange={e => setForm({...form, researchAreas: form.researchAreas!.map((a,i) => i===idx ? {...a,imageUrl:e.target.value} : a)})} /></label>
           <button type="button" onClick={() => setForm({...form,researchAreas:form.researchAreas!.filter((_,i)=>i!==idx)})}>Remove area</button>
