@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Microscope } from 'lucide-react';
-import { resolveMediaUrl } from '../lib/mediaAssets';
 
 interface LabImageProps {
   src: string;
@@ -16,7 +15,7 @@ export const LabImage: React.FC<LabImageProps> = ({
   fallbackLabel,
 }) => {
   const [failed, setFailed] = useState(false);
-  const resolved = resolveMediaUrl(src);
+  const resolved = src || '';
 
   if (!resolved || failed) {
     return (

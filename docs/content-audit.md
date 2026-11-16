@@ -12,14 +12,14 @@ current project funding, a current teaching schedule, or final PI approval.
 | Awards | Seven supplied honors, newest first, 2023–2014 | Authoritative source links and approved descriptions; none invented |
 | Research areas | Five editable focus areas with descriptions and optional approved imagery; publication topics connect to these areas | Confirm exact wording and approved photographs |
 | Research activities | Four supplied historical themes, archived separately from completed/ongoing work; related publications | Confirm active/completed status, funding, dates and links; no active project claims |
-| Publications | Six supplied citations, including 2026 preprint; year/type/topic/search controls | Verify all bibliographic metadata, resolve DOI/publisher/permitted PDF links, migrate complete historical list; only 2021 publisher URL is provided by bibliographic location, not independently checked |
-| Teaching | Educational activities published; five candidate courses kept as CMS drafts | Official titles, semesters, instructor assignments, syllabus permissions and materials |
+| Publications | Six supplied citations, including 2026 preprint; year/type/topic/search controls. Every card links to its DOI, verified in November 2026: title, authors, year, journal, volume and pages match the Crossref record (arXiv record for the preprint), and each DOI resolves to that article's page | Permitted PDF links; migrate the complete historical publication list |
+| Teaching | Educational activities published; ASM 54000 and ASM 59100 (Data Visualization and Edge Computing) listed as current 2026–2027 courses with Purdue catalog links; other candidate courses kept as hidden drafts | Semesters, syllabus permissions and materials; confirm or remove the remaining draft courses |
 | News | Three historical announcements (2023, 2022, 2020) with year-only dates | Exact dates, source links, approved attachments/photos; dates were not guessed |
 | People | PI only; editable photo, role, category, interests, email and professional link; dedicated People page | Verified current roster, approved profiles and alumni |
 | Opportunities | No fabricated listings; neutral empty state | PI-approved position details before posting |
 | Images | Unapproved generated/sample presets removed from use; no false PI photo | Approved lab photographs, captions, usage rights and alt text |
 | Identity/design | Existing layout and black/Boilermaker Gold/white palette retained; false statistics removed | Purdue brand review; no claim of formal brand approval |
-| CMS | Persistent SQLite; editable profile/areas/teaching/team/home curation, publications/projects/courses/news/openings/media | Provision authorized administrators, HTTPS hosting, backup/storage and publication policy |
+| Content management | Static site on GitHub Pages; all content in `src/content/siteContent.ts`, published by merging to `main`; no admin login, server or database | Give content maintainers GitHub access and agree on a review step before merging |
 
 ## Old-site migration — deliberately deferred
 
@@ -32,11 +32,10 @@ Do not redirect uninspected old URLs to invented destinations.
 
 ## Review and approval
 
-The visible review notice remains in the profile. Dr. Saraswat should review
-all brief-derived content, approve photographs and links, confirm current
-membership and project status, and approve publication before that notice is
-cleared. Candidate courses stay in draft until independently confirmed. The
-2026 entry remains a preprint, not a peer-reviewed journal article.
+The public review notice was removed at the lab's request. Dr. Saraswat should
+still review the remaining brief-derived content, approve photographs and links,
+and confirm current membership and project status. Candidate courses stay in
+draft until independently confirmed. The 2026 entry remains a preprint, not a
+peer-reviewed journal article.
 
-No production deployment or merge is included in this personalization phase.
-The previous PR/API access issue remains separate.
+The site is published on GitHub Pages from the `main` branch.

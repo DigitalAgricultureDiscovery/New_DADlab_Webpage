@@ -7,8 +7,6 @@
   --font-serif: var(--font-times);
   --font-sans: var(--font-times);
   --font-mono: var(--font-times);
-  /* True monospace, kept only for the raw HTML source editor in the CMS. */
-  --font-code: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   --color-purdue-gold: #CFB991;
   --color-purdue-gold-dark: #8E6F3E;
@@ -34,7 +32,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Rich text editorial formatting for CMS-authored descriptions and news */
+/* Rich text editorial formatting for descriptions and news written as HTML in src/content */
 .prose-lab {
   color: #27272A;
   line-height: 1.75;

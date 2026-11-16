@@ -1,10 +1,9 @@
-import { isStaticSite } from './api';
-
-// Hash routes keep deep links and refreshes within GitHub Pages' index.html.
+// The site is served as static files (GitHub Pages), which only knows index.html.
+// Hash routes (e.g. #/research) keep deep links and refreshes working there.
 export function readPath(): string {
-  return isStaticSite ? (window.location.hash.slice(1) || '/') : (window.location.pathname || '/');
+  return window.location.hash.slice(1) || '/';
 }
 
 export function routeHref(path: string): string {
-  return isStaticSite ? `${import.meta.env.BASE_URL}#${path}` : path;
+  return `${import.meta.env.BASE_URL}#${path}`;
 }

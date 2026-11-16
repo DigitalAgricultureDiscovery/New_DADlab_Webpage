@@ -1,102 +1,88 @@
-# Digital Agriculture Discovery (Dad Lab)
+# Digital Agriculture Discovery Lab (DAD Lab) website
+
+The public website of the Digital Agriculture Discovery Lab at Purdue University.
+It is a fully static React + Vite site published on GitHub Pages. There is no
+server, database, or admin login: all content lives in the repository and is
+published by merging changes to `main`.
+
+## Editing content
+
+Everything the site shows comes from one file:
+[`src/content/siteContent.ts`](src/content/siteContent.ts). It contains the lab
+profile (name, biography, research areas, team members, contact details) and the
+lists of publications, research projects, courses, news, and opportunities.
+
+Edit that file (on GitHub, use the pencil icon), then merge the change into `main`.
+The deploy workflow rebuilds and publishes the site automatically, usually within
+a minute or two.
+
+Visibility rules:
+
+| List | Shown on the site | Hidden |
+| --- | --- | --- |
+| `publications` | `status: "published"` | `status: "draft"` |
+| `projects`, `opportunities` | `publish_status: "published"` | `publish_status: "draft"` |
+| `courses` | `status: "active"` or `"archived"` | `status: "draft"` |
+| `news` | `status: "published"` or `"archived"` | `status: "draft"` |
+
+Fields ending in `_html` (for example `piBioHtml` or a course's `description_html`)
+accept simple HTML such as `<p>`, `<ul>`, and `<a>`.
+
+### Publication links
+
+Each publication card on the Publications page is clickable when the publication
+has a `publication_url`. Clicking anywhere on the card opens that paper in a new
+tab. To add or change a link:
+
+1. Find the paper's DOI (on the article page, or by searching the title at
+   [search.crossref.org](https://search.crossref.org)).
+2. Set `publication_url` to the DOI link, for example
+   `"https://doi.org/10.3390/rs13245182"`. Use the publisher's article page only
+   when the paper has no DOI.
+3. Open the link and confirm it shows that exact paper before publishing.
+4. Optionally set `doi_url` to the same DOI link. It adds a "DOI" link to the
+   paper on the Home and Research pages.
+
+Leave `publication_url` empty (`""`) when no verified link exists. The card then
+stays visible but is not clickable.
 
 ## Local development
 
-Use Node.js 24 (the server uses built-in SQLite), then:
+Use Node.js 24, then:
 
 ```sh
 npm install --legacy-peer-deps --package-lock=false --no-audit --no-fund
 npm run dev
 ```
 
-The Express/Vite development server listens on port 3000. SQLite content,
-uploads and a generated session secret live in `data/`. Keep this directory
-local; do not commit or publish it. `npm run lint` checks TypeScript, and
-`npm run build` builds the frontend for the Express server.
+`npm run dev` starts the Vite development server and prints its local address.
+`npm run lint` type-checks the code, and `npm run build` produces the static site
+in `dist/`. This repository has no lockfile, so fresh installs may resolve newer
+versions within the declared ranges.
 
-The compatibility install flag handles the current Vite/esbuild optional peer
-conflict. This repository has no lockfile, so fresh installs may resolve newer
-versions within its declared ranges.
+## Deployment (GitHub Pages)
 
-## GitHub Pages
+The `Deploy website to GitHub Pages` workflow
+([`.github/workflows/pages.yml`](.github/workflows/pages.yml)) runs on every push
+to `main`. It type-checks, builds, and publishes `dist/`. It can also be started
+manually from the repository's Actions tab.
 
-In the repository's **Settings → Pages → Build and deployment**, select
-**GitHub Actions** as the source. Push these changes to `main` (or run the
-`Deploy website to GitHub Pages` workflow manually). The workflow builds and
-deploys `dist/index.html` and its compiled assets; do not serve the source
-`index.html` from a branch.
+In **Settings → Pages → Build and deployment**, the source must be
+**GitHub Actions**. "Deploy from a branch" would publish the unbuilt source files
+and show blank pages.
 
-The workflow obtains the URL base from GitHub Pages, so both repository paths
-and custom domains use the correct asset URLs. Public navigation uses hash
-routes, for example `#/research`, allowing bookmarks and refreshes on Pages.
-
-To build locally for the repository URL:
+The workflow gets the site's base path from GitHub Pages, so asset URLs work both
+at `https://<owner>.github.io/<repo>/` and on a custom domain. To reproduce the
+production build locally:
 
 ```sh
-VITE_BASE_PATH=/New_DADlab_Webpage/ npm run build:pages
+VITE_BASE_PATH=/New_DADlab_Webpage/ npm run build
 ```
 
-Pages serves static files only. By default the build exports **public brief-based review content**
-from a temporary database into `dist/public-data.json`; it never exports user
-accounts, inquiries, session secrets, or a local CMS database. Changes made
-through a running CMS are not automatically published to Pages. Update seeded
-public content and rebuild to publish changes, or host the full Express app
-when live CMS editing is needed. The Pages contact page offers email, and
-administration explains that a CMS server is required.
+Pages are addressed with hash routes such as `#/publications`, so bookmarks and
+page refreshes work on GitHub Pages without server-side routing.
 
-Existing research descriptions and other sample content still need editorial
-review for the lab; changing the lab name does not rewrite that content.
+## Content review
 
-## Personalization review and CMS operation
-
-See [the content audit and remaining verification ledger](docs/content-audit.md).
-The brief is the source for the review version. Original-site migration is
-explicitly deferred. The header review notice is editable in Site Profile;
-clear it only after the PI approves the content.
-
-A fresh database has **no default accounts**. Provision an administrator from
-the server terminal using `CMS_ADMIN_EMAIL` and `CMS_ADMIN_PASSWORD` (at least
-16 characters), then run `node --import tsx scripts/create-admin.ts`. Supply
-these values through secure environment settings or masked terminal input,
-never source files or command-line arguments. Clear those variables afterwards.
-The CMS can then create additional users. No Gemini key is required.
-
-Run the Express app on Node 24 with HTTPS in production and a persistent,
-backed-up `CMS_DATA_DIR` (defaults to `data/`). The production server runs with
-`NODE_ENV=production npm run dev` after `npm run build`; the script uses `tsx`
-for TypeScript. `PORT` defaults to 3000. Uploads, SQLite data and the session
-secret must survive container restarts. Keep backups private. The public export
-is not a database backup. Deploying on GitHub Pages alone does not provide CMS
-hosting, authentication, or persistent server storage.
-
-The profile editor manages identity, biography, education, honors, research
-focus areas, teaching overview, team and alumni, images, review notice and
-homepage curation. Separate managers support publications, research status
-(including archived themes), news sources/attachments, draft/current/archived
-courses, openings and media. Save reviewed topic names consistently between
-research areas, projects and publication topics to retain their associations.
-
-For Pages after editing the CMS: use **Download public content for Pages** in
-Site Profile, place the downloaded JSON at `content/public-data.json`, and
-submit that content file through GitHub review. The existing workflow publishes
-it on merge. This changes content data, not application source. Without that
-file, Pages builds the brief-based review seed. Private user accounts and
-contact inquiries are excluded by the authenticated public export endpoint.
-Use public hosted media URLs in a Pages snapshot; local `/uploads/` paths
-require the backend and must be copied to public hosting or replaced before
-Pages publication. For immediate routine updates without a GitHub publication
-step, serve the full Express app instead of a Pages snapshot.
-
-Existing databases are never silently overwritten or reseeded when a table
-becomes empty. Schema migration preserves project records while adding archived
-status. Existing deployments containing old demonstration content must back up
-their databases, revoke demonstration accounts, and replace that content through
-the CMS or a separately reviewed migration before launch. This session's local
-demo database was moved to `/workspace/dad-lab-backups/demo-data-before-personalization`
-and a fresh brief-based review database was started; no external database was
-modified.
-
-Validation: `node --import tsx --test tests/cms.test.ts` exercises authentication,
-public/draft separation, persistent edits, safe HTML, backup/restore, public
-export and schema migration. `npm run lint` checks types and `npm run build:pages`
-checks the static build.
+See [the content audit and verification ledger](docs/content-audit.md) for what
+has been verified and what still needs review.
