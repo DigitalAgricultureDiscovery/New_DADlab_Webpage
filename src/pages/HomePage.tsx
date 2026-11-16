@@ -3,6 +3,7 @@ import { ArrowRight, ExternalLink, FileText, BookOpen, FlaskConical, Briefcase }
 import type { PublicBootstrapData } from '../types/cms';
 import { LabImage } from '../components/LabImage';
 import { formatAcademicDate } from '../lib/htmlUtils';
+import { STATUS_LABELS } from '../lib/researchFilters';
 
 interface HomePageProps {
   data: PublicBootstrapData;
@@ -66,8 +67,9 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
               <div className="h-72 sm:h-96 lg:h-full min-h-[340px] rounded-md overflow-hidden border border-neutral-800 bg-neutral-900">
                 <LabImage
                   src={profile.heroImageUrl}
-                  alt={`${profile.labName} at ${profile.institution}`}
+                  alt={profile.heroImageAlt || `${profile.labName} at ${profile.institution}`}
                   className="w-full h-full object-cover"
+                  loading="eager"
                 />
               </div>
             </div>
@@ -76,12 +78,27 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
       </section>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-5">
-        <h2 className="font-serif text-3xl">{profile.piName}</h2>
-        <p>{profile.piTitle} · {profile.institution}</p>
-        <p className="max-w-4xl text-neutral-700 leading-relaxed">{profile.missionStatement}</p>
-        <button className="underline" onClick={() => onNavigate('/about')}>Biography and recognition</button>
+        <div className="grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-6 sm:gap-8 items-start">
+          {profile.piPortraitUrl && (
+            <div className="w-36 sm:w-44 rounded-md overflow-hidden border border-[#E5E2DC] bg-white">
+              <LabImage
+                src={profile.piPortraitUrl}
+                alt={`Portrait of ${profile.piName}`}
+                width={800}
+                height={946}
+                className="w-full h-auto block"
+              />
+            </div>
+          )}
+          <div className="space-y-5">
+            <h2 className="font-serif text-3xl">{profile.piName}</h2>
+            <p>{profile.piTitle} · {profile.institution}</p>
+            <p className="max-w-4xl text-neutral-700 leading-relaxed">{profile.missionStatement}</p>
+            <button className="underline" onClick={() => onNavigate('/about')}>Biography and recognition</button>
+          </div>
+        </div>
         <h2 className="font-serif text-2xl pt-4">Research Focus Areas</h2>
-        <div className="grid md:grid-cols-2 gap-6">{profile.researchAreas?.map(area => <article key={area.id} className="bg-white p-6 border border-[#E5E2DC] rounded-md">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">{profile.researchAreas?.map(area => <article key={area.id} className="bg-white p-6 border border-[#E5E2DC] rounded-md">
           <h3 className="font-serif text-xl">{area.title}</h3><p className="mt-2 text-neutral-700">{area.description}</p>
         </article>)}</div>
       </section>
@@ -190,7 +207,7 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
               <div className="aspect-[4/3] bg-neutral-100 overflow-hidden border-b border-[#E5E2DC]">
                 <LabImage
                   src={project.image_url}
-                  alt={project.title}
+                  alt={project.image_caption || project.title}
                   className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
                 />
               </div>
@@ -198,7 +215,7 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
                 <div className="space-y-2.5">
                   <div className="flex items-center gap-2 text-xs text-neutral-500">
                     <span className="font-semibold text-[#8E6F3E]">
-                      {project.project_status === 'ongoing' ? 'Ongoing' : project.project_status === 'completed' ? 'Completed' : 'Historical / theme'}
+                      {STATUS_LABELS[project.project_status] ?? project.project_status}
                     </span>
                     <span aria-hidden="true">·</span>
                     <span className="truncate">{project.research_area}</span>

@@ -1,22 +1,37 @@
-import type { PublicBootstrapData } from '../types/cms';
-import { courses, news, opportunities, profile, projects, publications } from './siteContent';
+import type { PublicBootstrapData } from '../types/cms.ts';
+import { SITE_PROFILE } from '../data/profile.ts';
+import { PUBLICATIONS } from '../data/publications/publications.ts';
+import { PROJECTS } from '../data/research/projects.ts';
+import { COURSES } from '../data/teaching/courses.ts';
+import { NEWS } from '../data/news/news.ts';
+import { OPPORTUNITIES } from '../data/opportunities/opportunities.ts';
 
-// Stable sort: items that compare equal keep their order from siteContent.ts.
+// Stable sort: items that compare equal keep their order from the data files.
 const sortBy = <T,>(items: T[], compare: (a: T, b: T) => number) =>
-  items.map((item, index) => ({ item, index }))
+  items
+    .map((item, index) => ({ item, index }))
     .sort((a, b) => compare(a.item, b.item) || a.index - b.index)
     .map(({ item }) => item);
 
-const desc = (a: string | number, b: string | number) => (a < b ? 1 : a > b ? -1 : 0);
+const asc = (a: string | number, b: string | number) => (a < b ? -1 : a > b ? 1 : 0);
+const desc = (a: string | number, b: string | number) => asc(b, a);
+const notOngoingLast = (status: string) => Number(status !== 'ongoing');
 
 /**
- * Builds the data the public pages render: hides drafts, orders each list,
- * and picks the items featured on the home page.
+ * Builds what the public pages render from the content in src/data/: hides
+ * drafts, orders each list, and picks the items featured on the home page.
+ * The site is static, so this runs in the browser on bundled data.
  */
 export function getSiteData(): PublicBootstrapData {
+  const profile = SITE_PROFILE;
+
+  // Courses and news have no ids in src/data; number them in file order.
+  const courses = COURSES.map((c, i) => ({ ...c, id: i + 1 }));
+  const news = NEWS.map((n, i) => ({ ...n, id: i + 1, attachments: [] }));
+
   const allProjects = sortBy(
-    projects.filter((p) => p.publish_status === 'published'),
-    (a, b) => Number(a.project_status !== 'ongoing') - Number(b.project_status !== 'ongoing'),
+    PROJECTS.filter((p) => p.publish_status === 'published'),
+    (a, b) => notOngoingLast(a.project_status) - notOngoingLast(b.project_status) || asc(a.id, b.id),
   );
 
   const allNews = sortBy(
@@ -25,7 +40,7 @@ export function getSiteData(): PublicBootstrapData {
   );
 
   const allPublications = sortBy(
-    publications.filter((p) => p.status === 'published'),
+    PUBLICATIONS.filter((p) => p.status === 'published'),
     (a, b) => desc(a.year, b.year) || desc(a.id, b.id),
   );
 
@@ -34,11 +49,11 @@ export function getSiteData(): PublicBootstrapData {
     (a, b) =>
       Number(a.status !== 'active') - Number(b.status !== 'active') ||
       desc(a.academic_year, b.academic_year) ||
-      a.course_number.localeCompare(b.course_number),
+      asc(a.course_number, b.course_number),
   );
 
-  const visibleOpportunities = sortBy(
-    opportunities.filter((o) => o.publish_status === 'published' && o.position_status !== 'Archived'),
+  const opportunities = sortBy(
+    OPPORTUNITIES.filter((o) => o.publish_status === 'published' && o.position_status !== 'Archived'),
     (a, b) => Number(a.position_status !== 'Open') - Number(b.position_status !== 'Open'),
   );
 
@@ -61,6 +76,6 @@ export function getSiteData(): PublicBootstrapData {
     featuredPublications: featuredPublications.length ? featuredPublications : allPublications.slice(0, 4),
     allPublications,
     courses: visibleCourses,
-    opportunities: visibleOpportunities,
+    opportunities,
   };
 }

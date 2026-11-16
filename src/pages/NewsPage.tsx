@@ -11,7 +11,10 @@ interface NewsPageProps {
 }
 
 export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNavigate }) => {
-  const [viewMode, setViewMode] = useState<'recent' | 'archive'>('archive');
+  // Open on current news when there is any; otherwise show the archive.
+  const [viewMode, setViewMode] = useState<'recent' | 'archive'>(() =>
+    news.some((n) => n.status !== 'archived') ? 'recent' : 'archive'
+  );
   const [yearFilter, setYearFilter] = useState<string>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
 

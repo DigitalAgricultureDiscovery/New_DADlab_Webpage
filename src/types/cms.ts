@@ -2,15 +2,25 @@ export interface TeamMember {
   id: string;
   name: string;
   role: string;
-  category: 'Faculty' | 'PhD Student' | 'MS Student' | 'Undergraduate' | 'Postdoctoral Researcher' | 'Visiting Researcher' | 'Alumni';
+  category: 'Faculty' | 'Staff' | 'PhD Student' | 'MS Student' | 'Undergraduate' | 'Postdoctoral Researcher' | 'Visiting Researcher' | 'Alumni';
   focus: string;
   photoUrl?: string;
   email?: string;
   website?: string;
 }
 
+/** A research focus area. Its `id` is the topic key that research projects reference. */
+export interface ResearchArea {
+  id: string;
+  title: string;
+  /** Short label used for compact topic filter chips. Falls back to `title`. */
+  shortLabel?: string;
+  description: string;
+  imageUrl: string;
+}
+
 export interface SiteProfile {
-  researchAreas?: { id: string; title: string; description: string; imageUrl: string }[];
+  researchAreas?: ResearchArea[];
   teachingOverview?: string;
   reviewNote?: string;
   labName: string;
@@ -22,6 +32,8 @@ export interface SiteProfile {
   heroHeadline: string;
   heroSubheadline: string;
   heroImageUrl: string;
+  heroImageAlt?: string;
+  logoUrl?: string;
   missionStatement: string;
   piName: string;
   piTitle: string;
@@ -127,6 +139,8 @@ export interface CourseItem {
   featured_on_home: boolean;
 }
 
+export type ProjectStatus = 'ongoing' | 'completed' | 'archived';
+
 export interface ResearchProjectItem {
   id: number;
   slug: string;
@@ -138,7 +152,9 @@ export interface ResearchProjectItem {
   progress_notes: string;
   image_url: string;
   image_caption: string;
-  project_status: 'ongoing' | 'completed' | 'archived';
+  project_status: ProjectStatus;
+  /** Research area ids (see SiteProfile.researchAreas); a project may have several. */
+  topics: string[];
   related_publication_ids: number[];
   collaborators: string;
   funding_info: string;

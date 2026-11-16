@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { readPath, routeHref } from './lib/routing';
-import { getSiteData } from './content';
+import { getSiteData } from './lib/siteData';
 import { PublicHeader, PublicFooter } from './components/PublicHeaderFooter';
 import { HomePage } from './pages/HomePage';
 import { PeoplePage } from './pages/PeoplePage';
@@ -12,7 +12,7 @@ import { TeachingPage } from './pages/TeachingPage';
 import { OpportunitiesPage } from './pages/OpportunitiesPage';
 import { ContactPage } from './pages/ContactPage';
 
-// Content is bundled with the site (src/content), so there is nothing to load at runtime.
+// Content is bundled with the site (src/data), so there is nothing to load at runtime.
 const publicData = getSiteData();
 
 export default function App() {
@@ -43,6 +43,7 @@ export default function App() {
     const base = `${publicData.profile.shortTitle} | ${publicData.profile.institution}`;
     if (currentPath === '/') document.title = `${publicData.profile.labName} | ${publicData.profile.institution}`;
     else if (currentPath.startsWith('/about')) document.title = `About | ${base}`;
+    else if (currentPath.startsWith('/people')) document.title = `People | ${base}`;
     else if (currentPath.startsWith('/research')) document.title = `Research | ${base}`;
     else if (currentPath.startsWith('/publications')) document.title = `Publications | ${base}`;
     else if (currentPath.startsWith('/news')) document.title = `News | ${base}`;

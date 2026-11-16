@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { Microscope } from 'lucide-react';
+import { resolveMediaUrl } from '../lib/mediaAssets';
 
 interface LabImageProps {
   src: string;
   alt: string;
   className?: string;
   fallbackLabel?: string;
+  /** Intrinsic dimensions; set them to reserve layout space before the image loads. */
+  width?: number;
+  height?: number;
+  loading?: 'lazy' | 'eager';
 }
 
 export const LabImage: React.FC<LabImageProps> = ({
@@ -13,9 +18,12 @@ export const LabImage: React.FC<LabImageProps> = ({
   alt,
   className = 'w-full h-full object-cover',
   fallbackLabel,
+  width,
+  height,
+  loading = 'lazy',
 }) => {
   const [failed, setFailed] = useState(false);
-  const resolved = src || '';
+  const resolved = resolveMediaUrl(src);
 
   if (!resolved || failed) {
     return (
@@ -32,6 +40,10 @@ export const LabImage: React.FC<LabImageProps> = ({
     <img
       src={resolved}
       alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      decoding="async"
       referrerPolicy="no-referrer"
       onError={() => setFailed(true)}
       className={className}
