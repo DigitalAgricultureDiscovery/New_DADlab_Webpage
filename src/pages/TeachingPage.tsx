@@ -57,7 +57,6 @@ export const TeachingPage: React.FC<TeachingPageProps> = ({ courses, profile }) 
           </div>
         </div>
 
-        <p className="text-sm text-neutral-600">Courses are listed as described on the DAD Lab&rsquo;s previous website. Please confirm the current schedule in the Purdue course catalog.</p>
         {displayed.length === 0 ? (
           <div className="bg-white border border-[#E5E2DC] rounded-md p-10 text-center">
             <p className="text-sm text-neutral-600">

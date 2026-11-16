@@ -126,9 +126,10 @@ export const ProfileManager: React.FC<ProfileManagerProps> = ({
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold text-neutral-800 mb-1">Hero Eyebrow</label>
+            <label className="block text-xs font-semibold text-neutral-800 mb-1">Hero Eyebrow (optional)</label>
             <input
               type="text"
+              placeholder="Leave blank to hide the line above the headline"
               value={form.heroEyebrow}
               onChange={(e) => setForm({ ...form, heroEyebrow: e.target.value })}
               className="w-full px-3 py-2 text-sm border border-neutral-300 rounded-md"

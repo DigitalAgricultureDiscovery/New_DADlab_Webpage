@@ -15,7 +15,7 @@ export const SITE_PROFILE: SiteProfile = {
   department: 'Department of Agricultural and Biological Engineering',
   college: 'Purdue University',
   institution: 'Purdue University',
-  heroEyebrow: 'Purdue University · Digital Agriculture Discovery Lab',
+  heroEyebrow: '',
   heroHeadline: 'Digital Agriculture Discovery Lab',
   heroSubheadline:
     'Advancing Agriculture and Natural Resource Management Through Data Science, Artificial Intelligence, and Digital Technologies.',
@@ -75,5 +75,5 @@ export const SITE_PROFILE: SiteProfile = {
   teamMembers: TEAM_MEMBERS,
   researchAreas: RESEARCH_AREAS,
   teachingOverview:
-    'Dr. Saraswat teaches geospatial and digital agriculture courses at Purdue, including GIS Applications (ASM 540), which brings course-based research experiences to undergraduates. He has led agricultural informatics and data science curriculum development supported by USDA-NIFA, covering computational thinking, open-source technologies, data analysis, experiential learning, and problem-based education, and has mentored REEU, SURF, and visiting researchers in the DAD Lab.',
+    'Dr. Saraswat teaches geospatial and digital agriculture courses at Purdue, including Geographic Information System Application (ASM 54000), which brings course-based research experiences to undergraduates, and Data Visualization and Edge Computing (ASM 59100). He has led agricultural informatics and data science curriculum development supported by USDA-NIFA, covering computational thinking, open-source technologies, data analysis, experiential learning, and problem-based education, and has mentored REEU, SURF, and visiting researchers in the DAD Lab.',
 };

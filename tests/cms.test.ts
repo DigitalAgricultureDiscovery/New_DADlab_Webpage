@@ -22,7 +22,9 @@ test('CMS persists migrated content, enforces authentication, and exports only p
     assert.equal(pub.profile.researchAreas.length,6);
     assert.equal(pub.profile.piPortraitUrl,'/images/people/principal-investigator/dharmendra-saraswat.jpg');
     assert.equal(pub.allPublications.length,38);
-    assert.equal(pub.courses.length,3);
+    assert.equal(pub.courses.length,4);
+    assert.deepEqual(pub.courses.filter((c:any)=>c.status==='active').map((c:any)=>c.title),['Geographic Information System Application','Data Visualization and Edge Computing']);
+    assert.equal(pub.profile.heroEyebrow,'');assert.equal(pub.profile.reviewNote,'');
     assert.equal(pub.opportunities.length,0);
     assert.equal(pub.allProjects.length,16);
     assert.ok(pub.allProjects.every((p:any)=>['ongoing','completed'].includes(p.project_status) && p.topics.length>0));
@@ -35,7 +37,7 @@ test('CMS persists migrated content, enforces authentication, and exports only p
     assert.equal(login.status,200);const cookie=login.headers.get('set-cookie')!.split(';')[0];
     const request=(url:string,method='GET',body?:unknown)=>fetch(base+url,{method,headers:{'Content-Type':'application/json',Cookie:cookie},body:body?JSON.stringify(body):undefined});
     const workspace=await (await request('/api/admin/workspace')).json();
-    assert.equal(workspace.courses.length,7);assert.equal(workspace.courses.filter((c:any)=>c.status==='draft').length,4);
+    assert.equal(workspace.courses.length,8);assert.equal(workspace.courses.filter((c:any)=>c.status==='draft').length,4);
     const draft=await (await request('/api/admin/news','POST',{title:'Private draft',status:'draft',source_url:'https://example.org/source',attachments:[{label:'Paper',url:'https://example.org/paper.pdf'}],content_html:'<p>Safe</p><img src=x onerror=alert(1)><script>alert(1)</script>'})).json();
     assert.ok(!draft.content_html.includes('onerror') && !draft.content_html.includes('<script'));
     assert.equal(draft.source_url,'https://example.org/source');

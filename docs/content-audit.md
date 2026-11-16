@@ -30,7 +30,7 @@ and what still needs the PI's confirmation. Migration date: November 16, 2026.
 | Research projects (16) | News feed, Tools, People, NNF, posts + brief | `src/data/research/projects.ts` |
 | Publications (38) | Publications page (29), news posts (8 conference papers), brief (1) | `src/data/publications/publications.ts` |
 | News (62 items, 2019-2024) | News feed (`/research/`), 2019 blog posts, and one 2020 item from the brief | `src/data/news/news.ts` |
-| Courses (3 published, 4 drafts) | Teaching, ASM 54000, ASM 59100, ABE 49500 pages + brief | `src/data/teaching/courses.ts` |
+| Courses (2 current, 2 archived, 4 drafts) | Current 2026-2027 courses from the PI; Teaching, ASM 54000, ASM 59100, ABE 49500 pages; brief | `src/data/teaching/courses.ts` |
 | People (28) | People page, The DAD Group page, thesis-defense posts | `src/data/people/team.ts` |
 | Images (54 files) | WordPress media library | `public/images/` |
 
@@ -129,9 +129,12 @@ page filters by status and topic with AND logic.
 - **Bachelor's degree year** is not on the former site and is not shown.
 - **Current roster:** the People page reflects the former site (last updated
   2023-2024). Please confirm current students and alumni positions.
-- **Courses:** ASM 54000 is shown as currently offered (Fall); ASM 59100
-  *Decision Agriculture Methods* and ABE 49500 *Introduction to UAS* are shown
-  as archived offerings. Candidate courses from the brief remain drafts.
+- **Courses:** the current 2026-2027 courses (ASM 54000 *Geographic
+  Information System Application* and ASM 59100 *Data Visualization and Edge
+  Computing*) were supplied by the PI; the former site's credit details were
+  added to ASM 54000. ASM 59100 *Decision Agriculture Methods* and ABE 49500
+  *Introduction to UAS* are shown as archived offerings. Candidate courses
+  from the brief remain drafts.
 - **Publications not added (incomplete citations on the former site):** the
   March 2024 tar spot paper (no author list), BNNDC-Net (title not given), and
   the 2022 weather-data lesson plan (title not given). They appear as news.
@@ -151,5 +154,5 @@ page filters by status and topic with AND logic.
 
 ## Review notice
 
-The header review notice was cleared for publication. It can be restored in
+The header review notice is cleared (as on `main`). It can be restored in
 **Site Profile → Public review notice** if needed.

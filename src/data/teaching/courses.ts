@@ -15,23 +15,39 @@ const course = (c: Pick<CourseSeed, 'course_number' | 'title' | 'status' | 'desc
 });
 
 /**
- * Published courses come from the former DAD Lab website's Teaching and course
- * pages (index.php/teaching/, /asm-54000/, /asm-59100/, /abe-49500/).
- * ASM 54000 is listed as currently offered because the former site's
- * December 2023 news still describes it as Dr. Saraswat's geospatial course;
- * the other two are kept as archived offerings. Candidate courses from the
- * personalization brief remain unpublished drafts until confirmed.
+ * Current courses (2026-2027, with Purdue catalog links) were supplied by the
+ * PI. Credit and meeting details for ASM 54000 and the two archived offerings
+ * come from the former DAD Lab website's Teaching and course pages
+ * (index.php/teaching/, /asm-54000/, /asm-59100/, /abe-49500/). Candidate
+ * courses from the personalization brief remain unpublished drafts.
  */
 export const COURSES: CourseSeed[] = [
   course({
     course_number: 'ASM 54000',
-    title: 'Geographic Information System (GIS) Applications',
-    semester: 'Fall',
+    title: 'Geographic Information System Application',
+    academic_year: '2026–2027',
     status: 'active',
     description_html:
-      '<p>3 credits (2 lectures and 1 lab per week); offered in the Fall semester. The course includes research components that provide Course-based Research Exposure to Undergraduate Students (CURE).</p>',
+      '<p>Fundamentals of geographic information systems (GIS) applied to environmental, agricultural, and engineering problems. Students work with spatial data sources, map projections, and metadata; analyze vector and raster data; automate GIS workflows with custom geoprocessing tools; and share their results through dashboards, web apps, and StoryMaps.</p><p>3 credits (2 lectures and 1 lab per week), offered in the Fall semester. The course includes research components that provide Course-based Research Exposure to Undergraduate Students (CURE).</p>',
+    university_catalog_url: 'https://catalog.purdue.edu/preview_course_nopop.php?catoid=19&coid=227381',
     materials: [{ label: 'Course website', url: 'https://engineering.purdue.edu/~asm540/' }],
   }),
+  course({
+    course_number: 'ASM 59100',
+    title: 'Data Visualization and Edge Computing',
+    academic_year: '2026–2027',
+    status: 'active',
+    description_html:
+      '<p>A hands-on introduction to data visualization for students new to the field, covering the visualization process through lectures, readings, and current tools. Students also work with IoT sensors for real-time data, edge computing, and deep learning models for computer vision, building a foundation in data analysis and visualization for future applications.</p>',
+    university_catalog_url: 'https://catalog.purdue.edu/preview_course_nopop.php?catoid=19&coid=227384',
+    materials: [
+      {
+        label: 'Course description (Purdue Agricultural & Biological Engineering)',
+        url: 'https://ag.purdue.edu/department/abe/courses/agriculture-informatics/index.html',
+      },
+    ],
+  }),
+  // Earlier offerings listed on the former DAD Lab website.
   course({
     course_number: 'ASM 59100',
     title: 'Decision Agriculture Methods',

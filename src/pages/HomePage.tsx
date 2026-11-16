@@ -30,9 +30,11 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-stretch">
             <div className="lg:col-span-7 flex flex-col justify-center space-y-6">
-              <p className="text-xs font-semibold tracking-[0.14em] text-[#CFB991] uppercase">
-                {profile.heroEyebrow}
-              </p>
+              {profile.heroEyebrow?.trim() && (
+                <p className="text-xs font-semibold tracking-[0.14em] text-[#CFB991] uppercase">
+                  {profile.heroEyebrow}
+                </p>
+              )}
               <h1
                 className="font-serif text-3xl sm:text-5xl font-semibold tracking-tight text-white leading-[1.12]"
                 style={{ textWrap: 'balance' }}
