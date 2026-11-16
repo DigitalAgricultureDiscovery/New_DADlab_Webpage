@@ -64,6 +64,7 @@ export default function App() {
     const base = `${publicData.profile.shortTitle} | ${publicData.profile.institution}`;
     if (currentPath === '/') document.title = `${publicData.profile.labName} | ${publicData.profile.institution}`;
     else if (currentPath.startsWith('/about')) document.title = `About | ${base}`;
+    else if (currentPath.startsWith('/people')) document.title = `People | ${base}`;
     else if (currentPath.startsWith('/research')) document.title = `Research | ${base}`;
     else if (currentPath.startsWith('/publications')) document.title = `Publications | ${base}`;
     else if (currentPath.startsWith('/news')) document.title = `News | ${base}`;

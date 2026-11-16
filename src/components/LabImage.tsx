@@ -7,6 +7,10 @@ interface LabImageProps {
   alt: string;
   className?: string;
   fallbackLabel?: string;
+  /** Intrinsic dimensions; set them to reserve layout space before the image loads. */
+  width?: number;
+  height?: number;
+  loading?: 'lazy' | 'eager';
 }
 
 export const LabImage: React.FC<LabImageProps> = ({
@@ -14,6 +18,9 @@ export const LabImage: React.FC<LabImageProps> = ({
   alt,
   className = 'w-full h-full object-cover',
   fallbackLabel,
+  width,
+  height,
+  loading = 'lazy',
 }) => {
   const [failed, setFailed] = useState(false);
   const resolved = resolveMediaUrl(src);
@@ -33,6 +40,10 @@ export const LabImage: React.FC<LabImageProps> = ({
     <img
       src={resolved}
       alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      decoding="async"
       referrerPolicy="no-referrer"
       onError={() => setFailed(true)}
       className={className}
