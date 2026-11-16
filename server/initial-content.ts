@@ -2,7 +2,7 @@ import type { SiteProfile } from "../src/types/cms.ts";
 
 // Source: user-supplied Personalization Brief v2.0. See docs/content-audit.md.
 export const initialProfile: SiteProfile = {
-  "reviewNote": "Content review version based on the personalization brief. Publication metadata and historical records await final PI approval.",
+  "reviewNote": "",
   "labName": "Digital Agriculture Discovery Lab",
   "shortTitle": "DAD Lab",
   "department": "Department of Agricultural and Biological Engineering",
