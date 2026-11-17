@@ -1,4 +1,5 @@
-import { LabImage } from '../components/LabImage';
+import { ExternalLink, Mail } from 'lucide-react';
+import { PersonAvatar } from '../components/PersonAvatar';
 import type { SiteProfile, TeamMember } from '../types/cms';
 
 const GROUPS: { category: TeamMember['category']; heading: string }[] = [
@@ -9,27 +10,35 @@ const GROUPS: { category: TeamMember['category']; heading: string }[] = [
   { category: 'Postdoctoral Researcher', heading: 'Postdoctoral Researchers' },
   { category: 'Visiting Researcher', heading: 'Visiting Scholars' },
   { category: 'Undergraduate', heading: 'Undergraduate Researchers and Interns' },
+  { category: 'Former Staff', heading: 'Former Staff' },
   { category: 'Alumni', heading: 'Alumni' },
 ];
+
+const LINK = 'inline-flex items-center gap-1.5 text-meta font-medium text-purdue-gold-text underline-offset-4 hover:text-black hover:underline';
 
 export function PeoplePage({profile}: {profile: SiteProfile}) {
   return <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-12">
     <div className="pb-8 border-b border-[#E5E2DC] space-y-3">
       <p className="text-label uppercase text-purdue-gold-text">{profile.labName}</p>
       <h1 className="font-display text-page text-black">People &amp; Alumni</h1>
-      <p className="text-body text-neutral-700 measure">Members, visiting scholars, undergraduate researchers, and alumni of the DAD Lab, as listed on the lab&rsquo;s previous website and its dated announcements. Positions shown for alumni are those last listed and may have changed.</p>
+      <p className="text-body text-neutral-700 measure">Members, visiting scholars, undergraduate researchers, and alumni of the DAD Lab. Positions shown for alumni are those last reported and may have changed.</p>
     </div>
     {GROUPS.map(({category, heading})=>{
       const members=profile.teamMembers.filter(m=>m.category===category);
       return members.length ? <section key={category} className="space-y-5" aria-labelledby={`people-${category}`}>
         <h2 id={`people-${category}`} className="text-section text-black">{heading}</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">{members.map(member=><article key={member.id} className="bg-white border border-[#E5E2DC] rounded-md p-6 space-y-2">
-          {member.photoUrl && <div className="w-28 h-28 mb-4 rounded-full overflow-hidden border border-[#E5E2DC] bg-neutral-100"><LabImage src={member.photoUrl} alt={`Photo of ${member.name}`} width={112} height={112} className="w-full h-full object-cover object-top" /></div>}
-          <h3 className="text-name text-black">{member.name}</h3>
-          <p className="text-body font-medium text-purdue-gold-text">{member.role}</p>
-          <p className="text-card text-neutral-700 pt-1">{member.focus}</p>
-          {member.email && <a className="block pt-1 text-meta underline underline-offset-4 hover:text-purdue-gold-text break-words" href={`mailto:${member.email}`}>{member.email}</a>}
-          {member.website && <a className="block pt-1 text-meta underline underline-offset-4 hover:text-purdue-gold-text" href={member.website} target="_blank" rel="noreferrer">Professional profile</a>}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">{members.map(member=><article key={member.id} className="bg-white border border-[#E5E2DC] rounded-md p-6 flex flex-col">
+          <PersonAvatar name={member.name} photoUrl={member.photoUrl} className="mb-4" />
+          <div className="space-y-2 flex-1">
+            <h3 className="text-name text-black">{member.name}</h3>
+            <p className="text-body font-medium text-purdue-gold-text">{member.role}</p>
+            {member.focus && <p className="text-card text-neutral-700 pt-1">{member.focus}</p>}
+          </div>
+          {(member.email || member.linkedin || member.website) && <div className="pt-4 mt-4 border-t border-neutral-100 flex flex-wrap gap-x-5 gap-y-2">
+            {member.linkedin && <a className={LINK} href={member.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on LinkedIn (opens in a new tab)`}>LinkedIn <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" /></a>}
+            {member.website && <a className={LINK} href={member.website} target="_blank" rel="noopener noreferrer" aria-label={`${member.name}'s professional profile (opens in a new tab)`}>Website <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" /></a>}
+            {member.email && <a className={`${LINK} break-all`} href={`mailto:${member.email}`}><Mail className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />{member.email}</a>}
+          </div>}
         </article>)}</div>
       </section>:null;
     })}

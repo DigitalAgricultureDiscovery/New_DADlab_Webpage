@@ -32,7 +32,7 @@ and what still needs the PI's confirmation. Migration date: November 16, 2026.
 | Publications (38) | Publications page (29), news posts (8 conference papers), brief (1) | `src/data/publications/publications.ts` |
 | News (62 items, 2019-2024) | News feed (`/research/`), 2019 blog posts, and one 2020 item from the brief | `src/data/news/news.ts` |
 | Courses (2 current, 2 archived, 4 drafts) | Current 2026-2027 courses from the PI; Teaching, ASM 54000, ASM 59100, ABE 49500 pages; brief | `src/data/teaching/courses.ts` |
-| People (28) | People page, The DAD Group page, thesis-defense posts | `src/data/people/team.ts` |
+| People (32) | People page, The DAD Group page, thesis-defense posts; PI's people workbook (Nov 2026) | `src/data/people/team.ts` |
 | Images (54 files) | WordPress media library | `public/images/` |
 
 `server/initial-content.ts` converts these modules into rows for a fresh CMS
@@ -128,8 +128,10 @@ page filters by status and topic with AND logic.
 - **Phone:** the Contact page lists +1 (501) 954-0365 (an Arkansas area code).
   It was not published; add it in Site Profile if it should appear.
 - **Bachelor's degree year** is not on the former site and is not shown.
-- **Current roster:** the People page reflects the former site (last updated
-  2023-2024). Please confirm current students and alumni positions.
+- **Current roster:** updated from the PI's November 2026 workbook (see
+  *People and LinkedIn* below). Four entries the workbook marked for
+  confirmation are published as listed: Rajiv Ranjan, Udaiveer Singh, Nihar
+  Shah, and Shreyans Jain.
 - **Courses:** the current 2026-2027 courses (ASM 54000 *Geographic
   Information System Application* and ASM 59100 *Data Visualization and Edge
   Computing*) were supplied by the PI; the former site's credit details were
@@ -163,6 +165,30 @@ list, e.g. the ASABE ITSC Best Paper Award is dated 2021 (the former site said
 third person; no facts were changed. Fulbright Specialist, the Alpha Epsilon
 Honor Society, and the class rank have no awarding organization in the PI's
 list and are shown without one.
+
+## People and LinkedIn
+
+The People page follows the PI's *DAD Lab Website Updates* workbook (November
+2026):
+
+- **LinkedIn:** 31 of 32 people link to their LinkedIn profile, plus the PI's
+  card on the About page. Jeff Fiechter has no LinkedIn profile listed.
+- **New entries:** Rajiv Ranjan (visiting scholar), Udaiveer Singh (2026 SURF
+  Fellow), and Nihar Shah and Shreyans Jain (2025 Purdue-IIT Gandhinagar
+  summer interns).
+- **Groups:** Ben Hancock moved to a new *Former Staff* group. Visiting
+  scholars' roles now give their fellowship and home institution, and alumni
+  roles give degree, year, and last reported position.
+- **Not published:** the workbook's verification notes and source columns.
+  Generic placeholder descriptions ("Former DAD Lab member.") were removed.
+- **Photos:** LinkedIn photos were not copied: LinkedIn's terms prohibit
+  scraping, and profile photos need the person's consent. People without a
+  photo on file (7) show a circular initials avatar until a photo is added
+  in the CMS (`photoUrl`) or under `public/images/people/members/`.
+
+The awards timeline on the About page is sorted by year, newest first, with
+an *Oldest first* toggle; the sort is done in code (`sortAwards` in
+`src/lib/awards.ts`), so new awards can be added in any order.
 
 ## Review notice
 

@@ -422,7 +422,7 @@ export const ProfileManager: React.FC<ProfileManagerProps> = ({
                 <option>PhD Student</option>
                 <option>MS Student</option>
                 <option>Undergraduate</option>
-                <option>Postdoctoral Researcher</option><option>Visiting Researcher</option><option>Alumni</option>
+                <option>Postdoctoral Researcher</option><option>Visiting Researcher</option><option>Former Staff</option><option>Alumni</option>
               </select>
               <input
                 type="text"
@@ -434,6 +434,7 @@ export const ProfileManager: React.FC<ProfileManagerProps> = ({
               <input aria-label="Member photo URL" placeholder="Approved photo URL" value={member.photoUrl || ''} onChange={e => updateMember(idx,{photoUrl:e.target.value})} className="border p-2" />
               <input aria-label="Member email" placeholder="Email" value={member.email || ''} onChange={e => updateMember(idx,{email:e.target.value})} className="border p-2" />
               <input aria-label="Member professional URL" placeholder="Professional URL" value={member.website || ''} onChange={e => updateMember(idx,{website:e.target.value})} className="border p-2" />
+              <input aria-label="Member LinkedIn URL" placeholder="LinkedIn URL (https://www.linkedin.com/in/...)" value={member.linkedin || ''} onChange={e => updateMember(idx,{linkedin:e.target.value})} className="border p-2" />
               <button
                 type="button"
                 onClick={() => removeMember(idx)}

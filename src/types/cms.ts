@@ -12,11 +12,13 @@ export interface TeamMember {
   id: string;
   name: string;
   role: string;
-  category: 'Faculty' | 'Staff' | 'PhD Student' | 'MS Student' | 'Undergraduate' | 'Postdoctoral Researcher' | 'Visiting Researcher' | 'Alumni';
+  category: 'Faculty' | 'Staff' | 'Former Staff' | 'PhD Student' | 'MS Student' | 'Undergraduate' | 'Postdoctoral Researcher' | 'Visiting Researcher' | 'Alumni';
   focus: string;
   photoUrl?: string;
   email?: string;
   website?: string;
+  /** Full LinkedIn profile URL. */
+  linkedin?: string;
 }
 
 /** An honor or award shown on the About page, newest first. */
@@ -71,6 +73,7 @@ export interface SiteProfile {
   labAddress: string;
   officeHours: string;
   googleScholarUrl: string;
+  linkedinUrl?: string;
   orcidUrl: string;
   githubUrl: string;
   homeLimits: {
