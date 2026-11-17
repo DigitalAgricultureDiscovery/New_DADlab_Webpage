@@ -32,7 +32,7 @@ and what still needs the PI's confirmation. Migration date: November 16, 2026.
 | Publications (80) | Publications page (29), news posts (8 conference papers), brief (1); PI's Google Scholar-verified workbook (42 added, Nov 2026) | `src/data/publications/publications.ts` |
 | News (62 items, 2019-2024) | News feed (`/research/`), 2019 blog posts, and one 2020 item from the brief | `src/data/news/news.ts` |
 | Courses (2 current, 2 archived, 4 drafts) | Current 2026-2027 courses from the PI; Teaching, ASM 54000, ASM 59100, ABE 49500 pages; brief | `src/data/teaching/courses.ts` |
-| People (36) | People page, The DAD Group page, thesis-defense posts; PI's workbooks (Nov 2026) | `src/data/people/team.ts` |
+| People (37) | People page, The DAD Group page, thesis-defense posts; PI's workbooks (Nov 2026) | `src/data/people/team.ts` |
 | Images (54 files) | WordPress media library | `public/images/` |
 
 `server/initial-content.ts` converts these modules into rows for a fresh CMS
@@ -172,13 +172,15 @@ list and are shown without one.
 The People page follows the PI's *DAD Lab Website Updates* workbook (November
 2026):
 
-- **LinkedIn:** 35 of 36 people link to their LinkedIn profile, plus the PI's
+- **LinkedIn:** 36 of 37 people link to their LinkedIn profile, plus the PI's
   card on the About page. Jeff Fiechter has no LinkedIn profile listed.
 - **New entries:** Rajiv Ranjan (visiting scholar), Udaiveer Singh (2026 SURF
   Fellow), and Nihar Shah and Shreyans Jain (2025 Purdue-IIT Gandhinagar
   summer interns); from the second workbook, Yogesh Chawla, Divyanth L.G.,
   and Sanjeevani Ratna Tiwari (2021 Purdue-IIT Kharagpur summer interns) and
   Hieu Phan (2021 SURF Fellow, Miami University).
+  Added at the PI's request: Sangeetharani M. (visiting scholar 2022-2023,
+  SERB-OVDF Fellow from IIT Bombay).
 - **Graduated:** Shih-Yun Lin is listed with the alumni (M.S. 2024), following
   the role given in the second workbook.
 - **Groups:** Ben Hancock moved to a new *Former Staff* group. Visiting
@@ -188,7 +190,7 @@ The People page follows the PI's *DAD Lab Website Updates* workbook (November
   Generic placeholder descriptions ("Former DAD Lab member.") were removed.
 - **Photos:** LinkedIn photos were not copied: LinkedIn's terms prohibit
   scraping, and profile photos need the person's consent. People without a
-  photo on file (11) show a circular initials avatar until a photo is added
+  photo on file (12) show a circular initials avatar until a photo is added
   in the CMS (`photoUrl`) or under `public/images/people/members/`.
 
 The awards timeline on the About page is sorted by year, newest first, with
