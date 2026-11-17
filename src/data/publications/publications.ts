@@ -465,7 +465,7 @@ export const PUBLICATIONS: PublicationSeed[] = [
     id: 46,
     title: 'Comprehensive Review of Artificial Intelligence and Edge Computing for Precision Weed Control',
     authors: 'Adewumi, A., and Saraswat, D.',
-    year: 2025,
+    year: 2026,
     venue: 'Artificial Intelligence and Applications',
     topic: AI,
     doi_url: doi('10.47852/bonviewaia62028867'),
