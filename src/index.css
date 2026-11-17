@@ -1,17 +1,86 @@
 @import "tailwindcss";
 
+/*
+ * DAD Lab typography system. See docs/typography.md for the scale, usage rules,
+ * and font licensing.
+ *
+ * Font stacks follow Purdue's brand typography: United Sans (display), Acumin Pro
+ * (body), Source Serif Pro (long-form). Those licensed fonts are listed first so
+ * they render for visitors who have them installed; they are not served by this
+ * site because Purdue licenses them only for Purdue-owned domains. Everyone else
+ * gets self-hosted SIL OFL fonts that follow Purdue's documented fallbacks:
+ * Libre Franklin (Franklin Gothic), Barlow Semi Condensed (in place of Impact),
+ * and Source Serif 4 (the open-source successor of Source Serif Pro).
+ */
 @theme {
-  /* Site-wide typeface: Times New Roman everywhere. Liberation Serif and Tinos are
-     metric-compatible stand-ins on Linux/ChromeOS where Times New Roman is absent. */
-  --font-times: "Times New Roman", Times, "Liberation Serif", Tinos, serif;
-  --font-serif: var(--font-times);
-  --font-sans: var(--font-times);
-  --font-mono: var(--font-times);
+  --font-body: "Acumin Pro", "Libre Franklin Variable", "Libre Franklin", "Franklin Gothic Book",
+    "Franklin Gothic", Arial, sans-serif;
+  --font-display: "United Sans", "United Sans Reg", "Barlow Semi Condensed", Impact, "Arial Narrow", Arial,
+    sans-serif;
+  --font-editorial: "Source Serif Pro", "Source Serif 4 Variable", "Source Serif 4", Georgia, serif;
+  /* Legacy family utilities map onto the system so older markup stays consistent. */
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-body);
+  --font-mono: var(--font-body);
   /* True monospace, kept only for the raw HTML source editor in the CMS. */
   --font-code: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
+  /*
+   * Type scale. Fluid sizes interpolate linearly between a 375px and a 1440px
+   * viewport (mobile -> desktop target) and are rem-based so text resizing works.
+   * Usage: `text-<token>`; line height, weight and tracking come with the token.
+   */
+  --text-hero: clamp(2.25rem, 1.81rem + 1.878vw, 3.5rem); /* 36 -> 56px */
+  --text-hero--line-height: 1.1;
+  --text-hero--font-weight: 700;
+  --text-hero--letter-spacing: -0.005em;
+  --text-page: clamp(2rem, 1.78rem + 0.939vw, 2.625rem); /* 32 -> 42px */
+  --text-page--line-height: 1.15;
+  --text-page--font-weight: 700;
+  --text-section: clamp(1.625rem, 1.493rem + 0.563vw, 2rem); /* 26 -> 32px */
+  --text-section--line-height: 1.25;
+  --text-section--font-weight: 600;
+  --text-subsection: clamp(1.3125rem, 1.2465rem + 0.282vw, 1.5rem); /* 21 -> 24px */
+  --text-subsection--line-height: 1.3;
+  --text-subsection--font-weight: 600;
+  --text-card-title: clamp(1.1875rem, 1.1435rem + 0.188vw, 1.3125rem); /* 19 -> 21px */
+  --text-card-title--line-height: 1.3;
+  --text-card-title--font-weight: 600;
+  --text-name: clamp(1.375rem, 1.309rem + 0.282vw, 1.5625rem); /* 22 -> 25px people's names */
+  --text-name--line-height: 1.25;
+  --text-name--font-weight: 600;
+  --text-item-title: clamp(1.125rem, 1.081rem + 0.188vw, 1.25rem); /* 18 -> 20px list items, publications */
+  --text-item-title--line-height: 1.35;
+  --text-item-title--font-weight: 600;
+  --text-lead: clamp(1.125rem, 1.059rem + 0.282vw, 1.3125rem); /* 18 -> 21px intro statements */
+  --text-lead--line-height: 1.55;
+  --text-body: clamp(1rem, 0.956rem + 0.188vw, 1.125rem); /* 16 -> 18px */
+  --text-body--line-height: 1.65;
+  --text-card: 1rem; /* 16px card descriptions */
+  --text-card--line-height: 1.55;
+  --text-nav: 1rem; /* 16px navigation */
+  --text-nav--line-height: 1.3;
+  --text-nav--font-weight: 500;
+  --text-button: 0.9375rem; /* 15px buttons and filters */
+  --text-button--line-height: 1.3;
+  --text-button--font-weight: 600;
+  --text-meta: clamp(0.875rem, 0.853rem + 0.094vw, 0.9375rem); /* 14 -> 15px metadata */
+  --text-meta--line-height: 1.5;
+  --text-caption: 0.875rem; /* 14px captions */
+  --text-caption--line-height: 1.45;
+  --text-label: 0.875rem; /* 14px uppercase eyebrow labels */
+  --text-label--line-height: 1.3;
+  --text-label--font-weight: 600;
+  --text-label--letter-spacing: 0.06em;
+  --text-badge: 0.8125rem; /* 13px status and category badges */
+  --text-badge--line-height: 1.25;
+  --text-badge--font-weight: 600;
+
   --color-purdue-gold: #CFB991;
   --color-purdue-gold-dark: #8E6F3E;
+  /* Aged gold darkened ~9% for text on light backgrounds: 5.2:1 on the paper
+     background (Aged gold #8E6F3E is 4.4:1, below WCAG AA for normal text). */
+  --color-purdue-gold-text: #816538;
   --color-purdue-gold-muted: #E8DEC8;
   --color-purdue-black: #000000;
   --color-purdue-charcoal: #141414;
@@ -21,81 +90,139 @@
 
 @layer base {
   html {
-    font-family: var(--font-sans);
+    font-family: var(--font-body);
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
-  h1, h2, h3, .font-display {
-    font-family: var(--font-serif);
+  body {
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-kerning: normal;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  /* Short page and section headings balance their lines; long card and
+     publication titles (h3+) wrap naturally, avoiding single-word last lines. */
+  h1, h2 {
+    text-wrap: balance;
+  }
+
+  h3, h4, h5, h6, p, li, figcaption, blockquote {
+    text-wrap: pretty;
+  }
+
+  /* Interactive text stays identifiable for keyboard users. */
+  a:focus-visible,
+  button:focus-visible,
+  select:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  summary:focus-visible {
+    outline: 2px solid var(--color-purdue-gold-dark);
+    outline-offset: 2px;
   }
 }
 
-.tabular-nums {
-  font-variant-numeric: tabular-nums;
-}
+@layer components {
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
 
-/* Rich text editorial formatting for CMS-authored descriptions and news */
-.prose-lab {
-  color: #27272A;
-  line-height: 1.75;
-  font-size: 1rem;
-}
+  /* Comfortable measure for long paragraphs (~65-75 characters). */
+  .measure {
+    max-width: 68ch;
+  }
 
-.prose-lab h2 {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #000000;
-  margin-top: 1.75rem;
-  margin-bottom: 0.75rem;
-}
+  /*
+   * Rich text from data/CMS (course descriptions, project objectives, news content).
+   * `.prose-editorial` switches long-form narratives (biography, research narratives,
+   * news articles) to the editorial serif.
+   */
+  .prose-lab {
+    color: #27272A;
+    font-size: var(--text-body);
+    line-height: 1.7;
+    max-width: 68ch;
+  }
 
-.prose-lab h3 {
-  font-family: var(--font-serif);
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #141414;
-  margin-top: 1.25rem;
-  margin-bottom: 0.5rem;
-}
+  .prose-lab.prose-editorial {
+    font-family: var(--font-editorial);
+    font-size: clamp(1.0625rem, 1.0405rem + 0.094vw, 1.125rem); /* 17 -> 18px */
+    line-height: 1.7;
+  }
 
-.prose-lab p {
-  margin-bottom: 1rem;
-}
+  .prose-lab h2 {
+    font-family: var(--font-body);
+    font-size: var(--text-subsection);
+    line-height: 1.3;
+    font-weight: 600;
+    color: #000000;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
 
-.prose-lab ul {
-  list-style-type: disc;
-  padding-left: 1.35rem;
-  margin-bottom: 1rem;
-}
+  .prose-lab h3 {
+    font-family: var(--font-body);
+    font-size: var(--text-card-title);
+    line-height: 1.3;
+    font-weight: 600;
+    color: #141414;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
 
-.prose-lab ol {
-  list-style-type: decimal;
-  padding-left: 1.35rem;
-  margin-bottom: 1rem;
-}
+  .prose-lab p {
+    margin-bottom: 1em;
+  }
 
-.prose-lab li {
-  margin-bottom: 0.35rem;
-}
+  .prose-lab p:last-child,
+  .prose-lab ul:last-child,
+  .prose-lab ol:last-child {
+    margin-bottom: 0;
+  }
 
-.prose-lab blockquote {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 1.125rem;
-  color: #141414;
-  padding: 1rem 0;
-  margin: 1.25rem 0;
-  border-top: 1px solid #E5E2DC;
-  border-bottom: 1px solid #E5E2DC;
-}
+  .prose-lab ul {
+    list-style-type: disc;
+    padding-left: 1.35rem;
+    margin-bottom: 1em;
+  }
 
-.prose-lab a {
-  color: #8E6F3E;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
+  .prose-lab ol {
+    list-style-type: decimal;
+    padding-left: 1.35rem;
+    margin-bottom: 1em;
+  }
 
-.prose-lab a:hover {
-  color: #000000;
+  .prose-lab li {
+    margin-bottom: 0.4em;
+  }
+
+  .prose-lab blockquote {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-size: 1.125rem;
+    color: #141414;
+    padding: 1rem 0;
+    margin: 1.25rem 0;
+    border-top: 1px solid #E5E2DC;
+    border-bottom: 1px solid #E5E2DC;
+  }
+
+  .prose-lab a {
+    color: var(--color-purdue-gold-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .prose-lab a:hover {
+    color: #000000;
+  }
 }
