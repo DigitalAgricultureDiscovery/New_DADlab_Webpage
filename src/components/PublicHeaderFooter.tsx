@@ -55,7 +55,7 @@ export const PublicHeader: React.FC<HeaderProps> = ({
           href={routeHref('/')}
           onClick={(e) => handleLinkClick(e, '/')}
           aria-label={`${profile.labName} home`}
-          className="inline-flex items-center gap-2.5 font-serif text-lg sm:text-xl font-semibold tracking-tight text-white hover:text-[#CFB991] transition-colors max-w-[55%] lg:max-w-[30%] leading-tight shrink-0"
+          className="inline-flex items-center gap-2.5 font-display text-[1.375rem] sm:text-2xl font-bold leading-none text-white hover:text-[#CFB991] transition-colors max-w-[55%] xl:max-w-[30%] shrink-0"
         >
           {profile.logoUrl && (
             <img
@@ -70,7 +70,7 @@ export const PublicHeader: React.FC<HeaderProps> = ({
         </a>
 
         {/* Zone 2: Clean single-line Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-6" aria-label="Primary Navigation">
+        <nav className="hidden xl:flex items-center gap-6" aria-label="Primary Navigation">
           {PUBLIC_NAV_ITEMS.map((item) => {
             const active = isActive(item.path);
             return (
@@ -78,7 +78,7 @@ export const PublicHeader: React.FC<HeaderProps> = ({
                 key={item.path}
                 href={routeHref(item.path)}
                 onClick={(e) => handleLinkClick(e, item.path)}
-                className={`relative py-1 text-[13px] font-medium transition-colors whitespace-nowrap shrink-0 ${
+                className={`relative py-1 text-nav transition-colors whitespace-nowrap shrink-0 ${
                   active ? 'text-[#CFB991]' : 'text-neutral-300 hover:text-white'
                 }`}
               >
@@ -99,7 +99,7 @@ export const PublicHeader: React.FC<HeaderProps> = ({
           <a
             href={routeHref('/admin')}
             onClick={(e) => handleLinkClick(e, '/admin')}
-            className="hidden sm:inline-flex items-center px-4 py-2 text-xs font-semibold bg-[#CFB991] text-black rounded hover:bg-[#DFCCA8] transition-colors whitespace-nowrap shrink-0"
+            className="hidden sm:inline-flex items-center px-4 py-2 text-button bg-[#CFB991] text-black rounded hover:bg-[#DFCCA8] transition-colors whitespace-nowrap shrink-0"
           >
             {currentUser ? 'CMS Dashboard' : 'Admin Login'}
           </a>
@@ -108,7 +108,7 @@ export const PublicHeader: React.FC<HeaderProps> = ({
             type="button"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            className="lg:hidden p-2 text-neutral-200 hover:text-[#CFB991] transition-colors"
+            className="xl:hidden p-2 text-neutral-200 hover:text-[#CFB991] transition-colors"
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -117,7 +117,7 @@ export const PublicHeader: React.FC<HeaderProps> = ({
 
       {/* Mobile Drawer */}
       {mobileOpen && (
-        <div className="lg:hidden bg-[#0D0D0D] border-t border-neutral-800 px-4 py-4 space-y-1">
+        <div className="xl:hidden bg-[#0D0D0D] border-t border-neutral-800 px-4 py-4 space-y-1">
           {PUBLIC_NAV_ITEMS.map((item) => {
             const active = isActive(item.path);
             return (
@@ -125,7 +125,7 @@ export const PublicHeader: React.FC<HeaderProps> = ({
                 key={item.path}
                 href={routeHref(item.path)}
                 onClick={(e) => handleLinkClick(e, item.path)}
-                className={`block px-3 py-2.5 text-sm font-medium rounded transition-colors ${
+                className={`block px-3 py-2.5 text-nav rounded transition-colors ${
                   active
                     ? 'text-[#CFB991] bg-neutral-900'
                     : 'text-neutral-200 hover:text-white hover:bg-neutral-900'
@@ -139,7 +139,7 @@ export const PublicHeader: React.FC<HeaderProps> = ({
             <a
               href={routeHref('/admin')}
               onClick={(e) => handleLinkClick(e, '/admin')}
-              className="block w-full text-center px-4 py-2.5 text-xs font-semibold bg-[#CFB991] text-black rounded hover:bg-[#DFCCA8]"
+              className="block w-full text-center px-4 py-2.5 text-button bg-[#CFB991] text-black rounded hover:bg-[#DFCCA8]"
             >
               {currentUser ? 'CMS Dashboard' : 'Admin Login'}
             </a>
@@ -164,12 +164,12 @@ export const PublicFooter: React.FC<FooterProps> = ({ profile, onNavigate }) => 
   return (
     <footer className="bg-black text-neutral-300 border-t-2 border-[#CFB991]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-10 border-b border-neutral-800">
-          <div className="md:col-span-5 space-y-3">
-            <p className="text-xs font-semibold tracking-wider text-[#CFB991] uppercase">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-10 border-b border-neutral-800">
+          <div className="md:col-span-2 lg:col-span-5 space-y-3">
+            <p className="text-label uppercase text-[#CFB991]">
               {profile.institution}
             </p>
-            <h2 className="font-serif text-2xl font-semibold text-white flex items-center gap-3">
+            <h2 className="font-display text-[1.75rem] leading-tight font-bold text-white flex items-center gap-3">
               {profile.logoUrl && (
                 <img
                   src={resolveMediaUrl(profile.logoUrl)}
@@ -182,13 +182,13 @@ export const PublicFooter: React.FC<FooterProps> = ({ profile, onNavigate }) => 
               )}
               {profile.labName}
             </h2>
-            <p className="text-sm text-neutral-400 leading-relaxed max-w-md">
+            <p className="text-card text-neutral-300 max-w-md">
               {profile.department}. {profile.missionStatement}
             </p>
           </div>
 
-          <div className="md:col-span-4 space-y-2.5 text-sm">
-            <h3 className="font-sans text-xs font-semibold tracking-wider text-[#CFB991] uppercase">
+          <div className="lg:col-span-4 space-y-2.5 text-meta">
+            <h3 className="text-label uppercase text-[#CFB991]">
               Laboratory Location
             </h3>
             <p className="text-neutral-300">{profile.piName}</p>
@@ -206,8 +206,8 @@ export const PublicFooter: React.FC<FooterProps> = ({ profile, onNavigate }) => 
             {profile.officeHours && <p className="text-neutral-400">Office Hours: {profile.officeHours}</p>}
           </div>
 
-          <div className="md:col-span-3 space-y-2.5 text-sm">
-            <h3 className="font-sans text-xs font-semibold tracking-wider text-[#CFB991] uppercase">
+          <div className="lg:col-span-3 space-y-2.5 text-meta">
+            <h3 className="text-label uppercase text-[#CFB991]">
               Directory
             </h3>
             <ul className="grid grid-cols-2 gap-y-2 gap-x-4">
@@ -226,7 +226,7 @@ export const PublicFooter: React.FC<FooterProps> = ({ profile, onNavigate }) => 
           </div>
         </div>
 
-        <div className="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-neutral-500">
+        <div className="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-caption text-neutral-400">
           <p>
             © {new Date().getFullYear()} {profile.labName} · {profile.institution}, West Lafayette, IN
           </p>

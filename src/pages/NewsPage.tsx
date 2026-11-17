@@ -38,7 +38,7 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
           <button
             type="button"
             onClick={() => onNavigate('/news')}
-            className="inline-flex items-center gap-2 text-xs font-semibold text-neutral-700 hover:text-black"
+            className="inline-flex items-center gap-2 text-button text-neutral-700 hover:text-black"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to News &amp; Announcements
@@ -46,17 +46,17 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
 
           <article className="bg-white border border-[#E5E2DC] rounded-md overflow-hidden">
             <div className="p-8 sm:p-10 space-y-4 border-b border-[#E5E2DC]">
-              <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-500 tabular-nums">
-                <span className="font-semibold text-[#8E6F3E]">{activeArticle.category}</span>
+              <div className="flex flex-wrap items-center gap-2 text-meta text-neutral-600 tabular-nums">
+                <span className="font-semibold text-purdue-gold-text">{activeArticle.category}</span>
                 <span aria-hidden="true">·</span>
                 <span>{formatAcademicDate(activeArticle.published_date)}</span>
                 <span aria-hidden="true">·</span>
                 <span>{activeArticle.author_name}</span>
               </div>
-              <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-black leading-tight">
+              <h1 className="font-display text-page text-black">
                 {activeArticle.title}
               </h1>
-              <p className="text-base sm:text-lg text-neutral-600 leading-relaxed">
+              <p className="text-lead text-neutral-700 measure">
                 {activeArticle.summary}
               </p>
             </div>
@@ -71,7 +71,7 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
                   />
                 </div>
                 {activeArticle.image_caption && (
-                  <figcaption className="px-8 py-3 text-xs font-serif italic text-neutral-600 border-t border-[#E5E2DC]">
+                  <figcaption className="px-8 py-3 text-caption italic text-neutral-600 border-t border-[#E5E2DC]">
                     {activeArticle.image_caption}
                   </figcaption>
                 )}
@@ -79,12 +79,12 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
             )}
 
             <div className="px-8 pt-6 space-y-2">
-              {activeArticle.source_url && <a className="block underline" href={activeArticle.source_url} target="_blank" rel="noreferrer">Original announcement / source</a>}
-              {activeArticle.attachments?.filter(a=>a.url).map((a,i)=><a className="block underline" key={i} href={a.url} target="_blank" rel="noreferrer">{a.label}</a>)}
+              {activeArticle.source_url && <a className="block text-meta underline underline-offset-4 hover:text-purdue-gold-text" href={activeArticle.source_url} target="_blank" rel="noreferrer">Original announcement / source</a>}
+              {activeArticle.attachments?.filter(a=>a.url).map((a,i)=><a className="block text-meta underline underline-offset-4 hover:text-purdue-gold-text" key={i} href={a.url} target="_blank" rel="noreferrer">{a.label}</a>)}
             </div>
             <div className="p-8 sm:p-10">
               <div
-                className="prose-lab max-w-2xl"
+                className="prose-lab prose-editorial"
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHtmlClient(activeArticle.content_html),
                 }}
@@ -125,13 +125,13 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <div className="pb-8 border-b border-[#E5E2DC] flex flex-col lg:flex-row lg:items-end justify-between gap-6">
           <div className="max-w-2xl">
-            <p className="text-xs font-semibold tracking-wider text-[#8E6F3E] uppercase">
+            <p className="text-label uppercase text-purdue-gold-text">
               Laboratory Dispatches
             </p>
-            <h1 className="font-serif text-4xl font-semibold text-black mt-2">
+            <h1 className="font-display text-page text-black mt-2">
               News &amp; Announcements
             </h1>
-            <p className="text-base text-neutral-600 mt-3 leading-relaxed">
+            <p className="text-body text-neutral-700 mt-3">
               Research milestones, student honors, conference presentations, and grant awards organized chronologically by month and year.
             </p>
           </div>
@@ -141,7 +141,7 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
               <button
                 type="button"
                 onClick={() => setViewMode('recent')}
-                className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors whitespace-nowrap shrink-0 ${
+                className={`px-3.5 py-2 text-button rounded transition-colors whitespace-nowrap shrink-0 ${
                   viewMode === 'recent'
                     ? 'bg-black text-[#CFB991]'
                     : 'text-neutral-600 hover:text-black'
@@ -152,7 +152,7 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
               <button
                 type="button"
                 onClick={() => setViewMode('archive')}
-                className={`px-3 py-1.5 text-xs font-semibold rounded transition-colors whitespace-nowrap shrink-0 ${
+                className={`px-3.5 py-2 text-button rounded transition-colors whitespace-nowrap shrink-0 ${
                   viewMode === 'archive'
                     ? 'bg-black text-[#CFB991]'
                     : 'text-neutral-600 hover:text-black'
@@ -166,7 +166,7 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
               value={yearFilter}
               onChange={(e) => setYearFilter(e.target.value)}
               aria-label="Filter news by year"
-              className="px-3 py-2 text-xs font-medium bg-white border border-[#E5E2DC] rounded-md focus:outline-none focus:border-black"
+              className="px-3 py-2.5 text-card bg-white border border-[#E5E2DC] rounded-md focus:outline-none focus:border-black"
             >
               {years.map((y) => (
                 <option key={y} value={y}>
@@ -179,7 +179,7 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
               aria-label="Filter news by category"
-              className="px-3 py-2 text-xs font-medium bg-white border border-[#E5E2DC] rounded-md focus:outline-none focus:border-black"
+              className="px-3 py-2.5 text-card bg-white border border-[#E5E2DC] rounded-md focus:outline-none focus:border-black"
             >
               {categories.map((c) => (
                 <option key={c} value={c}>
@@ -192,7 +192,7 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
 
         {groupedByMonthYear.length === 0 ? (
           <div className="bg-white border border-[#E5E2DC] rounded-md p-10 text-center">
-            <p className="text-sm text-neutral-600">
+            <p className="text-card text-neutral-700">
               No {viewMode === 'archive' ? 'archived' : 'current'} announcements match your filters.
             </p>
           </div>
@@ -201,8 +201,8 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
             {groupedByMonthYear.map(([monthKey, group]) => (
               <section key={monthKey} className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 <div className="lg:col-span-3 lg:sticky lg:top-24">
-                  <h2 className="font-serif text-2xl font-semibold text-black">{group.label}</h2>
-                  <p className="text-xs text-neutral-500 mt-1 tabular-nums">
+                  <h2 className="text-subsection text-black">{group.label}</h2>
+                  <p className="text-caption text-neutral-600 mt-1 tabular-nums">
                     {group.items.length} {group.items.length === 1 ? 'entry' : 'entries'}
                   </p>
                 </div>
@@ -228,26 +228,26 @@ export const NewsPage: React.FC<NewsPageProps> = ({ news, selectedSlug, onNaviga
                             item.image_url ? 'md:col-span-8' : 'md:col-span-12'
                           } p-6 sm:p-7 space-y-3`}
                         >
-                          <div className="flex items-center gap-2 text-xs text-neutral-500 tabular-nums">
-                            <span className="font-semibold text-[#8E6F3E]">{item.category}</span>
+                          <div className="flex items-center gap-2 text-meta text-neutral-600 tabular-nums">
+                            <span className="font-semibold text-purdue-gold-text">{item.category}</span>
                             <span aria-hidden="true">·</span>
                             <span>{formatAcademicDate(item.published_date)}</span>
                           </div>
-                          <h3 className="font-serif text-2xl font-semibold text-black leading-snug">
+                          <h3 className="text-card-title text-black">
                             <button
                               type="button"
                               onClick={() => onNavigate(`/news/${item.slug}`)}
-                              className="text-left hover:text-[#8E6F3E] transition-colors"
+                              className="text-left hover:text-purdue-gold-text transition-colors"
                             >
                               {item.title}
                             </button>
                           </h3>
-                          <p className="text-sm text-neutral-600 leading-relaxed">{item.summary}</p>
+                          <p className="text-card text-neutral-700 measure">{item.summary}</p>
                           <div className="pt-2">
                             <button
                               type="button"
                               onClick={() => onNavigate(`/news/${item.slug}`)}
-                              className="inline-flex items-center gap-1.5 text-xs font-semibold text-black hover:text-[#8E6F3E]"
+                              className="inline-flex items-center gap-1.5 text-button text-black hover:text-purdue-gold-text"
                             >
                               Read Full Announcement <ArrowRight className="w-3.5 h-3.5" />
                             </button>

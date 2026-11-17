@@ -78,10 +78,10 @@ export default function App() {
     return (
       <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center p-6">
         <div className="text-center space-y-2">
-          <p className="text-xs font-semibold tracking-widest text-[#8E6F3E] uppercase">
+          <p className="text-label uppercase text-purdue-gold-text">
             Purdue University
           </p>
-          <p className="font-serif text-xl text-black">Loading Laboratory Portal...</p>
+          <p className="text-card-title text-black">Loading Laboratory Portal...</p>
         </div>
       </div>
     );
@@ -91,15 +91,15 @@ export default function App() {
     return (
       <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center p-6">
         <div className="bg-white border border-[#E5E2DC] rounded-md p-8 max-w-md text-center space-y-3">
-          <h1 className="font-serif text-2xl font-semibold text-black">Connection Error</h1>
-          <p className="text-sm text-neutral-600">{error || 'Laboratory data unavailable.'}</p>
+          <h1 className="text-subsection text-black">Connection Error</h1>
+          <p className="text-card text-neutral-700">{error || 'Laboratory data unavailable.'}</p>
           <button
             type="button"
             onClick={() => {
               setLoading(true);
               loadBootstrap();
             }}
-            className="px-4 py-2 text-xs font-semibold bg-black text-[#CFB991] rounded-md"
+            className="px-4 py-2 text-button bg-black text-[#CFB991] rounded-md"
           >
             Retry
           </button>
@@ -110,7 +110,7 @@ export default function App() {
 
   if (currentPath.startsWith('/admin') && isStaticSite) {
     return <main className="max-w-2xl mx-auto p-8 space-y-4">
-      <h1 className="text-2xl">CMS administration</h1>
+      <h1 className="font-display text-page text-black">CMS administration</h1>
       <p>CMS editing requires the laboratory server. This website publishes the public laboratory content.</p>
       <a href={routeHref('/')} onClick={(event) => { event.preventDefault(); navigate('/'); }}>Return to the laboratory website</a>
     </main>;
@@ -183,7 +183,7 @@ export default function App() {
         onNavigate={navigate}
         currentUser={currentUser}
       />
-      {publicData.profile.reviewNote && <p className="bg-[#CFB991] text-black px-4 py-3 text-sm text-center">{publicData.profile.reviewNote}</p>}
+      {publicData.profile.reviewNote && <p className="bg-[#CFB991] text-black px-4 py-3 text-meta text-center">{publicData.profile.reviewNote}</p>}
       <main className="flex-1">{renderPublicPage()}</main>
       <PublicFooter profile={publicData.profile} onNavigate={navigate} />
     </div>
