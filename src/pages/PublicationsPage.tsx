@@ -73,13 +73,13 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         <div className="pb-8 border-b border-[#E5E2DC] space-y-6">
           <div className="max-w-3xl">
-            <p className="text-xs font-semibold tracking-wider text-[#8E6F3E] uppercase">
+            <p className="text-label uppercase text-purdue-gold-text">
               Peer-Reviewed Scholarship
             </p>
-            <h1 className="font-serif text-4xl font-semibold text-black mt-2">
+            <h1 className="font-display text-page text-black mt-2">
               Research Publications
             </h1>
-            <p className="text-base text-neutral-600 mt-3 leading-relaxed">
+            <p className="text-body text-neutral-700 mt-3">
               Journal articles, conference proceedings, and technical papers authored by our Purdue University research group.
             </p>
           </div>
@@ -87,14 +87,14 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
           {/* Search & Filters */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-3 pt-2">
             <div className="md:col-span-5 relative">
-              <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-neutral-600 absolute left-3 top-1/2 -translate-y-1/2" aria-hidden="true" />
               <input
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search title, authors, venue, or keywords..."
+                placeholder="Search title, author, or venue"
                 aria-label="Search publications"
-                className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-[#E5E2DC] rounded-md focus:outline-none focus:border-black"
+                className="w-full pl-9 pr-3 py-2.5 text-card bg-white border border-[#E5E2DC] rounded-md focus:outline-none focus:border-black placeholder:text-neutral-600"
               />
             </div>
 
@@ -103,7 +103,7 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                 value={yearFilter}
                 onChange={(e) => setYearFilter(e.target.value)}
                 aria-label="Filter by year"
-                className="w-full px-3 py-2 text-sm bg-white border border-[#E5E2DC] rounded-md focus:outline-none focus:border-black"
+                className="w-full px-3 py-2.5 text-card bg-white border border-[#E5E2DC] rounded-md focus:outline-none focus:border-black"
               >
                 {years.map((y) => (
                   <option key={y} value={y}>
@@ -118,7 +118,7 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
                 aria-label="Filter by publication type"
-                className="w-full px-3 py-2 text-sm bg-white border border-[#E5E2DC] rounded-md focus:outline-none focus:border-black"
+                className="w-full px-3 py-2.5 text-card bg-white border border-[#E5E2DC] rounded-md focus:outline-none focus:border-black"
               >
                 {types.map((t) => (
                   <option key={t} value={t}>
@@ -133,7 +133,7 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                 value={topicFilter}
                 onChange={(e) => setTopicFilter(e.target.value)}
                 aria-label="Filter by research topic"
-                className="w-full px-3 py-2 text-sm bg-white border border-[#E5E2DC] rounded-md focus:outline-none focus:border-black"
+                className="w-full px-3 py-2.5 text-card bg-white border border-[#E5E2DC] rounded-md focus:outline-none focus:border-black"
               >
                 {topics.map((t) => (
                   <option key={t} value={t}>
@@ -147,7 +147,7 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
 
         {groupedByYear.length === 0 ? (
           <div className="bg-white border border-[#E5E2DC] rounded-md p-10 text-center space-y-2">
-            <p className="text-sm text-neutral-700 font-medium">
+            <p className="text-card text-neutral-700 font-medium">
               No publications match your current search or filter criteria.
             </p>
             <button
@@ -158,7 +158,7 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                 setTypeFilter('all');
                 setTopicFilter('all');
               }}
-              className="text-xs font-semibold text-[#8E6F3E] hover:text-black underline underline-offset-4"
+              className="text-button text-purdue-gold-text hover:text-black underline underline-offset-4"
             >
               Reset All Filters
             </button>
@@ -168,10 +168,10 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
             {groupedByYear.map(([year, items]) => (
               <section key={year} className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 <div className="lg:col-span-2 lg:sticky lg:top-24">
-                  <h2 className="font-serif text-3xl font-semibold text-black tabular-nums">
+                  <h2 className="font-display text-section font-bold text-black tabular-nums">
                     {year}
                   </h2>
-                  <p className="text-xs text-neutral-500 mt-1 tabular-nums">
+                  <p className="text-caption text-neutral-600 mt-1 tabular-nums">
                     {items.length} {items.length === 1 ? 'publication' : 'publications'}
                   </p>
                 </div>
@@ -180,21 +180,20 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                   {items.map((pub) => {
                     const isExpanded = Boolean(expandedIds[pub.id]);
                     return (
-                      <article key={pub.id} className="p-6 space-y-3">
-                        <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-500">
-                          <span className="font-semibold text-[#8E6F3E]">{pub.pub_type}</span>
-                          <span aria-hidden="true">·</span>
+                      <article key={pub.id} className="p-6 space-y-2.5">
+                        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-meta text-neutral-600">
+                          <span className="inline-flex items-center px-2 py-0.5 text-badge font-medium text-purdue-gold-text bg-[#FAF9F6] border border-[#E5E2DC] rounded">{pub.pub_type}</span>
                           <span>{pub.topic}</span>
                         </div>
 
-                        <h3 className="font-serif text-xl font-semibold text-black leading-snug">
+                        <h3 className="text-item-title text-black">
                           {pub.title}
                         </h3>
 
-                        <p className="text-sm text-neutral-800">{pub.authors}</p>
-                        <p className="text-sm text-neutral-600 italic">{pub.venue}</p>
+                        <p className="text-card text-neutral-800">{pub.authors}</p>
+                        <p className="text-meta text-neutral-600 italic">{pub.venue} <span className="not-italic tabular-nums">({pub.year})</span></p>
 
-                        <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-semibold">
+                        <div className="pt-2 flex flex-wrap items-center gap-x-5 gap-y-2 text-button">
                           {pub.abstract && (
                           <button
                             type="button"
@@ -218,7 +217,7 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                               href={pub.doi_url}
                               target="_blank"
                               rel="noreferrer"
-                              className="inline-flex items-center gap-1 text-[#8E6F3E] hover:text-black"
+                              className="inline-flex items-center gap-1 text-purdue-gold-text hover:text-black"
                             >
                               DOI <ExternalLink className="w-3 h-3" />
                             </a>
@@ -240,7 +239,7 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                               href={pub.pdf_url}
                               target="_blank"
                               rel="noreferrer"
-                              className="inline-flex items-center gap-1 text-black hover:text-[#8E6F3E]"
+                              className="inline-flex items-center gap-1 text-black hover:text-purdue-gold-text"
                             >
                               Download PDF <FileText className="w-3.5 h-3.5" />
                             </a>
@@ -266,8 +265,8 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
                         </div>
 
                         {isExpanded && (
-                          <div className="mt-3 p-4 bg-[#FAF9F6] border border-[#E5E2DC] rounded text-sm text-neutral-700 leading-relaxed">
-                            <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
+                          <div className="mt-3 p-4 bg-[#FAF9F6] border border-[#E5E2DC] rounded text-card text-neutral-700 measure">
+                            <p className="text-label uppercase text-neutral-600 mb-1">
                               Abstract
                             </p>
                             {pub.abstract}

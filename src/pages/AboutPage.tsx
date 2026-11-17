@@ -25,13 +25,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         {/* Page Header */}
         <div className="pb-8 border-b border-[#E5E2DC] max-w-3xl">
-          <p className="text-xs font-semibold tracking-wider text-[#8E6F3E] uppercase">
+          <p className="text-label uppercase text-purdue-gold-text">
             {profile.institution}
           </p>
-          <h1 className="font-serif text-4xl font-semibold text-black mt-2">
+          <h1 className="font-display text-page text-black mt-2">
             About the Laboratory &amp; Principal Investigator
           </h1>
-          <p className="text-base text-neutral-600 mt-3 leading-relaxed">
+          <p className="text-body text-neutral-700 mt-3">
             {profile.department}
           </p>
         </div>
@@ -50,25 +50,25 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
               />
             </div>
 
-            <div className="bg-white border border-[#E5E2DC] rounded-md p-5 space-y-3 text-sm">
-              <h2 className="font-serif text-lg font-semibold text-black">{profile.piName}</h2>
-              <p className="text-xs text-neutral-600">{profile.piTitle}</p>
-              <div className="pt-2 border-t border-neutral-100 space-y-2 text-xs text-neutral-700">
+            <div className="bg-white border border-[#E5E2DC] rounded-md p-5 space-y-3 text-card">
+              <h2 className="text-name text-black">{profile.piName}</h2>
+              <p className="text-body text-neutral-700">{profile.piTitle}</p>
+              <div className="pt-3 border-t border-neutral-100 space-y-2.5 text-meta text-neutral-700">
                 <p className="flex items-start gap-2">
-                  <Mail className="w-3.5 h-3.5 text-[#8E6F3E] shrink-0 mt-0.5" />
+                  <Mail className="w-4 h-4 text-purdue-gold-text shrink-0 mt-0.5" aria-hidden="true" />
                   <a href={`mailto:${profile.piEmail}`} className="hover:underline">
                     {profile.piEmail}
                   </a>
                 </p>
                 {profile.piPhone && (
                   <p className="flex items-start gap-2">
-                    <Phone className="w-3.5 h-3.5 text-[#8E6F3E] shrink-0 mt-0.5" />
+                    <Phone className="w-4 h-4 text-purdue-gold-text shrink-0 mt-0.5" aria-hidden="true" />
                     <span className="tabular-nums">{profile.piPhone}</span>
                   </p>
                 )}
                 {(profile.piOffice || profile.labAddress) && (
                   <p className="flex items-start gap-2">
-                    <MapPin className="w-3.5 h-3.5 text-[#8E6F3E] shrink-0 mt-0.5" />
+                    <MapPin className="w-4 h-4 text-purdue-gold-text shrink-0 mt-0.5" aria-hidden="true" />
                     <span>
                       {profile.piOffice && <span className="block">Office: {profile.piOffice}</span>}
                       {profile.labAddress}
@@ -76,13 +76,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                   </p>
                 )}
               </div>
-              <div className="pt-3 border-t border-neutral-100 flex flex-wrap gap-4 text-xs font-semibold">
+              <div className="pt-3 border-t border-neutral-100 flex flex-wrap gap-4 text-button">
                 {profile.googleScholarUrl && (
                   <a
                     href={profile.googleScholarUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-[#8E6F3E] hover:text-black"
+                    className="inline-flex items-center gap-1 text-purdue-gold-text hover:text-black"
                   >
                     Google Scholar <ExternalLink className="w-3 h-3" />
                   </a>
@@ -92,7 +92,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                     href={profile.orcidUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-[#8E6F3E] hover:text-black"
+                    className="inline-flex items-center gap-1 text-purdue-gold-text hover:text-black"
                   >
                     ORCID <ExternalLink className="w-3 h-3" />
                   </a>
@@ -102,7 +102,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                     href={profile.githubUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-[#8E6F3E] hover:text-black"
+                    className="inline-flex items-center gap-1 text-purdue-gold-text hover:text-black"
                   >
                     GitHub <ExternalLink className="w-3 h-3" />
                   </a>
@@ -114,21 +114,21 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
           <div className="lg:col-span-8 space-y-8">
             <div className="bg-white border border-[#E5E2DC] rounded-md p-8 space-y-6">
               <div>
-                <h2 className="font-serif text-2xl font-semibold text-black mb-4">
+                <h2 className="text-subsection text-black mb-4">
                   Academic Biography
                 </h2>
                 <div
-                  className="prose-lab max-w-none"
+                  className="prose-lab prose-editorial"
                   dangerouslySetInnerHTML={{ __html: sanitizeHtmlClient(profile.piBioHtml) }}
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-[#E5E2DC]">
                 <div>
-                  <h3 className="font-serif text-lg font-semibold text-black mb-3">Education</h3>
-                  <ul className="space-y-2.5 text-sm text-neutral-700">
+                  <h3 className="text-card-title text-black mb-3">Education</h3>
+                  <ul className="space-y-2.5 text-card text-neutral-700">
                     {profile.piEducation.map((edu, idx) => (
-                      <li key={idx} className="leading-snug">
+                      <li key={idx}>
                         {edu}
                       </li>
                     ))}
@@ -136,12 +136,12 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                 </div>
 
                 <div>
-                  <h3 className="font-serif text-lg font-semibold text-black mb-3">
+                  <h3 className="text-card-title text-black mb-3">
                     Recent Honors
                   </h3>
-                  <ul className="space-y-2.5 text-sm text-neutral-700">
+                  <ul className="space-y-2.5 text-card text-neutral-700">
                     {awards.slice(0, RECENT_AWARDS_SHOWN).map((award, idx) => (
-                      <li key={idx} className="leading-snug">
+                      <li key={idx}>
                         <span className="tabular-nums">{award.year}</span>
                         {award.year && ' \u2014 '}
                         {award.title}
@@ -152,7 +152,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                     <button
                       type="button"
                       onClick={() => awardsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
-                      className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-black hover:text-[#8E6F3E]"
+                      className="mt-4 inline-flex items-center gap-1.5 text-button text-black hover:text-purdue-gold-text"
                     >
                       View all {awards.length} honors and awards
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -163,17 +163,17 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
             </div>
 
             <div className="bg-black text-white rounded-md p-8 space-y-3">
-              <p className="text-xs font-semibold tracking-wider text-[#CFB991] uppercase">
+              <p className="text-label uppercase text-[#CFB991]">
                 Laboratory Mission
               </p>
-              <p className="font-serif text-xl sm:text-2xl leading-relaxed text-white">
+              <p className="font-editorial text-lead text-white">
                 {profile.missionStatement}
               </p>
               <div className="pt-2">
                 <button
                   type="button"
                   onClick={() => onNavigate('/opportunities')}
-                  className="text-xs font-semibold text-[#CFB991] hover:underline underline-offset-4"
+                  className="text-button text-[#CFB991] hover:underline underline-offset-4"
                 >
                   Interested in joining our research team? View open positions →
                 </button>
@@ -191,9 +191,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                   className="w-48 h-48 sm:w-56 sm:h-56 object-contain mx-auto"
                 />
                 <div className="space-y-2">
-                  <p className="text-xs font-semibold tracking-wider text-[#8E6F3E] uppercase">Laboratory Identity</p>
-                  <h3 className="font-serif text-xl font-semibold text-black">The {profile.shortTitle} Logo</h3>
-                  <p className="text-sm text-neutral-700 leading-relaxed">
+                  <p className="text-label uppercase text-purdue-gold-text">Laboratory Identity</p>
+                  <h3 className="text-card-title text-black">The {profile.shortTitle} Logo</h3>
+                  <p className="text-card text-neutral-700">
                     The lab&rsquo;s logo places Digital Agriculture Discovery at the center of four connected themes:
                     UAV and machine intelligence, big data analytics, web tools, and IoT for high-value crops, linked
                     by platforms that connect over the web and open-source tools for production and management.
@@ -208,27 +208,27 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
         {awards.length > 0 && (
           <section ref={awardsRef} className="space-y-6 scroll-mt-24" aria-labelledby="honors-heading">
             <div className="pb-4 border-b border-[#E5E2DC]">
-              <p className="text-xs font-semibold tracking-wider text-[#8E6F3E] uppercase">Recognition</p>
-              <h2 id="honors-heading" className="font-serif text-3xl font-semibold text-black mt-1">
+              <p className="text-label uppercase text-purdue-gold-text">Recognition</p>
+              <h2 id="honors-heading" className="text-section text-black mt-1">
                 Honors &amp; Awards
               </h2>
             </div>
             <div className="bg-white border border-[#E5E2DC] rounded-md divide-y divide-[#E5E2DC]">
               {groupAwardsByYear(awards).map((group, groupIdx) => (
                 <div key={`${group.year}-${groupIdx}`} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 p-5 sm:p-6">
-                  <p className="md:col-span-2 font-serif text-xl font-semibold text-[#8E6F3E] tabular-nums">
+                  <p className="md:col-span-2 font-display text-subsection font-bold text-purdue-gold-text tabular-nums">
                     {group.year}
                   </p>
                   <ul className="md:col-span-10 space-y-4">
                     {group.awards.map((award, idx) => (
                       <li key={idx} className="space-y-1">
-                        <p className="text-base font-semibold text-black leading-snug">
+                        <p className="text-item-title text-black">
                           {award.url ? (
                             <a
                               href={award.url}
                               target="_blank"
                               rel="noreferrer"
-                              className="inline-flex items-center gap-1 hover:text-[#8E6F3E] underline-offset-4 hover:underline"
+                              className="inline-flex items-center gap-1 hover:text-purdue-gold-text underline-offset-4 hover:underline"
                             >
                               {award.title}
                               <ExternalLink className="w-3.5 h-3.5 shrink-0" />
@@ -237,8 +237,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                             award.title
                           )}
                         </p>
-                        {award.organization && <p className="text-sm text-neutral-600">{award.organization}</p>}
-                        {award.details && <p className="text-sm text-neutral-700 leading-relaxed">{award.details}</p>}
+                        {award.organization && <p className="text-meta text-neutral-600">{award.organization}</p>}
+                        {award.details && <p className="text-card text-neutral-700 measure">{award.details}</p>}
                       </li>
                     ))}
                   </ul>
@@ -253,21 +253,21 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
           <section className="space-y-6">
             <div className="pb-4 border-b border-[#E5E2DC] flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold tracking-wider text-[#8E6F3E] uppercase">People</p>
-                <h2 className="font-serif text-3xl font-semibold text-black mt-1">
+                <p className="text-label uppercase text-purdue-gold-text">People</p>
+                <h2 className="text-section text-black mt-1">
                   Research Group &amp; Alumni
                 </h2>
               </div>
               <button
                 type="button"
                 onClick={() => onNavigate('/people')}
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-black hover:text-[#8E6F3E] whitespace-nowrap shrink-0"
+                className="inline-flex items-center gap-1.5 text-button text-black hover:text-purdue-gold-text whitespace-nowrap shrink-0"
               >
                 Meet the team
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-sm text-neutral-700 max-w-3xl leading-relaxed">
+            <p className="text-body text-neutral-700 measure">
               The DAD Lab brings together graduate students, staff, visiting scholars, and undergraduate researchers
               {alumniCount > 0 ? `, with ${alumniCount} alumni listed` : ''}.
             </p>

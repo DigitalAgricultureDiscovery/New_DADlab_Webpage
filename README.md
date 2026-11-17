@@ -55,6 +55,15 @@ topic combination against this data. In the CMS, edit topics with the
 **Research Topics** checkboxes in **Research Projects**, and research areas
 (including the short labels used on the filter chips) in **Site Profile**.
 
+### Typography
+
+Fonts and the type scale are defined in `src/index.css` (Tailwind v4 theme
+tokens such as `text-page`, `text-body`, `text-meta`) and loaded in
+`src/main.tsx`. The site self-hosts open-licensed fonts that follow Purdue's
+documented fallbacks, because Purdue's licensed brand fonts are only licensed
+for Purdue-owned domains. See [the typography guide](docs/typography.md) for the
+scale, usage rules, licensing, and accessibility notes.
+
 ## Local development
 
 Use Node.js 24 (Node 22.13 or later also works; the server uses the built-in
