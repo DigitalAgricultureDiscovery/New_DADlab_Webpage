@@ -213,8 +213,8 @@ technical reports.
   existing entries not found on Google Scholar or Crossref (ids 28, 32, 34,
   35, 36, 38); *Review of Agricultural Autonomy Safety Standardization*
   (2026, no DOI or volume yet); *Comprehensive Review of Artificial
-  Intelligence and Edge Computing for Precision Weed Control* (Scholar says
-  2025, Crossref 2026); and the 2009 SAGEEP paper, which may be the same work
+  Intelligence and Edge Computing for Precision Weed Control* (Scholar said
+  2025, Crossref 2026; the PI confirmed 2026 on November 17, 2026); and the 2009 SAGEEP paper, which may be the same work
   as id 28 (*FastTimes*).
 - **Shown as separate entries, as in the workbook:** conference and journal
   versions of the same study (e.g., ids 7 and 31; id 25 and the 2010 TMDL

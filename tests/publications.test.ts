@@ -36,3 +36,10 @@ test('corrections from the verified workbook are applied', () => {
   assert.equal(byId.get(25)!.authors, 'Pai, N., Saraswat, D., and Daniels, M.');
   assert.ok(byId.get(5)!.authors.includes('Mishra, S. K.'));
 });
+
+test('weed-control review is listed once, dated 2026 as confirmed by the PI', () => {
+  const matches = PUBLICATIONS.filter((p) => p.title.startsWith('Comprehensive Review of Artificial Intelligence and Edge Computing'));
+  assert.equal(matches.length, 1);
+  assert.equal(matches[0].year, 2026);
+  assert.equal(matches[0].publisher_url, 'https://ojs.bonviewpress.com/index.php/AIA/article/view/8867');
+});
