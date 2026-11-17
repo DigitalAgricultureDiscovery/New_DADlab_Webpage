@@ -5,22 +5,22 @@ import { SITE_PROFILE } from '../src/data/profile.ts';
 import { isLinkedInProfileUrl, personInitials } from '../src/lib/people.ts';
 
 test('roster has unique ids and valid groups', () => {
-  assert.equal(TEAM_MEMBERS.length, 32);
+  assert.equal(TEAM_MEMBERS.length, 36);
   assert.equal(new Set(TEAM_MEMBERS.map((m) => m.id)).size, TEAM_MEMBERS.length);
   const count = (category: string) => TEAM_MEMBERS.filter((m) => m.category === category).length;
   assert.equal(count('Faculty'), 1);
   assert.equal(count('PhD Student'), 2);
-  assert.equal(count('MS Student'), 1);
+  assert.equal(count('MS Student'), 0);
   assert.equal(count('Visiting Researcher'), 6);
-  assert.equal(count('Undergraduate'), 11);
+  assert.equal(count('Undergraduate'), 15);
   assert.equal(count('Former Staff'), 1);
-  assert.equal(count('Alumni'), 10);
+  assert.equal(count('Alumni'), 11);
   assert.equal(SITE_PROFILE.teamMembers, TEAM_MEMBERS);
 });
 
 test('LinkedIn links are well-formed public profile URLs', () => {
   const withLinkedIn = TEAM_MEMBERS.filter((m) => m.linkedin);
-  assert.equal(withLinkedIn.length, 31);
+  assert.equal(withLinkedIn.length, 35);
   for (const member of withLinkedIn) assert.ok(isLinkedInProfileUrl(member.linkedin!), `${member.name}: ${member.linkedin}`);
   assert.equal(new Set(withLinkedIn.map((m) => m.linkedin)).size, withLinkedIn.length, 'duplicate LinkedIn URL');
   assert.deepEqual(TEAM_MEMBERS.filter((m) => !m.linkedin).map((m) => m.name), ['Jeff Fiechter']);
@@ -41,6 +41,7 @@ test('initials avatars use first and last name initials', () => {
   assert.equal(personInitials('Dr. Dharmendra Saraswat'), 'DS');
   assert.equal(personInitials('Gyu Ri Ha'), 'GH');
   assert.equal(personInitials('Udaiveer Singh'), 'US');
+  assert.equal(personInitials('Divyanth L.G.'), 'DL');
   assert.equal(personInitials('Madonna'), 'M');
   assert.equal(personInitials(''), '?');
 });

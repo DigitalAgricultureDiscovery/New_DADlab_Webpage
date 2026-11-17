@@ -4,7 +4,9 @@ import type { TeamMember } from '../../types/cms.ts';
  * Lab roster. Sources: the former DAD Lab website "People" page and its dated
  * news posts (photos, degrees, thesis titles), updated with the PI's
  * "DAD Lab Website Updates" workbook (November 2026): LinkedIn profiles,
- * current roles and positions, group changes, and four additional members.
+ * current roles and positions, group changes, and additional members; and the
+ * November 2026 "Publications (Google Scholar verified)" workbook (Shih-Yun
+ * Lin's M.S. 2024 and four 2021 summer researchers).
  * Members are ordered within each group from most to least recent.
  * Members without a photo get an initials avatar on the website.
  */
@@ -38,15 +40,6 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: 'PhD Student',
     focus: 'Generalizing YOLO networks for soybean plant stand count across fields.',
     linkedin: li('adeayodaniel'),
-  },
-  {
-    id: 'grad-lin',
-    name: 'Shih-Yun Lin',
-    role: 'M.S. Student, Agricultural and Biological Engineering',
-    category: 'MS Student',
-    focus: 'Deep learning applications for disease identification and prediction in rice.',
-    photoUrl: `${P}shih-yun-lin.jpg`,
-    linkedin: li('ziyunlin'),
   },
   {
     id: 'visiting-ranjan',
@@ -198,6 +191,38 @@ export const TEAM_MEMBERS: TeamMember[] = [
     linkedin: li('ariaziat'),
   },
   {
+    id: 'ug-chawla',
+    name: 'Yogesh Chawla',
+    role: '2021 Purdue-IIT Kharagpur Summer Intern',
+    category: 'Undergraduate',
+    focus: '',
+    linkedin: li('yogesh-chawla'),
+  },
+  {
+    id: 'ug-divyanth',
+    name: 'Divyanth L.G.',
+    role: '2021 Purdue-IIT Kharagpur Summer Intern',
+    category: 'Undergraduate',
+    focus: '',
+    linkedin: li('divyanthlg'),
+  },
+  {
+    id: 'ug-sr-tiwari',
+    name: 'Sanjeevani Ratna Tiwari',
+    role: '2021 Purdue-IIT Kharagpur Summer Intern',
+    category: 'Undergraduate',
+    focus: '',
+    linkedin: li('sanjeevani-ratna-tiwari-3051951bb'),
+  },
+  {
+    id: 'ug-phan',
+    name: 'Hieu Phan',
+    role: '2021 SURF Fellow, Miami University',
+    category: 'Undergraduate',
+    focus: '',
+    linkedin: li('hieu-p-021784149'),
+  },
+  {
     id: 'staff-hancock',
     name: 'Benjamin (Ben) Hancock',
     role: 'Application Developer, Agricultural and Biological Engineering',
@@ -205,6 +230,15 @@ export const TEAM_MEMBERS: TeamMember[] = [
     focus: 'Staff programmer for DAD Lab web tools; mentor for summer research projects.',
     photoUrl: `${P}ben-hancock.jpg`,
     linkedin: li('ben-hancock-75119b255'),
+  },
+  {
+    id: 'alum-lin',
+    name: 'Shih-Yun Lin',
+    role: 'M.S. 2024, Agricultural and Biological Engineering',
+    category: 'Alumni',
+    focus: 'Deep learning applications for disease identification and prediction in rice.',
+    photoUrl: `${P}shih-yun-lin.jpg`,
+    linkedin: li('ziyunlin'),
   },
   {
     id: 'alum-ahmad',

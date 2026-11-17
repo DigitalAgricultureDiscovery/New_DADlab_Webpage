@@ -21,7 +21,7 @@ test('CMS persists migrated content, enforces authentication, and exports only p
     assert.equal(pub.profile.piName,'Dr. Dharmendra Saraswat');
     assert.equal(pub.profile.researchAreas.length,6);
     assert.equal(pub.profile.piPortraitUrl,'/images/people/principal-investigator/dharmendra-saraswat.jpg');
-    assert.equal(pub.allPublications.length,38);
+    assert.equal(pub.allPublications.length,80);
     assert.equal(pub.courses.length,4);
     assert.deepEqual(pub.courses.filter((c:any)=>c.status==='active').map((c:any)=>c.title),['Geographic Information System Application','Data Visualization and Edge Computing']);
     assert.equal(pub.profile.heroEyebrow,'');assert.equal(pub.profile.reviewNote,'');
