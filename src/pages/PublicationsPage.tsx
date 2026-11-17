@@ -4,9 +4,11 @@ import type { PublicationItem } from '../types/cms';
 
 interface PublicationsPageProps {
   publications: PublicationItem[];
+  /** The PI's Google Scholar profile, where current citation counts are kept. */
+  scholarUrl?: string;
 }
 
-export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications }) => {
+export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications, scholarUrl }) => {
   const [query, setQuery] = useState('');
   const [yearFilter, setYearFilter] = useState<string>('all');
   const [typeFilter, setTypeFilter] = useState<string>('all');
@@ -74,14 +76,26 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
         <div className="pb-8 border-b border-[#E5E2DC] space-y-6">
           <div className="max-w-3xl">
             <p className="text-label uppercase text-purdue-gold-text">
-              Peer-Reviewed Scholarship
+              Scholarship
             </p>
             <h1 className="font-display text-page text-black mt-2">
               Research Publications
             </h1>
             <p className="text-body text-neutral-700 mt-3">
-              Journal articles, conference proceedings, and technical papers authored by our Purdue University research group.
+              {publications.length} journal articles, conference papers and abstracts, book chapters, preprints, and technical reports by the DAD Lab, checked against Google Scholar and the publishers' records.
             </p>
+            {scholarUrl && (
+              <a
+                href={scholarUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 mt-4 text-button text-purdue-gold-text underline-offset-4 hover:text-black hover:underline"
+              >
+                Citations on Google Scholar
+                <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
+            )}
           </div>
 
           {/* Search & Filters */}

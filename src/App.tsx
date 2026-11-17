@@ -151,7 +151,7 @@ export default function App() {
       );
     }
     if (currentPath === '/publications') {
-      return <PublicationsPage publications={publicData.allPublications} />;
+      return <PublicationsPage publications={publicData.allPublications} scholarUrl={publicData.profile.googleScholarUrl} />;
     }
     if (currentPath === '/news' || currentPath.startsWith('/news/')) {
       const slug = currentPath.startsWith('/news/')

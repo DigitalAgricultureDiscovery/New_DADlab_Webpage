@@ -29,10 +29,10 @@ and what still needs the PI's confirmation. Migration date: November 16, 2026.
 | Contact (email, office) | Contact Us | `src/data/profile.ts` |
 | Research focus areas | Research Interests (`/news/`) + brief | `src/data/research/areas.ts` |
 | Research projects (16) | News feed, Tools, People, NNF, posts + brief | `src/data/research/projects.ts` |
-| Publications (38) | Publications page (29), news posts (8 conference papers), brief (1) | `src/data/publications/publications.ts` |
+| Publications (80) | Publications page (29), news posts (8 conference papers), brief (1); PI's Google Scholar-verified workbook (42 added, Nov 2026) | `src/data/publications/publications.ts` |
 | News (62 items, 2019-2024) | News feed (`/research/`), 2019 blog posts, and one 2020 item from the brief | `src/data/news/news.ts` |
 | Courses (2 current, 2 archived, 4 drafts) | Current 2026-2027 courses from the PI; Teaching, ASM 54000, ASM 59100, ABE 49500 pages; brief | `src/data/teaching/courses.ts` |
-| People (32) | People page, The DAD Group page, thesis-defense posts; PI's people workbook (Nov 2026) | `src/data/people/team.ts` |
+| People (36) | People page, The DAD Group page, thesis-defense posts; PI's workbooks (Nov 2026) | `src/data/people/team.ts` |
 | Images (54 files) | WordPress media library | `public/images/` |
 
 `server/initial-content.ts` converts these modules into rows for a fresh CMS
@@ -138,11 +138,12 @@ page filters by status and topic with AND logic.
   added to ASM 54000. ASM 59100 *Decision Agriculture Methods* and ABE 49500
   *Introduction to UAS* are shown as archived offerings. Candidate courses
   from the brief remain drafts.
-- **Publications not added (incomplete citations on the former site):** the
-  March 2024 tar spot paper (no author list), BNNDC-Net (title not given), and
-  the 2022 weather-data lesson plan (title not given). They appear as news.
-  The Chawla et al. 2022 ASABE paper number on the former site duplicated
-  another paper's number and was omitted.
+- **Publications from news posts:** the March 2024 tar spot paper and BNNDC
+  are now listed from the Google Scholar-verified workbook (see
+  *Publications* below). The 2022 weather-data lesson plan appears as the
+  2020 ASABE case-study module *Teaching Geospatial Programming and Data
+  Science to AgriScience Students*. The Chawla et al. 2022 ASABE paper number
+  on the former site duplicated another paper's number and was omitted.
 - **Undated item:** the 2024 summer intern announcement was labeled
   "10/06/2024" but its photo was uploaded in July 2024; it is shown with the
   year only.
@@ -171,11 +172,15 @@ list and are shown without one.
 The People page follows the PI's *DAD Lab Website Updates* workbook (November
 2026):
 
-- **LinkedIn:** 31 of 32 people link to their LinkedIn profile, plus the PI's
+- **LinkedIn:** 35 of 36 people link to their LinkedIn profile, plus the PI's
   card on the About page. Jeff Fiechter has no LinkedIn profile listed.
 - **New entries:** Rajiv Ranjan (visiting scholar), Udaiveer Singh (2026 SURF
   Fellow), and Nihar Shah and Shreyans Jain (2025 Purdue-IIT Gandhinagar
-  summer interns).
+  summer interns); from the second workbook, Yogesh Chawla, Divyanth L.G.,
+  and Sanjeevani Ratna Tiwari (2021 Purdue-IIT Kharagpur summer interns) and
+  Hieu Phan (2021 SURF Fellow, Miami University).
+- **Graduated:** Shih-Yun Lin is listed with the alumni (M.S. 2024), following
+  the role given in the second workbook.
 - **Groups:** Ben Hancock moved to a new *Former Staff* group. Visiting
   scholars' roles now give their fellowship and home institution, and alumni
   roles give degree, year, and last reported position.
@@ -183,12 +188,44 @@ The People page follows the PI's *DAD Lab Website Updates* workbook (November
   Generic placeholder descriptions ("Former DAD Lab member.") were removed.
 - **Photos:** LinkedIn photos were not copied: LinkedIn's terms prohibit
   scraping, and profile photos need the person's consent. People without a
-  photo on file (7) show a circular initials avatar until a photo is added
+  photo on file (11) show a circular initials avatar until a photo is added
   in the CMS (`photoUrl`) or under `public/images/people/members/`.
 
 The awards timeline on the About page is sorted by year, newest first, with
 an *Oldest first* toggle; the sort is done in code (`sortAwards` in
 `src/lib/awards.ts`), so new awards can be added in any order.
+
+## Publications
+
+The Publications page follows the PI's *DAD Lab Publications (Google Scholar
+verified)* workbook (November 2026): 80 publications, 39 journal articles,
+29 conference papers and abstracts, 5 book chapters, 5 preprints, and 2
+technical reports.
+
+- **Corrected (28 existing entries):** DOIs added, and titles, author order or
+  missing co-authors, years, volumes, and pages corrected to match Google
+  Scholar, Crossref, arXiv, or the publisher. Examples: the 2023 IEEE Access
+  paper now lists El Gamal as second author; the Computers & Geosciences
+  paper is dated 2012 (issue year), not 2011.
+- **Added (42):** ids 39-80. Existing ids 1-38 are unchanged, so research
+  project links to publications still work.
+- **Kept as listed, flagged "Needs review" in the workbook (9):** six
+  existing entries not found on Google Scholar or Crossref (ids 28, 32, 34,
+  35, 36, 38); *Review of Agricultural Autonomy Safety Standardization*
+  (2026, no DOI or volume yet); *Comprehensive Review of Artificial
+  Intelligence and Edge Computing for Precision Weed Control* (Scholar says
+  2025, Crossref 2026); and the 2009 SAGEEP paper, which may be the same work
+  as id 28 (*FastTimes*).
+- **Shown as separate entries, as in the workbook:** conference and journal
+  versions of the same study (e.g., ids 7 and 31; id 25 and the 2010 TMDL
+  paper). Conference abstracts (AGU, EGU, ASA-CSSA-SSSA) are included.
+- **Not added:** the workbook's *Scholar Not Added* sheet: duplicate Scholar
+  records, two 2006-2007 seed-metering papers by "DC Saraswat" (authorship
+  to confirm), the 2007 Ph.D. dissertation, user manuals, project reports,
+  magazine articles, and records without enough detail.
+- **Citations:** per-paper Google Scholar counts are not copied onto the site
+  (they change weekly). The Publications and About pages link to the PI's
+  Google Scholar profile instead.
 
 ## Review notice
 

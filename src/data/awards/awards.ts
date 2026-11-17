@@ -14,10 +14,17 @@ const IARI = 'Indian Agricultural Research Institute (IARI)';
  * the website; no facts were changed.
  */
 export const AWARDS: Award[] = [
-  { year: '2026', title: 'Excellence in International Engagement', organization: 'Asian Association for Agricultural Engineering (AAAE)' },
+  {
+    year: '2026',
+    title: 'Excellence in International Engagement',
+    organization: 'Asian Association for Agricultural Engineering (AAAE)',
+    details:
+      'The award honors those individuals who have made significant contributions to cross-border collaboration, global partnerships, or the international promotion and exchange of agricultural engineering knowledge and sustainable technologies.',
+  },
   {
     year: '2025',
     title: 'Fulbright Specialist',
+    organization: 'Fulbright Foreign Scholarship Board',
     details:
       'One among 400 U.S. citizens included in the roster for three years, from August 15, 2025, to August 15, 2028, to share expertise in digital agriculture with host institutions abroad. Recipients of Fulbright Specialist awards are selected based on academic and professional achievement, demonstrated leadership in their field, and their potential to foster long-term cooperation between institutions in the U.S. and abroad.',
   },
@@ -37,10 +44,10 @@ export const AWARDS: Award[] = [
   },
   {
     year: '2025',
-    title: 'Publishing Achievement',
+    title: 'Publishing Achievement: Most Significant Increase in H-index for the 2023-2024 Academic Year',
     organization: 'College of Agriculture, Purdue University',
     details:
-      'Recognized for the most significant increase in H-index for the 2023-2024 academic year. The H-index represents a formula that factors in both the number of publications a scholar has published and the number of times other researchers cite those papers. It shows that an author’s cumulative work is widely recognized and frequently referenced by peers, suggesting that their findings have been influential over the long term.',
+      'The H-index represents a formula that factors in both the number of publications a scholar has published and the number of times other researchers cite those papers. It shows that an author’s cumulative work is widely recognized and frequently referenced by peers, suggesting that their findings have been influential over the long term.',
   },
   {
     year: '2023',
