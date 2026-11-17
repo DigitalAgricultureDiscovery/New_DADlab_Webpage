@@ -1,13 +1,15 @@
 import type { TeamMember } from '../../types/cms.ts';
 
 /**
- * Lab roster migrated from the former DAD Lab website "People" page
- * (dad.saraswat.rcac.purdue.edu/index.php/people/, last updated 2023-2024) and
- * its dated news posts. Degree completions come from the dated thesis-defense
- * announcements on that site. Positions listed for alumni are those shown on
- * the former site and may have changed since.
+ * Lab roster. Sources: the former DAD Lab website "People" page and its dated
+ * news posts (photos, degrees, thesis titles), updated with the PI's
+ * "DAD Lab Website Updates" workbook (November 2026): LinkedIn profiles,
+ * current roles and positions, group changes, and four additional members.
+ * Members are ordered within each group from most to least recent.
+ * Members without a photo get an initials avatar on the website.
  */
 const P = '/images/people/members/';
+const li = (slug: string) => `https://www.linkedin.com/in/${slug}`;
 
 export const TEAM_MEMBERS: TeamMember[] = [
   {
@@ -18,14 +20,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     focus: 'Digital agriculture, agricultural informatics, remote sensing, and environmental modeling',
     email: 'saraswat@purdue.edu',
     photoUrl: '/images/people/principal-investigator/dharmendra-saraswat.jpg',
-  },
-  {
-    id: 'staff-hancock',
-    name: 'Benjamin (Ben) Hancock',
-    role: 'Application Developer, Agricultural and Biological Engineering',
-    category: 'Staff',
-    focus: 'Staff programmer for DAD Lab web tools; mentor for summer research projects.',
-    photoUrl: `${P}ben-hancock.jpg`,
+    linkedin: li('dharmendra-saraswat-40934411'),
   },
   {
     id: 'grad-aggarwal',
@@ -34,6 +29,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: 'PhD Student',
     focus: 'UAS imagery and deep learning for soybean stand counting and weed identification.',
     photoUrl: `${P}varun-aggarwal.jpg`,
+    linkedin: li('aggarwal-v'),
   },
   {
     id: 'grad-adewumi',
@@ -41,6 +37,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: 'Ph.D. Student, Agricultural and Biological Engineering',
     category: 'PhD Student',
     focus: 'Generalizing YOLO networks for soybean plant stand count across fields.',
+    linkedin: li('adeayodaniel'),
   },
   {
     id: 'grad-lin',
@@ -49,45 +46,82 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: 'MS Student',
     focus: 'Deep learning applications for disease identification and prediction in rice.',
     photoUrl: `${P}shih-yun-lin.jpg`,
+    linkedin: li('ziyunlin'),
+  },
+  {
+    id: 'visiting-ranjan',
+    name: 'Rajiv Ranjan',
+    role: 'Ph.D. Scholar, Plaksha University',
+    category: 'Visiting Researcher',
+    focus: '',
+    linkedin: li('rajiv-ranjan-248a59103'),
   },
   {
     id: 'visiting-ramalingam',
     name: 'Selvaprakash Ramalingam',
-    role: 'Visiting Scholar (2023), Agricultural and Biological Engineering',
+    role: 'Visiting Scholar (2023), SERB-OVDF Fellow from the Indian Agricultural Research Institute, New Delhi',
     category: 'Visiting Researcher',
-    focus: '2023 visiting scholar in the DAD Lab.',
+    focus: '',
     photoUrl: `${P}selvaprakash-ramalingam.jpg`,
-  },
-  {
-    id: 'visiting-tiwari',
-    name: 'Pooja Tiwari',
-    role: 'Visiting Scholar (2021-2022), Atmospheric Science',
-    category: 'Visiting Researcher',
-    focus: '2021-2022 visiting scholar in the DAD Lab.',
-    photoUrl: `${P}pooja-tiwari.jpg`,
+    linkedin: li('mr-selvaprakash'),
   },
   {
     id: 'visiting-tyagi',
     name: 'Shoobhangi Tyagi',
-    role: 'Visiting SERB Scholar (2021-2022), Atmospheric Sciences',
+    role: 'Visiting Scholar (2021-2022), SERB-OVDF Fellow from the Indian Institute of Technology Delhi',
     category: 'Visiting Researcher',
-    focus:
-      'Ph.D. candidate at the Indian Institute of Technology Delhi; flash drought and machine learning. 2023 European Geosciences Union OSPP award.',
+    focus: 'Flash drought and machine learning. 2023 European Geosciences Union OSPP award.',
     photoUrl: `${P}shoobhangi-tyagi.jpg`,
+    linkedin: li('shoobhangi-tyagi-phd'),
+  },
+  {
+    id: 'visiting-tiwari',
+    name: 'Pooja Tiwari',
+    role: 'Visiting Scholar (2021-2022), SERB-OVDF Fellow from Jawaharlal Nehru University',
+    category: 'Visiting Researcher',
+    focus: '',
+    photoUrl: `${P}pooja-tiwari.jpg`,
+    linkedin: li('pooja-tiwari-844651ba'),
   },
   {
     id: 'visiting-saurav',
     name: 'Ankit Saurav',
-    role: 'Visiting Scholar (2021-2022), Civil Engineering',
+    role: 'Visiting Scholar (2021); Co-Founder, Multifold.ai',
     category: 'Visiting Researcher',
-    focus: '2021-2022 visiting scholar in the DAD Lab.',
+    focus: '',
+    linkedin: li('ankitsaurav'),
   },
   {
     id: 'visiting-saini',
     name: 'Ankit Kumar Saini',
-    role: 'Visiting Scholar (2021-2022), Civil Engineering',
+    role: 'Visiting Scholar (2021); Senior Data Scientist, Policybazaar',
     category: 'Visiting Researcher',
-    focus: '2021-2022 visiting scholar in the DAD Lab.',
+    focus: '',
+    linkedin: li('ankit-kumar-saini'),
+  },
+  {
+    id: 'ug-udaiveer-singh',
+    name: 'Udaiveer Singh',
+    role: '2026 SURF Fellow',
+    category: 'Undergraduate',
+    focus: '',
+    linkedin: li('udaiveer-singh-profile'),
+  },
+  {
+    id: 'ug-shah',
+    name: 'Nihar Shah',
+    role: '2025 Purdue-IIT Gandhinagar Summer Intern',
+    category: 'Undergraduate',
+    focus: '',
+    linkedin: li('nihar-shah-63162425a'),
+  },
+  {
+    id: 'ug-jain',
+    name: 'Shreyans Jain',
+    role: '2025 Purdue-IIT Gandhinagar Summer Intern',
+    category: 'Undergraduate',
+    focus: '',
+    linkedin: li('shreyans-jain-1b56aa247'),
   },
   {
     id: 'ug-mehta',
@@ -96,6 +130,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: 'Undergraduate',
     focus: 'Evaluating computational approaches for agricultural field data analysis.',
     photoUrl: `${P}smit-mehta.jpg`,
+    linkedin: li('smit-mehta-0845a0225'),
   },
   {
     id: 'ug-ha',
@@ -104,6 +139,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: 'Undergraduate',
     focus: 'Chatbots and large language models for agricultural extension.',
     photoUrl: `${P}son-thai-ha.jpg`,
+    linkedin: li('son-h-8676661b6'),
   },
   {
     id: 'ug-hwang',
@@ -113,14 +149,16 @@ export const TEAM_MEMBERS: TeamMember[] = [
     focus:
       'Intent classification-based interactive chatbot for weed management; 2023 SURF Best Poster Presenter award.',
     photoUrl: `${P}jungeun-hwang.jpg`,
+    linkedin: li('jung31'),
   },
   {
     id: 'ug-patel',
     name: 'Kush Patel',
     role: '2023 Summer Intern, Indian Institute of Technology Gandhinagar',
     category: 'Undergraduate',
-    focus: '2023 summer research intern in the DAD Lab.',
+    focus: '',
     photoUrl: `${P}kush-patel.jpg`,
+    linkedin: li('kush-patel-5397281b8'),
   },
   {
     id: 'ug-bhoopathy',
@@ -130,6 +168,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     focus:
       'Software-in-the-loop simulation of UAS-UGV cooperation in precision agriculture; 2022 SURF Student Choice Award.',
     photoUrl: `${P}saron-bhoopathy.jpg`,
+    linkedin: li('saron-bhoopathy'),
   },
   {
     id: 'ug-hirashima',
@@ -138,6 +177,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: 'Undergraduate',
     focus: 'ROS2/Gazebo simulation for autonomous navigation of robots in agriculture.',
     photoUrl: `${P}kenta-hirashima.jpg`,
+    linkedin: li('kenta-hirashima-11105b192'),
   },
   {
     id: 'ug-azim',
@@ -146,14 +186,25 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: 'Undergraduate',
     focus: 'Aiding farm operations with an artificial intelligence chatbot.',
     photoUrl: `${P}samia-sohail-azim.jpg`,
+    linkedin: li('samiasohailazim'),
   },
   {
     id: 'ug-riaziat',
     name: 'Ava Riaziat',
     role: '2021 SURF Fellow, Purdue First-Year Engineering',
     category: 'Undergraduate',
-    focus: '2021 summer undergraduate research fellow in the DAD Lab.',
+    focus: '',
     photoUrl: `${P}ava-riaziat.jpg`,
+    linkedin: li('ariaziat'),
+  },
+  {
+    id: 'staff-hancock',
+    name: 'Benjamin (Ben) Hancock',
+    role: 'Application Developer, Agricultural and Biological Engineering',
+    category: 'Former Staff',
+    focus: 'Staff programmer for DAD Lab web tools; mentor for summer research projects.',
+    photoUrl: `${P}ben-hancock.jpg`,
+    linkedin: li('ben-hancock-75119b255'),
   },
   {
     id: 'alum-ahmad',
@@ -163,6 +214,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     focus:
       'Thesis: Deep Learning-Based Computer Vision for Disease Identification and Monitoring in Corn Systems (defended November 17, 2023).',
     photoUrl: `${P}aanis-ahmad.jpg`,
+    linkedin: li('aanisahmad'),
   },
   {
     id: 'alum-klein',
@@ -172,6 +224,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     focus:
       'Thesis: Evaluation and Optimization of Deep Learning Networks for Plant Disease Forecasting and Assessment of their Generalizability for Early Warning Systems (defended April 11, 2023).',
     photoUrl: `${P}hannah-klein.jpg`,
+    linkedin: li('hannah-klein-b066a8167'),
   },
   {
     id: 'alum-guntaka',
@@ -180,6 +233,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     category: 'Alumni',
     focus: 'Thesis: IoT Based Low-Cost Precision Indoor Farming (defended July 16, 2021).',
     photoUrl: `${P}madhu-lekha-guntaka.jpg`,
+    linkedin: li('madhu-lekha'),
   },
   {
     id: 'alum-hearst',
@@ -189,6 +243,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     focus:
       'Thesis: Remote Sensing of Soybean Canopy Cover, Color, and Visible Indicators of Moisture Stress Using Imagery from Unmanned Aircraft Systems (defended April 10, 2019).',
     photoUrl: `${P}anthony-hearst.jpg`,
+    linkedin: li('anthonyhearstprogeny'),
   },
   {
     id: 'alum-etienne',
@@ -198,6 +253,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     focus:
       'Thesis: Automated Weed Detection Using Machine Learning Techniques on UAS-Based Imagery (defended July 16, 2019). 2019 ABE Outstanding Master’s Student.',
     photoUrl: `${P}aaron-etienne.jpg`,
+    linkedin: li('aaron-etienne-64374a141'),
   },
   {
     id: 'alum-fiechter',
@@ -209,35 +265,39 @@ export const TEAM_MEMBERS: TeamMember[] = [
     photoUrl: `${P}jeff-fiechter.jpg`,
   },
   {
-    id: 'alum-pai',
-    name: 'Dr. Naresh Pai',
-    role: 'Alumnus; Senior Research Scientist, Bayer (as listed on the former lab website)',
-    category: 'Alumni',
-    focus: 'SWAT watershed modeling tools, including Field_SWAT, SWAT2009_LUC, and streambank delineation.',
-    photoUrl: `${P}naresh-pai.jpg`,
-  },
-  {
     id: 'alum-singh',
     name: 'Dr. Gurdeep Singh',
-    role: 'Alumnus; Research Data Engineer, The Climate Corporation (as listed on the former lab website)',
+    role: 'Ph.D. 2016; Global Data Engineering Manager, Brother USA',
     category: 'Alumni',
     focus: 'Marginal land mapping in SWAT, conservation practices, and the LUU Checker framework.',
     photoUrl: `${P}gurdeep-singh.jpg`,
+    linkedin: li('gurdeep-singh-data-science'),
   },
   {
     id: 'alum-kumar',
     name: 'Eeshan Kumar',
-    role: 'Alumnus; Water Resource Engineer, Wood plc (as listed on the former lab website)',
+    role: 'M.S. 2016; Project Manager, WSP, Canada',
     category: 'Alumni',
     focus: 'Bioenergy crop impacts on water quality using static and dynamic land use change modeling.',
     photoUrl: `${P}eeshan-kumar.jpg`,
+    linkedin: li('ekumar2410'),
   },
   {
     id: 'alum-thomas',
     name: 'Nikhil Thomas',
-    role: 'Alumnus; Software Engineer, Red Hat (as listed on the former lab website)',
+    role: 'M.S. 2016; Principal Site Reliability Engineer, Red Hat',
     category: 'Alumni',
-    focus: 'Former DAD Lab member.',
+    focus: '',
     photoUrl: `${P}nikhil-thomas.jpg`,
+    linkedin: li('nikhilthomas1'),
+  },
+  {
+    id: 'alum-pai',
+    name: 'Dr. Naresh Pai',
+    role: 'Ph.D. 2012; Senior Research Scientist, Bayer',
+    category: 'Alumni',
+    focus: 'SWAT watershed modeling tools, including Field_SWAT, SWAT2009_LUC, and streambank delineation.',
+    photoUrl: `${P}naresh-pai.jpg`,
+    linkedin: li('nareshpai'),
   },
 ];

@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { AWARDS } from '../src/data/awards/awards.ts';
 import { SITE_PROFILE } from '../src/data/profile.ts';
-import { awardLine, groupAwardsByYear, parseHonorLine, profileAwards } from '../src/lib/awards.ts';
+import { awardLine, awardStartYear, groupAwardsByYear, parseHonorLine, profileAwards, sortAwards } from '../src/lib/awards.ts';
 
 const firstYear = (year: string) => Number(year.match(/\d{4}/)?.[0]);
 
@@ -41,4 +41,28 @@ test('profiles with only one-line honors still show awards', () => {
   ]);
   assert.deepEqual(parseHonorLine('1990-91 — IARI Senior Fellowship'), { year: '1990-91', title: 'IARI Senior Fellowship' });
   assert.equal(profileAwards({ piHonors: ['x'], piAwards: AWARDS }), AWARDS);
+});
+
+test('awards sort chronologically in either direction, oldest first is the exact reverse', () => {
+  const sample = [
+    { year: '2001', title: 'A' },
+    { year: '', title: 'Undated' },
+    { year: '2019', title: 'B' },
+    { year: '1990-91', title: 'C' },
+    { year: '2019', title: 'D' },
+  ];
+  assert.deepEqual(sortAwards(sample).map((a) => a.title), ['B', 'D', 'A', 'C', 'Undated']);
+  assert.deepEqual(sortAwards(sample, 'oldest').map((a) => a.title), ['C', 'A', 'D', 'B', 'Undated']);
+  assert.equal(awardStartYear({ year: '1990-91', title: 'x' }), 1990);
+  assert.ok(Number.isNaN(awardStartYear({ year: '', title: 'x' })));
+  assert.deepEqual(sample.map((a) => a.title), ['A', 'Undated', 'B', 'C', 'D'], 'input is not mutated');
+
+  const oldest = sortAwards(AWARDS, 'oldest');
+  assert.equal(oldest.length, AWARDS.length);
+  assert.equal(oldest[0].title, 'Third rank in a class of 42 students');
+  assert.equal(oldest[oldest.length - 1].year, '2026');
+  for (let i = 1; i < oldest.length; i++) assert.ok(firstYear(oldest[i].year) >= firstYear(oldest[i - 1].year));
+  assert.deepEqual(sortAwards(AWARDS), AWARDS, 'stored list is already newest first');
+  assert.deepEqual(oldest, [...AWARDS].reverse());
+  assert.equal(groupAwardsByYear(oldest).length, groupAwardsByYear(AWARDS).length);
 });

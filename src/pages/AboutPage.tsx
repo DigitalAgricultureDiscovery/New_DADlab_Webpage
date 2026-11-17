@@ -1,10 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Mail, MapPin, Phone, ExternalLink, ArrowRight } from 'lucide-react';
 import type { SiteProfile } from '../types/cms';
 import { LabImage } from '../components/LabImage';
+import { PersonAvatar } from '../components/PersonAvatar';
 import { sanitizeHtmlClient } from '../lib/htmlUtils';
 import { resolveMediaUrl } from '../lib/mediaAssets';
-import { groupAwardsByYear, profileAwards } from '../lib/awards';
+import { groupAwardsByYear, profileAwards, sortAwards, type AwardOrder } from '../lib/awards';
 
 const RECENT_AWARDS_SHOWN = 6;
 
@@ -17,7 +18,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
   const team = profile.teamMembers.filter((m) => m.category !== 'Faculty');
   const alumniCount = team.filter((m) => m.category === 'Alumni').length;
   const previewMembers = team.filter((m) => m.photoUrl).slice(0, 8);
-  const awards = profileAwards(profile);
+  // Awards are always shown in chronological order, whatever order they are stored in.
+  const awards = sortAwards(profileAwards(profile), 'newest');
+  const [awardOrder, setAwardOrder] = useState<AwardOrder>('newest');
+  const timelineAwards = awardOrder === 'newest' ? awards : sortAwards(awards, 'oldest');
   const awardsRef = useRef<HTMLElement>(null);
 
   return (
@@ -105,6 +109,17 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                     className="inline-flex items-center gap-1 text-purdue-gold-text hover:text-black"
                   >
                     GitHub <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
+                {profile.linkedinUrl && (
+                  <a
+                    href={profile.linkedinUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`${profile.piName} on LinkedIn (opens in a new tab)`}
+                    className="inline-flex items-center gap-1 text-purdue-gold-text hover:text-black"
+                  >
+                    LinkedIn <ExternalLink className="w-3 h-3" aria-hidden="true" />
                   </a>
                 )}
               </div>
@@ -204,22 +219,45 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
           </div>
         </section>
 
-        {/* Honors & awards, grouped by year (newest first) */}
+        {/* Honors & awards: chronological timeline grouped by year, newest or oldest first */}
         {awards.length > 0 && (
           <section ref={awardsRef} className="space-y-6 scroll-mt-24" aria-labelledby="honors-heading">
-            <div className="pb-4 border-b border-[#E5E2DC]">
-              <p className="text-label uppercase text-purdue-gold-text">Recognition</p>
-              <h2 id="honors-heading" className="text-section text-black mt-1">
-                Honors &amp; Awards
-              </h2>
+            <div className="pb-4 border-b border-[#E5E2DC] flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              <div>
+                <p className="text-label uppercase text-purdue-gold-text">Recognition</p>
+                <h2 id="honors-heading" className="text-section text-black mt-1">
+                  Honors &amp; Awards
+                </h2>
+              </div>
+              <div role="group" aria-label="Order of honors and awards" className="flex items-center gap-1 p-1 bg-white border border-[#E5E2DC] rounded-md self-start sm:self-auto">
+                {(['newest', 'oldest'] as const).map((order) => (
+                  <button
+                    key={order}
+                    type="button"
+                    aria-pressed={awardOrder === order}
+                    onClick={() => setAwardOrder(order)}
+                    className={`px-3.5 py-2 text-button rounded transition-colors whitespace-nowrap ${
+                      awardOrder === order ? 'bg-black text-[#CFB991]' : 'text-neutral-700 hover:text-black'
+                    }`}
+                  >
+                    {order === 'newest' ? 'Newest first' : 'Oldest first'}
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="bg-white border border-[#E5E2DC] rounded-md divide-y divide-[#E5E2DC]">
-              {groupAwardsByYear(awards).map((group, groupIdx) => (
-                <div key={`${group.year}-${groupIdx}`} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 p-5 sm:p-6">
-                  <p className="md:col-span-2 font-display text-subsection font-bold text-purdue-gold-text tabular-nums">
+            <ol className="bg-white border border-[#E5E2DC] rounded-md px-5 sm:px-8 py-2">
+              {groupAwardsByYear(timelineAwards).map((group, groupIdx) => (
+                <li
+                  key={`${group.year}-${groupIdx}`}
+                  className="relative grid grid-cols-[1.5rem_1fr] md:grid-cols-[1.5rem_7rem_1fr] gap-x-4 md:gap-x-6 py-5 before:absolute before:left-[calc(0.75rem-1px)] before:top-0 before:bottom-0 before:w-0.5 before:bg-[#E5E2DC] first:before:top-8 last:before:bottom-auto last:before:h-8"
+                >
+                  <span aria-hidden="true" className="relative row-span-2 md:row-span-1 flex justify-center pt-2">
+                    <span className="w-3.5 h-3.5 rounded-full bg-[#CFB991] border border-[#8E6F3E] ring-4 ring-white" />
+                  </span>
+                  <h3 className="font-display text-subsection font-bold text-purdue-gold-text tabular-nums">
                     {group.year}
-                  </p>
-                  <ul className="md:col-span-10 space-y-4">
+                  </h3>
+                  <ul className="col-start-2 md:col-start-3 md:row-start-1 mt-2 md:mt-0 space-y-4">
                     {group.awards.map((award, idx) => (
                       <li key={idx} className="space-y-1">
                         <p className="text-item-title text-black">
@@ -227,11 +265,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                             <a
                               href={award.url}
                               target="_blank"
-                              rel="noreferrer"
+                              rel="noopener noreferrer"
                               className="inline-flex items-center gap-1 hover:text-purdue-gold-text underline-offset-4 hover:underline"
                             >
                               {award.title}
-                              <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                              <ExternalLink className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
                             </a>
                           ) : (
                             award.title
@@ -242,9 +280,9 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                       </li>
                     ))}
                   </ul>
-                </div>
+                </li>
               ))}
-            </div>
+            </ol>
           </section>
         )}
 
@@ -274,8 +312,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
             {previewMembers.length > 0 && (
               <ul className="flex flex-wrap gap-3" aria-label="Selected lab members">
                 {previewMembers.map((m) => (
-                  <li key={m.id} title={m.name} className="w-14 h-14 rounded-full overflow-hidden border border-[#E5E2DC] bg-white">
-                    <LabImage src={m.photoUrl!} alt={m.name} width={56} height={56} className="w-full h-full object-cover" />
+                  <li key={m.id} title={m.name}>
+                    <PersonAvatar name={m.name} photoUrl={m.photoUrl} size="sm" />
                   </li>
                 ))}
               </ul>
