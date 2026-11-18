@@ -90,6 +90,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: 'Visiting Scholar (2021); Co-Founder, Multifold.ai',
     category: 'Visiting Researcher',
     focus: '',
+    photoUrl: `${P}ankit-saurav.jpg`,
     linkedin: li('ankitsaurav'),
   },
   {
