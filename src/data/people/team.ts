@@ -271,7 +271,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
   {
     id: 'alum-guntaka',
     name: 'Madhu Lekha Guntaka',
-    role: 'M.S. 2021, Civil Engineering',
+    role: 'M.S. 2021; Data/Engineering/Digital Transformation, Gap Inc.',
     category: 'Alumni',
     focus: 'Thesis: IoT Based Low-Cost Precision Indoor Farming (defended July 16, 2021).',
     photoUrl: `${P}madhu-lekha-guntaka.jpg`,
@@ -309,7 +309,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
   {
     id: 'alum-singh',
     name: 'Dr. Gurdeep Singh',
-    role: 'Ph.D. 2016; Global Data Engineering Manager, Brother USA',
+    role: 'M.S. 2012; Ph.D. 2015; Global Data Engineering Manager, Brother USA',
     category: 'Alumni',
     focus: 'Marginal land mapping in SWAT, conservation practices, and the LUU Checker framework.',
     photoUrl: `${P}gurdeep-singh.jpg`,
@@ -318,7 +318,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
   {
     id: 'alum-kumar',
     name: 'Eeshan Kumar',
-    role: 'M.S. 2016; Project Manager, WSP, Canada',
+    role: 'M.S. 2015; Project Manager, WSP, Canada',
     category: 'Alumni',
     focus: 'Bioenergy crop impacts on water quality using static and dynamic land use change modeling.',
     photoUrl: `${P}eeshan-kumar.jpg`,
@@ -327,7 +327,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
   {
     id: 'alum-thomas',
     name: 'Nikhil Thomas',
-    role: 'M.S. 2016; Principal Site Reliability Engineer, Red Hat',
+    role: 'M.S. 2015; Principal Site Reliability Engineer, Red Hat',
     category: 'Alumni',
     focus: '',
     photoUrl: `${P}nikhil-thomas.jpg`,

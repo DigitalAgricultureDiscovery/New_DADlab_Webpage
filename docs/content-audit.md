@@ -181,6 +181,9 @@ The People page follows the PI's *DAD Lab Website Updates* workbook (November
   Hieu Phan (2021 SURF Fellow, Miami University).
   Added at the PI's request: Sangeetharani M. (visiting scholar 2022-2023,
   SERB-OVDF Fellow from IIT Bombay).
+- **Alumni updates (PI's workbook, November 18, 2026):** Madhu Lekha
+  Guntaka's current position (Gap Inc.); Dr. Gurdeep Singh's degrees (M.S.
+  2012, Ph.D. 2015); and Eeshan Kumar's and Nikhil Thomas's M.S. year (2015).
 - **Graduated:** Shih-Yun Lin is listed with the alumni (M.S. 2024), following
   the role given in the second workbook.
 - **Groups:** Ben Hancock moved to a new *Former Staff* group. Visiting
