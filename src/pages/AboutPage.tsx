@@ -3,6 +3,8 @@ import { Mail, MapPin, Phone, ExternalLink, ArrowRight } from 'lucide-react';
 import type { SiteProfile } from '../types/cms';
 import { LabImage } from '../components/LabImage';
 import { PersonAvatar } from '../components/PersonAvatar';
+import { ProfileLinks } from '../components/ProfileLinks';
+import { phoneHref } from '../lib/profileLinks';
 import { sanitizeHtmlClient } from '../lib/htmlUtils';
 import { resolveMediaUrl } from '../lib/mediaAssets';
 import { groupAwardsByYear, profileAwards, sortAwards, type AwardOrder } from '../lib/awards';
@@ -64,12 +66,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                     {profile.piEmail}
                   </a>
                 </p>
-                {profile.piPhone && (
-                  <p className="flex items-start gap-2">
-                    <Phone className="w-4 h-4 text-purdue-gold-text shrink-0 mt-0.5" aria-hidden="true" />
-                    <span className="tabular-nums">{profile.piPhone}</span>
-                  </p>
-                )}
                 {(profile.piOffice || profile.labAddress) && (
                   <p className="flex items-start gap-2">
                     <MapPin className="w-4 h-4 text-purdue-gold-text shrink-0 mt-0.5" aria-hidden="true" />
@@ -79,49 +75,25 @@ export const AboutPage: React.FC<AboutPageProps> = ({ profile, onNavigate }) => 
                     </span>
                   </p>
                 )}
+                {profile.piPhone && (
+                  <p className="flex items-start gap-2">
+                    <Phone className="w-4 h-4 text-purdue-gold-text shrink-0 mt-0.5" aria-hidden="true" />
+                    <a href={phoneHref(profile.piPhone)} className="tabular-nums hover:underline">
+                      {profile.piPhone}
+                    </a>
+                  </p>
+                )}
               </div>
-              <div className="pt-3 border-t border-neutral-100 flex flex-wrap gap-4 text-button">
-                {profile.googleScholarUrl && (
-                  <a
-                    href={profile.googleScholarUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-purdue-gold-text hover:text-black"
-                  >
-                    Google Scholar <ExternalLink className="w-3 h-3" />
-                  </a>
-                )}
-                {profile.orcidUrl && (
-                  <a
-                    href={profile.orcidUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-purdue-gold-text hover:text-black"
-                  >
-                    ORCID <ExternalLink className="w-3 h-3" />
-                  </a>
-                )}
-                {profile.githubUrl && (
-                  <a
-                    href={profile.githubUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-purdue-gold-text hover:text-black"
-                  >
-                    GitHub <ExternalLink className="w-3 h-3" />
-                  </a>
-                )}
-                {profile.linkedinUrl && (
-                  <a
-                    href={profile.linkedinUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={`${profile.piName} on LinkedIn (opens in a new tab)`}
-                    className="inline-flex items-center gap-1 text-purdue-gold-text hover:text-black"
-                  >
-                    LinkedIn <ExternalLink className="w-3 h-3" aria-hidden="true" />
-                  </a>
-                )}
+              <div className="pt-3 border-t border-neutral-100">
+                <ProfileLinks
+                  owner={profile.piName}
+                  links={[
+                    { kind: 'scholar', url: profile.googleScholarUrl },
+                    { kind: 'orcid', url: profile.orcidUrl },
+                    { kind: 'github', url: profile.githubUrl },
+                    { kind: 'linkedin', url: profile.linkedinUrl },
+                  ]}
+                />
               </div>
             </div>
           </div>

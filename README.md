@@ -27,7 +27,8 @@ src/
     news/news.ts                 News
     teaching/courses.ts          Courses
     people/team.ts               People and alumni
-  lib/researchFilters.ts         Research page status/topic filtering (pure, tested)
+  lib/researchFilters.ts         Research page status/topic filtering and topic links (pure, tested)
+  lib/publications.ts            Publication order (newest first), shared by Home and Publications
   pages/, components/            React pages and components
 server/                          SQLite CMS (db.ts) and seed adapter (initial-content.ts)
 server.ts                        Express API, CMS, and production server
@@ -47,6 +48,12 @@ Each project in `src/data/research/projects.ts` has:
   the CMS and appears as a "Historical" filter only when used);
 - `topics`: one or more research area ids from `src/data/research/areas.ts`;
 - `research_area`: the primary area's title (always one of its topics).
+
+Each topic has a shareable link, `/research?topic=<slug>` (for example
+`/research?topic=remote-sensing-uas`; on GitHub Pages
+`#/research?topic=remote-sensing-uas`). The slug comes from the area's short
+label; the area id and a slug of its full title also work, and unknown topics
+show all research. The home page's Research Focus Areas cards use these links.
 
 The Research page combines the status and topic filters (AND), shows counts,
 highlights the active filters, offers a reset, and shows a message when

@@ -23,6 +23,7 @@ import type {
   ResearchProjectItem,
   OpportunityItem,
 } from './src/types/cms.ts';
+import { recentPublications } from './src/lib/publications.ts';
 
 initDb();
 
@@ -326,9 +327,8 @@ export function getPublicBootstrap() {
       .filter((n) => n.status === 'published' && n.featured_on_home)
       .slice(0, profile.homeLimits?.news ?? 3);
 
-    const featuredPublications = allPublications
-      .filter((p) => p.featured_on_home)
-      .slice(0, profile.homeLimits?.publications ?? 4);
+    // The home page shows the most recent publications, in Publications page order.
+    const featuredPublications = recentPublications(allPublications, profile.homeLimits?.publications ?? 4);
 
     return {
       profile,
@@ -339,9 +339,7 @@ export function getPublicBootstrap() {
           ? featuredNews
           : allNews.slice(0, 3),
       allNews,
-      featuredPublications: featuredPublications.length
-        ? featuredPublications
-        : allPublications.slice(0, 4),
+      featuredPublications,
       allPublications,
       courses,
       opportunities,

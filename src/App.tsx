@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { readPath, routeHref } from './lib/routing';
+import { readPath, routeHref, splitPath } from './lib/routing';
 import { api, isStaticSite } from './lib/api';
 import type { PublicBootstrapData, UserAccount } from './types/cms';
 import { PublicHeader, PublicFooter } from './components/PublicHeaderFooter';
@@ -16,6 +16,7 @@ import { AdminDashboard } from './pages/admin/AdminDashboard';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => readPath());
+  const { route: routePath, query } = splitPath(currentPath);
   const [publicData, setPublicData] = useState<PublicBootstrapData | null>(null);
   const [currentUser, setCurrentUser] = useState<UserAccount | null>(null);
   const [loading, setLoading] = useState(true);
@@ -62,17 +63,17 @@ export default function App() {
   useEffect(() => {
     if (!publicData) return;
     const base = `${publicData.profile.shortTitle} | ${publicData.profile.institution}`;
-    if (currentPath === '/') document.title = `${publicData.profile.labName} | ${publicData.profile.institution}`;
-    else if (currentPath.startsWith('/about')) document.title = `About | ${base}`;
-    else if (currentPath.startsWith('/people')) document.title = `People | ${base}`;
-    else if (currentPath.startsWith('/research')) document.title = `Research | ${base}`;
-    else if (currentPath.startsWith('/publications')) document.title = `Publications | ${base}`;
-    else if (currentPath.startsWith('/news')) document.title = `News | ${base}`;
-    else if (currentPath.startsWith('/teaching')) document.title = `Teaching | ${base}`;
-    else if (currentPath.startsWith('/opportunities')) document.title = `Opportunities | ${base}`;
-    else if (currentPath.startsWith('/contact')) document.title = `Contact | ${base}`;
-    else if (currentPath.startsWith('/admin')) document.title = `CMS Administration | ${base}`;
-  }, [currentPath, publicData]);
+    if (routePath === '/') document.title = `${publicData.profile.labName} | ${publicData.profile.institution}`;
+    else if (routePath.startsWith('/about')) document.title = `About | ${base}`;
+    else if (routePath.startsWith('/people')) document.title = `People | ${base}`;
+    else if (routePath.startsWith('/research')) document.title = `Research | ${base}`;
+    else if (routePath.startsWith('/publications')) document.title = `Publications | ${base}`;
+    else if (routePath.startsWith('/news')) document.title = `News | ${base}`;
+    else if (routePath.startsWith('/teaching')) document.title = `Teaching | ${base}`;
+    else if (routePath.startsWith('/opportunities')) document.title = `Opportunities | ${base}`;
+    else if (routePath.startsWith('/contact')) document.title = `Contact | ${base}`;
+    else if (routePath.startsWith('/admin')) document.title = `CMS Administration | ${base}`;
+  }, [routePath, publicData]);
 
   if (loading) {
     return (
@@ -108,7 +109,7 @@ export default function App() {
     );
   }
 
-  if (currentPath.startsWith('/admin') && isStaticSite) {
+  if (routePath.startsWith('/admin') && isStaticSite) {
     return <main className="max-w-2xl mx-auto p-8 space-y-4">
       <h1 className="font-display text-page text-black">CMS administration</h1>
       <p>CMS editing requires the laboratory server. This website publishes the public laboratory content.</p>
@@ -116,7 +117,7 @@ export default function App() {
     </main>;
   }
 
-  if (currentPath.startsWith('/admin')) {
+  if (routePath.startsWith('/admin')) {
     return (
       <AdminDashboard
         currentUser={currentUser}
@@ -129,16 +130,16 @@ export default function App() {
   }
 
   const renderPublicPage = () => {
-    if (currentPath === '/' || currentPath === '') {
+    if (routePath === '/' || routePath === '') {
       return <HomePage data={publicData} onNavigate={navigate} />;
     }
-    if (currentPath === '/people') return <PeoplePage profile={publicData.profile} />;
-    if (currentPath === '/about') {
+    if (routePath === '/people') return <PeoplePage profile={publicData.profile} />;
+    if (routePath === '/about') {
       return <AboutPage profile={publicData.profile} onNavigate={navigate} />;
     }
-    if (currentPath === '/research' || currentPath.startsWith('/research/')) {
-      const slug = currentPath.startsWith('/research/')
-        ? currentPath.replace('/research/', '')
+    if (routePath === '/research' || routePath.startsWith('/research/')) {
+      const slug = routePath.startsWith('/research/')
+        ? routePath.replace('/research/', '')
         : undefined;
       return (
         <ResearchPage
@@ -146,30 +147,31 @@ export default function App() {
           publications={publicData.allPublications}
           researchAreas={publicData.profile.researchAreas}
           selectedSlug={slug}
+          topicParam={slug ? undefined : query.get('topic')}
           onNavigate={navigate}
         />
       );
     }
-    if (currentPath === '/publications') {
+    if (routePath === '/publications') {
       return <PublicationsPage publications={publicData.allPublications} scholarUrl={publicData.profile.googleScholarUrl} />;
     }
-    if (currentPath === '/news' || currentPath.startsWith('/news/')) {
-      const slug = currentPath.startsWith('/news/')
-        ? currentPath.replace('/news/', '')
+    if (routePath === '/news' || routePath.startsWith('/news/')) {
+      const slug = routePath.startsWith('/news/')
+        ? routePath.replace('/news/', '')
         : undefined;
       return (
         <NewsPage news={publicData.allNews} selectedSlug={slug} onNavigate={navigate} />
       );
     }
-    if (currentPath === '/teaching') {
+    if (routePath === '/teaching') {
       return <TeachingPage courses={publicData.courses} profile={publicData.profile} />;
     }
-    if (currentPath === '/opportunities') {
+    if (routePath === '/opportunities') {
       return (
         <OpportunitiesPage opportunities={publicData.opportunities} onNavigate={navigate} />
       );
     }
-    if (currentPath === '/contact') {
+    if (routePath === '/contact') {
       return <ContactPage profile={publicData.profile} />;
     }
     return <HomePage data={publicData} onNavigate={navigate} />;
@@ -179,12 +181,13 @@ export default function App() {
     <div className="min-h-screen flex flex-col bg-[#FAF9F6]">
       <PublicHeader
         profile={publicData.profile}
-        currentPath={currentPath}
+        currentPath={routePath}
         onNavigate={navigate}
         currentUser={currentUser}
       />
       {publicData.profile.reviewNote && <p className="bg-[#CFB991] text-black px-4 py-3 text-meta text-center">{publicData.profile.reviewNote}</p>}
-      <main className="flex-1">{renderPublicPage()}</main>
+      {/* Keyed on the full path so each page change replays a short fade-in. */}
+      <main key={currentPath} className="flex-1 page-enter">{renderPublicPage()}</main>
       <PublicFooter profile={publicData.profile} onNavigate={navigate} />
     </div>
   );

@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { Search, ExternalLink, FileText, Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import type { PublicationItem } from '../types/cms';
+import { sortPublications } from '../lib/publications';
+import { ProfileIcon } from '../components/ProfileLinks';
 
 interface PublicationsPageProps {
   publications: PublicationItem[];
@@ -45,7 +47,7 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
 
   const groupedByYear = useMemo(() => {
     const map = new Map<number, PublicationItem[]>();
-    for (const pub of filtered) {
+    for (const pub of sortPublications(filtered)) {
       const list = map.get(pub.year) || [];
       list.push(pub);
       map.set(pub.year, list);
@@ -87,12 +89,13 @@ export const PublicationsPage: React.FC<PublicationsPageProps> = ({ publications
             {scholarUrl && (
               <a
                 href={scholarUrl}
+                title="Google Scholar"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 mt-4 text-button text-purdue-gold-text underline-offset-4 hover:text-black hover:underline"
               >
+                <ProfileIcon kind="scholar" className="w-4 h-4" />
                 Citations on Google Scholar
-                <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
                 <span className="sr-only">(opens in a new tab)</span>
               </a>
             )}

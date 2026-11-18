@@ -1,5 +1,7 @@
 import { ExternalLink, Mail } from 'lucide-react';
 import { PersonAvatar } from '../components/PersonAvatar';
+import { ProfileLinks, type ProfileLinkInput } from '../components/ProfileLinks';
+import { profileLinkKind } from '../lib/profileLinks';
 import type { SiteProfile, TeamMember } from '../types/cms';
 
 const GROUPS: { category: TeamMember['category']; heading: string }[] = [
@@ -13,6 +15,14 @@ const GROUPS: { category: TeamMember['category']; heading: string }[] = [
   { category: 'Former Staff', heading: 'Former Staff' },
   { category: 'Alumni', heading: 'Alumni' },
 ];
+
+/** LinkedIn, plus the website when it is a Scholar/GitHub/ORCID/LinkedIn profile. */
+function memberProfileLinks(member: TeamMember): ProfileLinkInput[] {
+  const links: ProfileLinkInput[] = [{ kind: 'linkedin', url: member.linkedin }];
+  const websiteKind = member.website ? profileLinkKind(member.website) : undefined;
+  if (websiteKind && !(websiteKind === 'linkedin' && member.linkedin)) links.push({ kind: websiteKind, url: member.website });
+  return links;
+}
 
 const LINK = 'inline-flex items-center gap-1.5 text-meta font-medium text-purdue-gold-text underline-offset-4 hover:text-black hover:underline';
 
@@ -34,9 +44,9 @@ export function PeoplePage({profile}: {profile: SiteProfile}) {
             <p className="text-body font-medium text-purdue-gold-text">{member.role}</p>
             {member.focus && <p className="text-card text-neutral-700 pt-1">{member.focus}</p>}
           </div>
-          {(member.email || member.linkedin || member.website) && <div className="pt-4 mt-4 border-t border-neutral-100 flex flex-wrap gap-x-5 gap-y-2">
-            {member.linkedin && <a className={LINK} href={member.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`${member.name} on LinkedIn (opens in a new tab)`}>LinkedIn <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" /></a>}
-            {member.website && <a className={LINK} href={member.website} target="_blank" rel="noopener noreferrer" aria-label={`${member.name}'s professional profile (opens in a new tab)`}>Website <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" /></a>}
+          {(member.email || member.linkedin || member.website) && <div className="pt-4 mt-4 border-t border-neutral-100 flex flex-wrap items-center gap-x-5 gap-y-2">
+            <ProfileLinks owner={member.name} links={memberProfileLinks(member)} />
+            {member.website && !profileLinkKind(member.website) && <a className={LINK} href={member.website} target="_blank" rel="noopener noreferrer" aria-label={`${member.name}'s professional profile (opens in a new tab)`}>Website <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" /></a>}
             {member.email && <a className={`${LINK} break-all`} href={`mailto:${member.email}`}><Mail className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />{member.email}</a>}
           </div>}
         </article>)}</div>
