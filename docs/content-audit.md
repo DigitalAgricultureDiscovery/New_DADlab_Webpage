@@ -125,8 +125,9 @@ page filters by status and topic with AND logic.
 
 - **Title:** the former site says *Associate Professor*; the new site keeps
   *Professor* from the personalization brief. Please confirm.
-- **Phone:** the Contact page lists +1 (501) 954-0365 (an Arkansas area code).
-  It was not published; add it in Site Profile if it should appear.
+- **Phone:** the former Contact page listed +1 (501) 954-0365 (an Arkansas
+  area code). Replaced with the PI's office number, 765-494-5013, as requested
+  in November 2026; it appears on the About and Contact pages.
 - **Bachelor's degree year** is not on the former site and is not shown.
 - **Current roster:** updated from the PI's November 2026 workbook (see
   *People and LinkedIn* below). Four entries the workbook marked for

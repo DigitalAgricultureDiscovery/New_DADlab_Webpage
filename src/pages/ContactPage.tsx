@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, MapPin, Phone, Clock, CheckCircle2 } from 'lucide-react';
+import { phoneHref } from '../lib/profileLinks';
 import type { SiteProfile } from '../types/cms';
 import { api, isStaticSite } from '../lib/api';
 
@@ -90,13 +91,20 @@ export const ContactPage: React.FC<ContactPageProps> = ({ profile }) => {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
-                  <Phone className="w-4 h-4 text-purdue-gold-text shrink-0 mt-1" />
-                  <div>
-                    <p className="font-semibold text-black">Office Telephone</p>
-                    <p className="text-neutral-600 tabular-nums">{profile.piPhone}</p>
+                {profile.piPhone && (
+                  <div className="flex items-start gap-3">
+                    <Phone className="w-4 h-4 text-purdue-gold-text shrink-0 mt-1" aria-hidden="true" />
+                    <p>
+                      <span className="font-semibold text-black">Office:</span>{' '}
+                      <a
+                        href={phoneHref(profile.piPhone)}
+                        className="text-purdue-gold-text hover:text-black underline underline-offset-4 tabular-nums"
+                      >
+                        {profile.piPhone}
+                      </a>
+                    </p>
                   </div>
-                </div>
+                )}
 
                 <div className="flex items-start gap-3">
                   <Clock className="w-4 h-4 text-purdue-gold-text shrink-0 mt-1" />

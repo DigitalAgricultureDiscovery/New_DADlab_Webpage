@@ -561,14 +561,9 @@ export const PublicationsManager: React.FC<PublicationsManagerProps> = ({
         </div>
 
         <div className="flex items-center justify-between pt-3 border-t border-neutral-200">
-          <label className="inline-flex items-center gap-2 text-xs font-medium text-neutral-800 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={Boolean(editing.featured_on_home)}
-              onChange={(e) => setEditing({ ...editing, featured_on_home: e.target.checked })}
-            />
-            Display in Recent Publications on Home Page
-          </label>
+          <p className="text-xs text-neutral-600">
+            The home page lists the most recent publications automatically (newest first).
+          </p>
           <button
             type="submit"
             disabled={saving}

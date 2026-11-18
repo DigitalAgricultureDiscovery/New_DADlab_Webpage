@@ -85,3 +85,46 @@ export function topicLabel(id: string, areas: ResearchArea[] = []): string {
   const area = areas.find((a) => a.id === id);
   return area ? area.shortLabel || area.title : id;
 }
+
+/** "Remote Sensing & UAS" -> "remote-sensing-uas". */
+export function slugify(text: string): string {
+  return text
+    .normalize('NFKD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/&/g, ' ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+/** URL slug for a topic: its short label (or title) slugified; unknown ids are slugified as-is. */
+export function topicSlug(id: string, areas: ResearchArea[] = []): string {
+  const area = areas.find((a) => a.id === id);
+  return slugify(area ? area.shortLabel || area.title : id) || id;
+}
+
+/** Research page URL with a topic filter applied, e.g. `/research?topic=remote-sensing-uas`. */
+export function researchTopicPath(id: string, areas: ResearchArea[] = []): string {
+  return id === 'all' ? '/research' : `/research?topic=${encodeURIComponent(topicSlug(id, areas))}`;
+}
+
+/**
+ * Resolves a `?topic=` value to a topic filter id. Accepts the topic's slug,
+ * its area id, or a slug of its full title, so older links keep working when
+ * a short label is edited. Unknown or empty values give `undefined`, meaning
+ * "show all research".
+ */
+export function topicFromParam(param: string | null | undefined, projects: ProjectLike[], areas: ResearchArea[] = []): string | undefined {
+  const value = (param || '').trim();
+  if (!value) return undefined;
+  const wanted = slugify(value);
+  const ids = topicOptions(projects, DEFAULT_FILTERS, areas)
+    .map((option) => option.value)
+    .filter((id) => id !== 'all');
+  for (const id of ids) {
+    const area = areas.find((a) => a.id === id);
+    const candidates = [id, topicSlug(id, areas), area ? slugify(area.title) : ''];
+    if (candidates.some((c) => c && (c === value || c === wanted))) return id;
+  }
+  return undefined;
+}

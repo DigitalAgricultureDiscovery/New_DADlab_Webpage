@@ -1,14 +1,17 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ExternalLink, FileText, RotateCcw } from 'lucide-react';
 import type { PublicationItem, ResearchProjectItem, SiteProfile } from '../types/cms';
 import { LabImage } from '../components/LabImage';
 import { sanitizeHtmlClient } from '../lib/htmlUtils';
+import { replacePath } from '../lib/routing';
 import {
   DEFAULT_FILTERS,
   STATUS_LABELS,
   filterProjects,
   projectTopicIds,
+  researchTopicPath,
   statusOptions,
+  topicFromParam,
   topicLabel,
   topicOptions,
   type FilterOption,
@@ -20,6 +23,11 @@ interface ResearchPageProps {
   researchAreas?: SiteProfile['researchAreas'];
   publications: PublicationItem[];
   selectedSlug?: string;
+  /**
+   * The `?topic=` value from the URL. When present, the list opens with that
+   * topic selected (or with all research if the topic is unknown).
+   */
+  topicParam?: string | null;
   onNavigate: (path: string) => void;
 }
 
@@ -84,11 +92,35 @@ export const ResearchPage: React.FC<ResearchPageProps> = ({
   researchAreas,
   publications,
   selectedSlug,
+  topicParam,
   onNavigate,
 }) => {
   const areas = researchAreas || [];
-  const [filters, setFiltersState] = useState<ResearchFilters>(rememberedFilters);
+  const linkedFromUrl = !selectedSlug && topicParam != null;
+  const [filters, setFiltersState] = useState<ResearchFilters>(() => {
+    if (!linkedFromUrl) return rememberedFilters;
+    // A shared or bookmarked topic link wins over remembered filters.
+    const topic = topicFromParam(topicParam, projects, areas);
+    rememberedFilters = topic ? { status: 'all', topic } : DEFAULT_FILTERS;
+    return rememberedFilters;
+  });
   const filterPanelRef = useRef<HTMLElement>(null);
+
+  // Keep the address bar in step with the topic filter so it can be bookmarked or shared.
+  useEffect(() => {
+    if (!selectedSlug) replacePath(researchTopicPath(filters.topic, areas));
+  }, [selectedSlug, filters.topic, areas]);
+
+  // Arriving from a topic link: once the page has faded in, bring the filter bar into view.
+  useEffect(() => {
+    if (!linkedFromUrl) return;
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const timer = window.setTimeout(() => {
+      filterPanelRef.current?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }, reduceMotion ? 0 : 180);
+    return () => window.clearTimeout(timer);
+    // Run once per arrival; the page remounts on each navigation.
+  }, []);
 
   const setFilters = (next: ResearchFilters) => {
     rememberedFilters = next;

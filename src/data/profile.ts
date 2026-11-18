@@ -30,7 +30,7 @@ export const SITE_PROFILE: SiteProfile = {
   piName: 'Dr. Dharmendra Saraswat',
   piTitle: 'Professor, Department of Agricultural and Biological Engineering',
   piEmail: 'saraswat@purdue.edu',
-  piPhone: '',
+  piPhone: '765-494-5013',
   piOffice: 'ABE 3041 P',
   piPortraitUrl: '/images/people/principal-investigator/dharmendra-saraswat.jpg',
   piBioHtml: [

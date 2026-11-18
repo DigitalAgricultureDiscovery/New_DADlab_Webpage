@@ -3,7 +3,9 @@ import { ArrowRight, ExternalLink, FileText, BookOpen, FlaskConical, Briefcase }
 import type { PublicBootstrapData } from '../types/cms';
 import { LabImage } from '../components/LabImage';
 import { formatAcademicDate } from '../lib/htmlUtils';
-import { STATUS_LABELS } from '../lib/researchFilters';
+import { STATUS_LABELS, researchTopicPath } from '../lib/researchFilters';
+import { recentPublications } from '../lib/publications';
+import { routeHref } from '../lib/routing';
 
 interface HomePageProps {
   data: PublicBootstrapData;
@@ -15,9 +17,12 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
     profile,
     featuredProjects,
     featuredNews,
-    featuredPublications,
+    allPublications,
     opportunities,
   } = data;
+
+  // Newest first, in the same order as the Publications page.
+  const latestPublications = recentPublications(allPublications, profile.homeLimits?.publications ?? 4);
 
   const openOpportunities = opportunities.filter((o) => o.position_status === 'Open').slice(0, 3);
   const leadNews = featuredNews[0];
@@ -98,9 +103,31 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
           </div>
         </div>
         <h2 className="text-section text-black pt-6">Research Focus Areas</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">{profile.researchAreas?.map(area => <article key={area.id} className="bg-white p-6 border border-[#E5E2DC] rounded-md">
-          <h3 className="text-card-title text-black">{area.title}</h3><p className="mt-2 text-card text-neutral-700">{area.description}</p>
-        </article>)}</div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {profile.researchAreas?.map((area) => {
+            const path = researchTopicPath(area.id, profile.researchAreas);
+            return (
+              <a
+                key={area.id}
+                href={routeHref(path)}
+                onClick={(event) => {
+                  // Let modified clicks (new tab/window) use the real link.
+                  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+                  event.preventDefault();
+                  onNavigate(path);
+                }}
+                className="group bg-white p-6 border border-[#E5E2DC] rounded-md flex flex-col cursor-pointer transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md hover:border-[#CFB991] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#CFB991] motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+              >
+                <h3 className="text-card-title text-black group-hover:text-purdue-gold-text transition-colors">{area.title}</h3>
+                <p className="mt-2 text-card text-neutral-700 flex-1">{area.description}</p>
+                <span className="mt-4 inline-flex items-center gap-1.5 text-button text-black group-hover:text-purdue-gold-text transition-colors">
+                  View research
+                  <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                </span>
+              </a>
+            );
+          })}
+        </div>
       </section>
       {/* Quick Links Institutional Bar */}
       <section className="bg-white border-b border-[#E5E2DC]">
@@ -419,7 +446,7 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
         </div>
 
         <div className="divide-y divide-[#E5E2DC]">
-          {featuredPublications.map((pub) => (
+          {latestPublications.map((pub) => (
             <article key={pub.id} className="py-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-baseline">
               <div className="md:col-span-2 flex items-center gap-2 text-caption tabular-nums text-neutral-600">
                 <span className="font-semibold text-black">{pub.year}</span>
