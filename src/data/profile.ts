@@ -54,7 +54,7 @@ export const SITE_PROFILE: SiteProfile = {
   officeHours: '',
   googleScholarUrl: 'https://scholar.google.com/citations?user=ZKWeTlUAAAAJ&hl=en',
   linkedinUrl: 'https://www.linkedin.com/in/dharmendra-saraswat-40934411',
-  orcidUrl: '',
+  orcidUrl: 'https://orcid.org/0000-0001-8882-0510',
   githubUrl: 'https://github.com/DigitalAgricultureDiscovery',
   homeLimits: {
     projects: 3,
