@@ -46,3 +46,11 @@ test('initials avatars use first and last name initials', () => {
   assert.equal(personInitials('Madonna'), 'M');
   assert.equal(personInitials(''), '?');
 });
+
+test('alumni degree years and positions follow the November 18 workbook', () => {
+  const role = (id: string) => TEAM_MEMBERS.find((m) => m.id === id)?.role;
+  assert.equal(role('alum-guntaka'), 'M.S. 2021; Data/Engineering/Digital Transformation, Gap Inc.');
+  assert.equal(role('alum-singh'), 'M.S. 2012; Ph.D. 2015; Global Data Engineering Manager, Brother USA');
+  assert.equal(role('alum-kumar'), 'M.S. 2015; Project Manager, WSP, Canada');
+  assert.equal(role('alum-thomas'), 'M.S. 2015; Principal Site Reliability Engineer, Red Hat');
+});
