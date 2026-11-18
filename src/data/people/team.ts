@@ -106,6 +106,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: '2026 SURF Fellow',
     category: 'Undergraduate',
     focus: '',
+    photoUrl: `${P}udaiveer-singh.jpg`,
     linkedin: li('udaiveer-singh-profile'),
   },
   {
