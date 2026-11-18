@@ -193,7 +193,7 @@ The People page follows the PI's *DAD Lab Website Updates* workbook (November
   Generic placeholder descriptions ("Former DAD Lab member.") were removed.
 - **Photos:** LinkedIn photos were not copied: LinkedIn's terms prohibit
   scraping, and profile photos need the person's consent. People without a
-  photo on file (12) show a circular initials avatar until a photo is added
+  photo on file (11) show a circular initials avatar until a photo is added
   in the CMS (`photoUrl`) or under `public/images/people/members/`.
 
 The awards timeline on the About page is sorted by year, newest first, with

@@ -220,6 +220,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: '2021 Purdue-IIT Kharagpur Summer Intern',
     category: 'Undergraduate',
     focus: '',
+    photoUrl: `${P}sanjeevani-tiwari.jpg`,
     linkedin: li('sanjeevani-ratna-tiwari-3051951bb'),
   },
   {
