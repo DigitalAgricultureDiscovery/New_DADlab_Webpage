@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Search, ExternalLink, FileText, Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
-import type { PublicationItem } from '../types/cms';
+import type { PublicationItem } from '../types/content';
 import { sortPublications } from '../lib/publications';
 import { ProfileIcon } from '../components/ProfileLinks';
 

@@ -1,4 +1,4 @@
-import type { TeamMember } from '../../types/cms.ts';
+import type { TeamMember } from '../../types/content.ts';
 
 /**
  * Lab roster. Sources: the former DAD Lab website "People" page and its dated

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Mail, MapPin, Phone, ExternalLink, ArrowRight } from 'lucide-react';
-import type { SiteProfile } from '../types/cms';
+import type { SiteProfile } from '../types/content';
 import { LabImage } from '../components/LabImage';
 import { PersonAvatar } from '../components/PersonAvatar';
 import { ProfileLinks } from '../components/ProfileLinks';

@@ -2,7 +2,7 @@ import { routeHref } from '../lib/routing';
 import { resolveMediaUrl } from '../lib/mediaAssets';
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import type { SiteProfile, UserAccount } from '../types/cms';
+import type { SiteProfile } from '../types/content';
 
 export interface NavItem {
   label: string;
@@ -25,14 +25,12 @@ interface HeaderProps {
   profile: SiteProfile;
   currentPath: string;
   onNavigate: (path: string) => void;
-  currentUser: UserAccount | null;
 }
 
 export const PublicHeader: React.FC<HeaderProps> = ({
   profile,
   currentPath,
   onNavigate,
-  currentUser,
 }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -94,21 +92,13 @@ export const PublicHeader: React.FC<HeaderProps> = ({
           })}
         </nav>
 
-        {/* Zone 3: Single Primary Action */}
-        <div className="flex items-center gap-3 shrink-0">
-          <a
-            href={routeHref('/admin')}
-            onClick={(e) => handleLinkClick(e, '/admin')}
-            className="hidden sm:inline-flex items-center px-4 py-2 text-button bg-[#CFB991] text-black rounded hover:bg-[#DFCCA8] transition-colors whitespace-nowrap shrink-0"
-          >
-            {currentUser ? 'CMS Dashboard' : 'Admin Login'}
-          </a>
-
+        {/* Zone 3: Mobile menu toggle */}
+        <div className="flex items-center gap-3 shrink-0 xl:hidden">
           <button
             type="button"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            className="xl:hidden p-2 text-neutral-200 hover:text-[#CFB991] transition-colors"
+            className="p-2 text-neutral-200 hover:text-[#CFB991] transition-colors"
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -135,15 +125,6 @@ export const PublicHeader: React.FC<HeaderProps> = ({
               </a>
             );
           })}
-          <div className="pt-3 mt-2 border-t border-neutral-800">
-            <a
-              href={routeHref('/admin')}
-              onClick={(e) => handleLinkClick(e, '/admin')}
-              className="block w-full text-center px-4 py-2.5 text-button bg-[#CFB991] text-black rounded hover:bg-[#DFCCA8]"
-            >
-              {currentUser ? 'CMS Dashboard' : 'Admin Login'}
-            </a>
-          </div>
         </div>
       )}
     </header>
@@ -226,17 +207,10 @@ export const PublicFooter: React.FC<FooterProps> = ({ profile, onNavigate }) => 
           </div>
         </div>
 
-        <div className="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-caption text-neutral-400">
+        <div className="pt-6 text-caption text-neutral-400">
           <p>
             © {new Date().getFullYear()} {profile.labName} · {profile.institution}, West Lafayette, IN
           </p>
-          <a
-            href={routeHref('/admin')}
-            onClick={(e) => handleLink(e, '/admin')}
-            className="text-neutral-400 hover:text-[#CFB991] transition-colors"
-          >
-            Laboratory Content Management Portal →
-          </a>
         </div>
       </div>
     </footer>

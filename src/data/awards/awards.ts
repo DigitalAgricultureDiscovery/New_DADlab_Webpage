@@ -1,4 +1,4 @@
-import type { Award } from '../../types/cms.ts';
+import type { Award } from '../../types/content.ts';
 
 const ASABE = 'American Society of Agricultural and Biological Engineers (ASABE)';
 const AABFEIO = 'Association of Agricultural Biological and Food Engineers of Indian Origin (AABFEIO)';

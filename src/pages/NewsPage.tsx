@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import type { NewsItem } from '../types/cms';
+import type { NewsItem } from '../types/content';
 import { LabImage } from '../components/LabImage';
 import { formatAcademicDate, formatMonthYear, sanitizeHtmlClient } from '../lib/htmlUtils';
 

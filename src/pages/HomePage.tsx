@@ -1,14 +1,13 @@
 import React from 'react';
 import { ArrowRight, ExternalLink, FileText, BookOpen, FlaskConical, Briefcase } from 'lucide-react';
-import type { PublicBootstrapData } from '../types/cms';
+import type { SiteContent } from '../types/content';
 import { LabImage } from '../components/LabImage';
 import { formatAcademicDate } from '../lib/htmlUtils';
 import { STATUS_LABELS, researchTopicPath } from '../lib/researchFilters';
-import { recentPublications } from '../lib/publications';
 import { routeHref } from '../lib/routing';
 
 interface HomePageProps {
-  data: PublicBootstrapData;
+  data: SiteContent;
   onNavigate: (path: string) => void;
 }
 
@@ -17,14 +16,13 @@ export const HomePage: React.FC<HomePageProps> = ({ data, onNavigate }) => {
     profile,
     featuredProjects,
     featuredNews,
-    allPublications,
+    featuredPublications: latestPublications, // newest first, as on the Publications page
     opportunities,
   } = data;
 
-  // Newest first, in the same order as the Publications page.
-  const latestPublications = recentPublications(allPublications, profile.homeLimits?.publications ?? 4);
-
-  const openOpportunities = opportunities.filter((o) => o.position_status === 'Open').slice(0, 3);
+  const openOpportunities = opportunities
+    .filter((o) => o.position_status === 'Open')
+    .slice(0, profile.homeLimits?.opportunities ?? 3);
   const leadNews = featuredNews[0];
   const secondaryNews = featuredNews.slice(1, 4);
 

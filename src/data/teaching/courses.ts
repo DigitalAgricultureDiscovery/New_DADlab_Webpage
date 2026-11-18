@@ -1,6 +1,6 @@
-import type { CourseItem } from '../../types/cms.ts';
+import type { CourseItem } from '../../types/content.ts';
 
-export type CourseSeed = Omit<CourseItem, 'id' | 'created_at' | 'updated_at'>;
+export type CourseSeed = Omit<CourseItem, 'id'>;
 
 const course = (c: Pick<CourseSeed, 'course_number' | 'title' | 'status' | 'description_html'> & Partial<CourseSeed>): CourseSeed => ({
   semester: '',

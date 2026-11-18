@@ -1,4 +1,4 @@
-import type { ResearchArea } from '../../types/cms.ts';
+import type { ResearchArea } from '../../types/content.ts';
 
 /**
  * Research focus areas. These double as the topic taxonomy for the Research

@@ -1,7 +1,7 @@
-import type { ResearchProjectItem } from '../../types/cms.ts';
+import type { ResearchProjectItem } from '../../types/content.ts';
 import { areaTitle } from './areas.ts';
 
-export type ProjectSeed = Omit<ResearchProjectItem, 'created_at' | 'updated_at'>;
+export type ProjectSeed = ResearchProjectItem;
 
 /**
  * Research projects migrated from the former DAD Lab website

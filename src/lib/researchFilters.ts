@@ -1,4 +1,4 @@
-import type { ProjectStatus, ResearchArea, ResearchProjectItem } from '../types/cms.ts';
+import type { ProjectStatus, ResearchArea, ResearchProjectItem } from '../types/content.ts';
 
 /** Filter values: `'all'` or a concrete status / research area id. */
 export type StatusFilter = 'all' | ProjectStatus;
