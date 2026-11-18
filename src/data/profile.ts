@@ -53,7 +53,7 @@ export const SITE_PROFILE: SiteProfile = {
     'Department of Agricultural and Biological Engineering, Purdue University, 225 S. University Street, West Lafayette, IN 47907',
   officeHours: '',
   googleScholarUrl: 'https://scholar.google.com/citations?user=ZKWeTlUAAAAJ&hl=en',
-  linkedinUrl: 'https://www.linkedin.com/in/dharmendra-saraswat-40934411',
+  linkedinUrl: 'https://www.linkedin.com/in/dharmendra-saraswat-40934411/',
   orcidUrl: 'https://orcid.org/0000-0001-8882-0510',
   githubUrl: 'https://github.com/DigitalAgricultureDiscovery',
   homeLimits: {
