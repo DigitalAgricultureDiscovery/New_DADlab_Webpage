@@ -62,6 +62,7 @@ export const PublicHeader: React.FC<HeaderProps> = ({
               width={40}
               height={40}
               className="w-10 h-10 object-contain shrink-0"
+              data-header-logo=""
             />
           )}
           <span>{profile.shortTitle}</span>

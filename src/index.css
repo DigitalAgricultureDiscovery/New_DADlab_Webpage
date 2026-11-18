@@ -246,3 +246,98 @@
     animation: none;
   }
 }
+
+/*
+ * Welcome animation (src/components/IntroSplash.tsx). Only opacity and
+ * transform change, so it is compositor-friendly on low-end devices.
+ */
+.intro-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.intro-splash__backdrop {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  transition: opacity 600ms ease-in 150ms;
+}
+
+/* Leaving: the backdrop fades while the logo flies; the page takes clicks again. */
+.intro-splash--leaving {
+  pointer-events: none;
+}
+
+.intro-splash--leaving .intro-splash__backdrop {
+  opacity: 0;
+}
+
+.intro-splash__stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.intro-splash__logo {
+  width: clamp(112px, 28vw, 160px);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(0.92);
+  transition:
+    opacity 500ms ease-out,
+    transform 800ms cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform, opacity;
+}
+
+.intro-splash__logo.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.intro-splash__text {
+  margin: 0;
+  opacity: 0;
+  transition:
+    opacity 300ms ease,
+    transform 450ms ease-out;
+}
+
+.intro-splash__text--top {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(0.875rem, 0.8rem + 0.4vw, 1.0625rem);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #cfb991;
+  transform: translateY(8px);
+}
+
+.intro-splash__text--bottom {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+  line-height: 1.1;
+  color: #fff;
+  transform: translateY(-8px);
+}
+
+.intro-splash__text.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Keep the header logo hidden until the flying logo lands on it. */
+html[data-intro='playing'] [data-header-logo] {
+  visibility: hidden;
+}
