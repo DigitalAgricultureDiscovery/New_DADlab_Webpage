@@ -114,6 +114,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: '2025 Purdue-IIT Gandhinagar Summer Intern',
     category: 'Undergraduate',
     focus: '',
+    photoUrl: `${P}nihar-shah.jpg`,
     linkedin: li('nihar-shah-63162425a'),
   },
   {
