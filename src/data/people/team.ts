@@ -64,6 +64,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: 'Visiting Scholar (2022-2023), SERB-OVDF Fellow from the Indian Institute of Technology Bombay',
     category: 'Visiting Researcher',
     focus: 'Remote sensing of evapotranspiration and crop coefficients over vineyards.',
+    photoUrl: `${P}sangeetharani-m.jpg`,
     linkedin: li('sangeetharani-m-86578477'),
   },
   {
