@@ -98,6 +98,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: 'Visiting Scholar (2021); Senior Data Scientist, Policybazaar',
     category: 'Visiting Researcher',
     focus: '',
+    photoUrl: `${P}ankit-kumar-saini.jpg`,
     linkedin: li('ankit-kumar-saini'),
   },
   {
