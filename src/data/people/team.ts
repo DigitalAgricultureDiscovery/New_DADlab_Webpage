@@ -48,6 +48,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: 'Ph.D. Scholar, Plaksha University',
     category: 'Visiting Researcher',
     focus: '',
+    photoUrl: `${P}rajiv-ranjan.jpg`,
     linkedin: li('rajiv-ranjan-248a59103'),
   },
   {
