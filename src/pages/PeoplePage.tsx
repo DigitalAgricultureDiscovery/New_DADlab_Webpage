@@ -2,7 +2,7 @@ import { ExternalLink, Mail } from 'lucide-react';
 import { PersonAvatar } from '../components/PersonAvatar';
 import { ProfileLinks, type ProfileLinkInput } from '../components/ProfileLinks';
 import { profileLinkKind } from '../lib/profileLinks';
-import type { SiteProfile, TeamMember } from '../types/cms';
+import type { SiteProfile, TeamMember } from '../types/content';
 
 const GROUPS: { category: TeamMember['category']; heading: string }[] = [
   { category: 'Faculty', heading: 'Principal Investigator' },

@@ -22,8 +22,6 @@
   --font-sans: var(--font-body);
   --font-serif: var(--font-body);
   --font-mono: var(--font-body);
-  /* True monospace, kept only for the raw HTML source editor in the CMS. */
-  --font-code: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   /*
    * Type scale. Fluid sizes interpolate linearly between a 375px and a 1440px
@@ -142,7 +140,7 @@
   }
 
   /*
-   * Rich text from data/CMS (course descriptions, project objectives, news content).
+   * Rich text from src/data/ (course descriptions, project objectives, news content).
    * `.prose-editorial` switches long-form narratives (biography, research narratives,
    * news articles) to the editorial serif.
    */

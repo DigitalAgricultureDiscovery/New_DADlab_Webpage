@@ -1,4 +1,4 @@
-import type { PublicationItem } from '../types/cms.ts';
+import type { PublicationItem } from '../types/content.ts';
 
 type PublicationLike = Pick<PublicationItem, 'id' | 'year'>;
 

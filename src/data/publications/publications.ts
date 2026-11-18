@@ -1,7 +1,7 @@
-import type { PublicationItem } from '../../types/cms.ts';
+import type { PublicationItem } from '../../types/content.ts';
 import { areaTitle } from '../research/areas.ts';
 
-export type PublicationSeed = Omit<PublicationItem, 'created_at' | 'updated_at'>;
+export type PublicationSeed = PublicationItem;
 
 const AI = areaTitle('area-1');
 const RS = areaTitle('area-2');

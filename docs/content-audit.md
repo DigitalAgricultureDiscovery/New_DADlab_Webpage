@@ -35,9 +35,8 @@ and what still needs the PI's confirmation. Migration date: November 16, 2026.
 | People (37) | People page, The DAD Group page, thesis-defense posts; PI's workbooks (Nov 2026) | `src/data/people/team.ts` |
 | Images (54 files) | WordPress media library | `public/images/` |
 
-`server/initial-content.ts` converts these modules into rows for a fresh CMS
-database and for the GitHub Pages export. Existing CMS databases are not
-overwritten.
+`src/data/content.ts` assembles these modules for the pages; the site is
+static and has no other content source.
 
 ## Images
 
@@ -195,7 +194,8 @@ The People page follows the PI's *DAD Lab Website Updates* workbook (November
 - **Photos:** LinkedIn photos were not copied: LinkedIn's terms prohibit
   scraping, and profile photos need the person's consent. People without a
   photo on file (2) show a circular initials avatar until a photo is added
-  in the CMS (`photoUrl`) or under `public/images/people/members/`.
+  under `public/images/people/members/` and set as `photoUrl` in
+  `src/data/people/team.ts`.
 
 The awards timeline on the About page is sorted by year, newest first, with
 an *Oldest first* toggle; the sort is done in code (`sortAwards` in
@@ -235,5 +235,5 @@ technical reports.
 
 ## Review notice
 
-The header review notice is cleared (as on `main`). It can be restored in
-**Site Profile → Public review notice** if needed.
+The header review notice is cleared (as on `main`). It can be restored by
+setting `reviewNote` in `src/data/profile.ts` if needed.

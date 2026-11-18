@@ -1,7 +1,11 @@
 # Digital Agriculture Discovery Lab (DAD Lab) website
 
-Website and content management system for the Digital Agriculture Discovery
-Lab, Department of Agricultural and Biological Engineering, Purdue University.
+Website of the Digital Agriculture Discovery Lab, Department of Agricultural
+and Biological Engineering, Purdue University. It is a static React site
+published on GitHub Pages; there is no server, database, or login. All content
+lives in TypeScript files under `src/data/` and is updated through pull
+requests.
+
 Content was migrated from the former lab website,
 `dad.saraswat.rcac.purdue.edu`; see
 [the migration ledger](docs/content-audit.md) for sources, corrections, and
@@ -18,8 +22,8 @@ public/images/
   research/projects/             Research project images
   news/                          News photos
 src/
-  data/                          Seed content (single source for the site's data)
-    profile.ts                   Lab profile, biography, education, contact
+  data/                          The site's content
+    profile.ts                   Lab profile, biography, education, contact, home page limits
     awards/awards.ts             Honors and awards (About page), newest first
     research/areas.ts            Research focus areas = Research page topic filters
     research/projects.ts         Research projects (status + topics)
@@ -27,30 +31,41 @@ src/
     news/news.ts                 News
     teaching/courses.ts          Courses
     people/team.ts               People and alumni
+    opportunities.ts             Open positions (currently none)
+    content.ts                   Assembles the above for the pages (drafts hidden, sorting, home picks)
   lib/researchFilters.ts         Research page status/topic filtering and topic links (pure, tested)
   lib/publications.ts            Publication order (newest first), shared by Home and Publications
   pages/, components/            React pages and components
-server/                          SQLite CMS (db.ts) and seed adapter (initial-content.ts)
-server.ts                        Express API, CMS, and production server
 tests/                           node:test suites
 ```
 
-Images are referenced by root-relative paths such as
-`/images/research/projects/corn-disease-geodls-app.jpg`;
-`resolveMediaUrl` adds the deployment base path, so the same paths work locally,
-on the Express server, and on GitHub Pages.
+## Updating content
+
+Edit the relevant file in `src/data/`, run the checks below, and open a pull
+request. Merging into `main` publishes the change.
+
+- Items with a draft status (`publish_status: 'draft'` for projects and
+  opportunities, `status: 'draft'` for publications, news and courses) stay in
+  the file but are not shown.
+- News from 2023 onward is listed as current news; earlier items appear in the
+  News Archive.
+- The home page shows the newest publications, the projects and news marked
+  `featured_on_home`, and open opportunities, up to the counts in
+  `homeLimits` in `src/data/profile.ts`.
+- Put new images under `public/images/` and reference them with root-relative
+  paths such as `/images/research/projects/corn-disease-geodls-app.jpg`;
+  `resolveMediaUrl` adds the GitHub Pages base path.
 
 ### Research projects and filters
 
 Each project in `src/data/research/projects.ts` has:
 
-- `project_status`: `ongoing` or `completed` (`archived` is still accepted by
-  the CMS and appears as a "Historical" filter only when used);
+- `project_status`: `ongoing` or `completed` (`archived` is also accepted and
+  appears as a "Historical" filter only when used);
 - `topics`: one or more research area ids from `src/data/research/areas.ts`;
 - `research_area`: the primary area's title (always one of its topics).
 
-Each topic has a shareable link, `/research?topic=<slug>` (for example
-`/research?topic=remote-sensing-uas`; on GitHub Pages
+Each topic has a shareable link, `#/research?topic=<slug>` (for example
 `#/research?topic=remote-sensing-uas`). The slug comes from the area's short
 label; the area id and a slug of its full title also work, and unknown topics
 show all research. The home page's Research Focus Areas cards use these links.
@@ -58,9 +73,9 @@ show all research. The home page's Research Focus Areas cards use these links.
 The Research page combines the status and topic filters (AND), shows counts,
 highlights the active filters, offers a reset, and shows a message when
 nothing matches. `tests/research-filters.test.ts` checks every status and
-topic combination against this data. In the CMS, edit topics with the
-**Research Topics** checkboxes in **Research Projects**, and research areas
-(including the short labels used on the filter chips) in **Site Profile**.
+topic combination against this data. Research areas, including the short
+labels used on the filter chips and in topic links, are edited in
+`src/data/research/areas.ts`.
 
 ### Typography
 
@@ -73,37 +88,30 @@ scale, usage rules, licensing, and accessibility notes.
 
 ## Local development
 
-Use Node.js 24 (Node 22.13 or later also works; the server uses the built-in
-`node:sqlite` module), then:
+Use Node.js 22 or later (the deploy workflow uses Node 24), then:
 
 ```sh
-npm install --legacy-peer-deps --package-lock=false --no-audit --no-fund
-npm run dev
+npm install --package-lock=false
+npm run dev        # http://localhost:3000
 ```
 
-The Express/Vite development server listens on port 3000. SQLite content,
-uploads and a generated session secret live in `data/`. Keep this directory
-local; do not commit or publish it. A new `data/` directory is seeded from
-`src/data/`; an existing database is never overwritten, so delete your local
-`data/` directory (after backing up anything you need) to load updated seed
-content.
+Before opening a pull request:
 
 ```sh
-npm run lint                                  # TypeScript checks
-node --import tsx --test tests/*.test.ts      # CMS, migration, export, and filter tests
-npm run build                                 # Frontend build for the Express server
+npm run lint       # TypeScript checks
+npm test           # content, filter, and helper tests
+npm run build      # production build into dist/
 ```
 
-The compatibility install flag handles the current Vite/esbuild optional peer
-conflict. This repository has no lockfile, so fresh installs may resolve newer
-versions within its declared ranges.
+This repository has no lockfile, so fresh installs may resolve newer versions
+within the ranges in `package.json`.
 
 ## Deploying to GitHub Pages
 
 The `Deploy website to GitHub Pages` workflow (`.github/workflows/pages.yml`)
 runs on every push to `main` and can be started manually from the **Actions**
-tab. It installs dependencies, runs `npm run lint`, builds with
-`npm run build:pages`, and publishes `dist/`.
+tab. It installs dependencies, runs `npm run lint` and `npm test`, builds with
+`npm run build`, and publishes `dist/`.
 
 1. In **Settings → Pages → Build and deployment**, select **GitHub Actions** as
    the source (one-time setup).
@@ -113,60 +121,16 @@ tab. It installs dependencies, runs `npm run lint`, builds with
    `https://<owner>.github.io/New_DADlab_Webpage/`.
 
 The workflow obtains the URL base from GitHub Pages, so both repository paths
-and custom domains use the correct asset URLs. Public navigation uses hash
-routes, for example `#/research`, allowing bookmarks and refreshes on Pages.
+and custom domains use the correct asset URLs. Pages use hash routes, for
+example `#/research`, so bookmarks and refreshes work on Pages.
 
-To build and preview the Pages site locally for the repository URL:
+To preview the production build for the repository URL locally:
 
 ```sh
-VITE_BASE_PATH=/New_DADlab_Webpage/ npm run build:pages
+VITE_BASE_PATH=/New_DADlab_Webpage/ npm run build
 ```
 
 Then serve `dist/` so that it is reachable under `/New_DADlab_Webpage/`.
 
-Pages serves static files only. The build exports public content from a
-temporary database seeded from `src/data/` into `dist/public-data.json`; it
-never exports user accounts, inquiries, session secrets, or a local CMS
-database. Changes made through a running CMS are not automatically published to
-Pages: update `src/data/` and rebuild, or use the CMS export described below.
-The Pages contact page offers email, and administration explains that a CMS
-server is required.
-
-## CMS operation
-
-A fresh database has **no default accounts**. Provision an administrator from
-the server terminal using `CMS_ADMIN_EMAIL` and `CMS_ADMIN_PASSWORD` (at least
-16 characters), then run `node --import tsx scripts/create-admin.ts`. Supply
-these values through secure environment settings or masked terminal input,
-never source files or command-line arguments. Clear those variables afterwards.
-The CMS can then create additional users. No Gemini key is required.
-
-Run the Express app on Node 24 with HTTPS in production and a persistent,
-backed-up `CMS_DATA_DIR` (defaults to `data/`). The production server runs with
-`NODE_ENV=production npm run dev` after `npm run build`; the script uses `tsx`
-for TypeScript. `PORT` defaults to 3000. Uploads, SQLite data and the session
-secret must survive container restarts. Keep backups private. The public export
-is not a database backup. Deploying on GitHub Pages alone does not provide CMS
-hosting, authentication, or persistent server storage.
-
-The profile editor manages identity, biography, education, honors and awards
-(structured: year, title, organization, details, link), logo, hero
-image, research focus areas, teaching overview, team and alumni, review notice
-and homepage curation. Separate managers support publications, research
-projects (status and topics), news sources/attachments, draft/current/archived
-courses, openings and media. The media picker offers the migrated images as
-presets. Keep publication topics identical to research area titles to retain
-their associations.
-
-For Pages after editing the CMS: use **Download public content for Pages** in
-Site Profile, place the downloaded JSON at `content/public-data.json`, and
-submit that content file through GitHub review. The workflow publishes it on
-merge; when present it takes precedence over `src/data/`. Private user
-accounts and contact inquiries are excluded by the authenticated public export
-endpoint. Use public hosted media URLs or files in `public/images/` in a Pages
-snapshot; local `/uploads/` paths require the backend.
-
-Existing databases are never silently overwritten or reseeded when a table
-becomes empty. Schema migrations preserve records while adding archived project
-status and project topics (existing projects start without topics and are
-filtered by their primary research area until topics are assigned).
+The Contact page lists the lab's email, phone, and address; inquiries go by
+email, since there is no server to receive form submissions.

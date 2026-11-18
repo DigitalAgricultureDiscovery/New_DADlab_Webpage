@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ExternalLink, Mail } from 'lucide-react';
-import type { OpportunityItem } from '../types/cms';
+import type { OpportunityItem } from '../types/content';
 import { sanitizeHtmlClient } from '../lib/htmlUtils';
 
 interface OpportunitiesPageProps {

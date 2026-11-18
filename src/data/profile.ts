@@ -1,4 +1,4 @@
-import type { SiteProfile } from '../types/cms.ts';
+import type { SiteProfile } from '../types/content.ts';
 import { RESEARCH_AREAS } from './research/areas.ts';
 import { TEAM_MEMBERS } from './people/team.ts';
 import { AWARDS } from './awards/awards.ts';

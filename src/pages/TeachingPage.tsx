@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ExternalLink, FileText, BookOpen } from 'lucide-react';
-import type { CourseItem, SiteProfile } from '../types/cms';
+import type { CourseItem, SiteProfile } from '../types/content';
 import { sanitizeHtmlClient } from '../lib/htmlUtils';
 
 interface TeachingPageProps {

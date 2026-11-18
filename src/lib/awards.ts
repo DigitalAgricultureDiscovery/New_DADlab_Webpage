@@ -1,4 +1,4 @@
-import type { Award, SiteProfile } from '../types/cms.ts';
+import type { Award, SiteProfile } from '../types/content.ts';
 
 /** One-line form used for the legacy `piHonors` list: "YEAR — Award, Organization". */
 export function awardLine(award: Award): string {

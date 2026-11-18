@@ -1,6 +1,6 @@
-import type { NewsItem } from '../../types/cms.ts';
+import type { NewsItem } from '../../types/content.ts';
 
-export type NewsSeed = Omit<NewsItem, 'id' | 'created_at' | 'updated_at' | 'attachments'>;
+export type NewsSeed = Omit<NewsItem, 'id' | 'attachments'>;
 
 /**
  * News migrated from the former DAD Lab website: the dated news feed

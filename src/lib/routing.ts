@@ -1,11 +1,14 @@
-import { isStaticSite } from './api';
+// The site is served as static files (GitHub Pages), so routes live in the URL
+// hash (e.g. `#/research?topic=education`): deep links and refreshes always
+// load index.html.
 
-// Hash routes keep deep links and refreshes within GitHub Pages' index.html.
-// The returned path includes any query string, e.g. "/research?topic=education".
+/** The current route, including any query string, e.g. "/research?topic=education". */
 export function readPath(): string {
-  return isStaticSite
-    ? (window.location.hash.slice(1) || '/')
-    : `${window.location.pathname || '/'}${window.location.search}`;
+  return window.location.hash.slice(1) || '/';
+}
+
+export function routeHref(path: string): string {
+  return `${import.meta.env.BASE_URL}#${path}`;
 }
 
 /** Splits "/research?topic=x" into its route ("/research") and query parameters. */
@@ -18,8 +21,4 @@ export function splitPath(path: string): { route: string; query: URLSearchParams
 /** Replaces the current URL without navigating (keeps a bookmarkable URL in sync with page state). */
 export function replacePath(path: string): void {
   if (path !== readPath()) window.history.replaceState(window.history.state, '', routeHref(path));
-}
-
-export function routeHref(path: string): string {
-  return isStaticSite ? `${import.meta.env.BASE_URL}#${path}` : path;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ExternalLink, FileText, RotateCcw } from 'lucide-react';
-import type { PublicationItem, ResearchProjectItem, SiteProfile } from '../types/cms';
+import type { PublicationItem, ResearchProjectItem, SiteProfile } from '../types/content';
 import { LabImage } from '../components/LabImage';
 import { sanitizeHtmlClient } from '../lib/htmlUtils';
 import { replacePath } from '../lib/routing';
