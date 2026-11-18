@@ -86,6 +86,20 @@ documented fallbacks, because Purdue's licensed brand fonts are only licensed
 for Purdue-owned domains. See [the typography guide](docs/typography.md) for the
 scale, usage rules, licensing, and accessibility notes.
 
+### Welcome animation
+
+On a visitor's first page load, a short intro (about 2.4 seconds) shows
+"Welcome", the lab logo, and "to the DAD Lab" over a black screen. The text
+fades out and the logo moves to its place in the header. It is in
+`src/components/IntroSplash.tsx` (styles at the end of `src/index.css`) and
+only animates `opacity` and `transform`, so it stays light on low-end devices.
+
+- It plays at most once every two hours per browser: the first-party cookie
+  `dadlab_intro_seen` (`Max-Age` 7200 s, set by `src/lib/intro.ts`) suppresses
+  it on refreshes and further visits until it expires.
+- It is skipped for visitors whose system requests reduced motion, and any
+  click, tap, or key press skips it.
+
 ## Local development
 
 Use Node.js 22 or later (the deploy workflow uses Node 24), then:

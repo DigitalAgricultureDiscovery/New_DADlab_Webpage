@@ -2,6 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { readPath, routeHref, splitPath } from './lib/routing';
 import { SITE_CONTENT } from './data/content';
 import { PublicHeader, PublicFooter } from './components/PublicHeaderFooter';
+import { IntroSplash } from './components/IntroSplash';
+import { introWanted } from './lib/intro';
+import { resolveMediaUrl } from './lib/mediaAssets';
 import { HomePage } from './pages/HomePage';
 import { PeoplePage } from './pages/PeoplePage';
 import { AboutPage } from './pages/AboutPage';
@@ -17,6 +20,8 @@ const publicData = SITE_CONTENT;
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => readPath());
   const { route: routePath, query } = splitPath(currentPath);
+  // Decided before the first paint so the page never flashes before the intro.
+  const [showIntro, setShowIntro] = useState(() => Boolean(publicData.profile.logoUrl) && introWanted());
 
   useEffect(() => {
     const onPop = () => {
@@ -102,6 +107,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF9F6]">
+      {showIntro && (
+        <IntroSplash
+          logoUrl={resolveMediaUrl(publicData.profile.logoUrl)}
+          labName={publicData.profile.labName}
+          shortTitle={publicData.profile.shortTitle}
+          onDone={() => setShowIntro(false)}
+        />
+      )}
       <PublicHeader
         profile={publicData.profile}
         currentPath={routePath}
