@@ -39,6 +39,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     role: 'Ph.D. Student, Agricultural and Biological Engineering',
     category: 'PhD Student',
     focus: 'Generalizing YOLO networks for soybean plant stand count across fields.',
+    photoUrl: `${P}adeayo-adewumi.jpg`,
     linkedin: li('adeayodaniel'),
   },
   {
